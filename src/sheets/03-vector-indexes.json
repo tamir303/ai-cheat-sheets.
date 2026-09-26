@@ -1,0 +1,350 @@
+{
+ "title": "Same Embeddings. Different Indexes. Different Trade-offs.",
+ "concept": "Vector index types",
+ "createdAt": "2026-09-24T18:22:00Z",
+ "data": {
+  "concept": "Vector index types",
+  "kicker": "Vector search cheat sheet · 6 index types",
+  "title": [
+   "Same Embeddings.",
+   "Different Indexes.",
+   "Different Trade-offs."
+  ],
+  "sticky": [
+   "Same vectors.",
+   "New index.",
+   "New latency!"
+  ],
+  "note": [
+   "Fast, small, exact:",
+   "pick two."
+  ],
+  "intro": {
+   "before": "Every vector database answers nearest-neighbour queries, but the index decides",
+   "highlight": "how much recall you trade",
+   "after": " for speed and memory."
+  },
+  "items": [
+   {
+    "n": 1,
+    "title": "Flat (Exact)",
+    "short": "Flat",
+    "tagline": "Compare with everything",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Exact results: perfect recall by definition"
+     },
+     {
+      "sign": "+",
+      "text": "No training, no tuning, easy updates"
+     },
+     {
+      "sign": "+",
+      "text": "The baseline to measure other indexes"
+     },
+     {
+      "sign": "-",
+      "text": "Query cost grows with every vector added"
+     }
+    ],
+    "latency": 3,
+    "cost": 2,
+    "tools": [
+     "FAISS IndexFlatL2",
+     "NumPy dot product"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 2,
+    "title": "IVF",
+    "short": "IVF",
+    "tagline": "Search the nearest clusters",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Clusters vectors with k-means, scans a few"
+     },
+     {
+      "sign": "+",
+      "text": "nprobe trades speed for recall per query"
+     },
+     {
+      "sign": "+",
+      "text": "Simple, and pairs well with compression"
+     },
+     {
+      "sign": "-",
+      "text": "Misses neighbours in unprobed clusters"
+     }
+    ],
+    "latency": 2,
+    "cost": 2,
+    "tools": [
+     "FAISS IndexIVFFlat",
+     "Milvus IVF_FLAT"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 3,
+    "title": "HNSW",
+    "short": "HNSW",
+    "tagline": "Navigate a layered graph",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Greedy walk from a sparse top layer down"
+     },
+     {
+      "sign": "+",
+      "text": "High recall at low latency; common default"
+     },
+     {
+      "sign": "+",
+      "text": "Supports incremental inserts"
+     },
+     {
+      "sign": "-",
+      "text": "Graph links cost a lot of extra memory"
+     }
+    ],
+    "latency": 1,
+    "cost": 3,
+    "tools": [
+     "hnswlib",
+     "FAISS IndexHNSWFlat",
+     "pgvector HNSW"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 4,
+    "title": "Product Quantization",
+    "short": "PQ",
+    "tagline": "Compress vectors to codes",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Splits vectors into chunks, 1-byte code each"
+     },
+     {
+      "sign": "+",
+      "text": "Cuts memory sharply: 3 KB → 96 B here"
+     },
+     {
+      "sign": "+",
+      "text": "Fast approximate distances via lookup tables"
+     },
+     {
+      "sign": "-",
+      "text": "Lossy: re-rank with full vectors"
+     }
+    ],
+    "latency": 1,
+    "cost": 1,
+    "tools": [
+     "FAISS IndexIVFPQ",
+     "Milvus IVF_PQ"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 5,
+    "title": "LSH",
+    "short": "LSH",
+    "tagline": "Hash similar vectors together",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Random hyperplanes hash vectors to buckets"
+     },
+     {
+      "sign": "+",
+      "text": "No training; easy to shard and stream"
+     },
+     {
+      "sign": "+",
+      "text": "Well-understood probability guarantees"
+     },
+     {
+      "sign": "-",
+      "text": "Needs many tables for good recall"
+     }
+    ],
+    "latency": 2,
+    "cost": 2,
+    "tools": [
+     "FAISS IndexLSH",
+     "FALCONN"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 6,
+    "title": "DiskANN",
+    "short": "DiskANN",
+    "tagline": "Graph on SSD, codes in RAM",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Keeps the graph and full vectors on SSD"
+     },
+     {
+      "sign": "+",
+      "text": "Compressed codes in RAM guide the search"
+     },
+     {
+      "sign": "+",
+      "text": "Scales past RAM on a single machine"
+     },
+     {
+      "sign": "-",
+      "text": "Slower than in-memory graphs; SSD-bound"
+     }
+    ],
+    "latency": 2,
+    "cost": 1,
+    "tools": [
+     "Microsoft DiskANN",
+     "Milvus DISKANN",
+     "pgvectorscale StreamingDiskANN"
+    ],
+    "diagram": ""
+   }
+  ],
+  "overview_title": "Where each index does its work",
+  "overview": {
+   "label": "per query",
+   "online": [
+    {
+     "name": "Query vector",
+     "note": "embedded question",
+     "items": []
+    },
+    {
+     "name": "Pick candidates",
+     "note": "nearest clusters or buckets",
+     "items": [
+      2,
+      5
+     ]
+    },
+    {
+     "name": "Graph walk",
+     "note": "hop to closer neighbours",
+     "items": [
+      3,
+      6
+     ]
+    },
+    {
+     "name": "Score distances",
+     "note": "exact or compressed",
+     "items": [
+      1,
+      4
+     ]
+    },
+    {
+     "name": "Top-k results",
+     "note": "to the reranker or LLM",
+     "items": []
+    }
+   ],
+   "offline": [],
+   "feeds": -1,
+   "loop": null,
+   "side": ""
+  },
+  "principles": [
+   {
+    "lead": "Measure recall and latency ",
+    "hl": "on your own vectors.",
+    "sub": "Benchmark against a flat index; recall@10 and p95 latency beat any default setting."
+   },
+   {
+    "lead": "Small corpus? ",
+    "hl": "Flat or HNSW is enough.",
+    "sub": "Reach for compression or disk-based indexes only when memory becomes the limit."
+   },
+   {
+    "lead": "Compressed search? ",
+    "hl": "Re-rank with full vectors.",
+    "sub": "Retrieve extra candidates with PQ codes, then re-score them exactly."
+   }
+  ],
+  "which": {
+   "title": "Which index?",
+   "rows": [
+    {
+     "q": "Small corpus, must be exact",
+     "items": [
+      1
+     ]
+    },
+    {
+     "q": "Low latency, high recall, RAM ok",
+     "items": [
+      3
+     ]
+    },
+    {
+     "q": "Tight memory budget",
+     "items": [
+      4
+     ]
+    },
+    {
+     "q": "Tune speed vs recall per query",
+     "items": [
+      2
+     ]
+    },
+    {
+     "q": "Bigger than RAM, one machine",
+     "items": [
+      6
+     ]
+    },
+    {
+     "q": "Streaming data, no training step",
+     "items": [
+      5
+     ]
+    }
+   ]
+  },
+  "quote": {
+   "big": "Every index trades recall for speed.",
+   "small": "Know how much recall you're giving up."
+  },
+  "diagrams": {
+   "1": {
+    "alt": "Flat index: the query is compared with all 10 vectors and the exact 3 nearest are returned.",
+    "svg": "<text x='120' y='16' font-size='11' fill='#43506B' text-anchor='middle'>compare the query with every vector</text><line x1='30' y1='85' x2='70' y2='70' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round'/><line x1='30' y1='85' x2='76' y2='104' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round'/><line x1='30' y1='85' x2='96' y2='88' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round'/><line x1='30' y1='85' x2='130' y2='40' stroke='#C8CFDC' stroke-width='1' stroke-linecap='round'/><line x1='30' y1='85' x2='150' y2='120' stroke='#C8CFDC' stroke-width='1' stroke-linecap='round'/><line x1='30' y1='85' x2='120' y2='150' stroke='#C8CFDC' stroke-width='1' stroke-linecap='round'/><line x1='30' y1='85' x2='170' y2='70' stroke='#C8CFDC' stroke-width='1' stroke-linecap='round'/><line x1='30' y1='85' x2='190' y2='30' stroke='#C8CFDC' stroke-width='1' stroke-linecap='round'/><line x1='30' y1='85' x2='200' y2='140' stroke='#C8CFDC' stroke-width='1' stroke-linecap='round'/><line x1='30' y1='85' x2='215' y2='95' stroke='#C8CFDC' stroke-width='1' stroke-linecap='round'/><circle cx='70' cy='70' r='4.5' fill='#3452C7'/><circle cx='76' cy='104' r='4.5' fill='#3452C7'/><circle cx='96' cy='88' r='4.5' fill='#3452C7'/><circle cx='130' cy='40' r='3.5' fill='#8C95A8'/><circle cx='150' cy='120' r='3.5' fill='#8C95A8'/><circle cx='120' cy='150' r='3.5' fill='#8C95A8'/><circle cx='170' cy='70' r='3.5' fill='#8C95A8'/><circle cx='190' cy='30' r='3.5' fill='#8C95A8'/><circle cx='200' cy='140' r='3.5' fill='#8C95A8'/><circle cx='215' cy='95' r='3.5' fill='#8C95A8'/><text x='78' y='65' font-size='10.5' fill='#D1495B' data-f='sans'>1</text><text x='84' y='99' font-size='10.5' fill='#D1495B' data-f='sans'>2</text><text x='104' y='83' font-size='10.5' fill='#D1495B' data-f='sans'>3</text><polygon points='30.0,77.0 32.1,82.2 37.6,82.5 33.3,86.1 34.7,91.5 30.0,88.5 25.3,91.5 26.7,86.1 22.4,82.5 27.9,82.2' fill='#D1495B' stroke='#1B2440' stroke-width='1'/><text x='120' y='165' font-size='10.5' fill='#1B2440' text-anchor='middle'>10 vectors → 10 distance checks · exact top-3</text>"
+   },
+   "2": {
+    "alt": "IVF with 4 clusters and nprobe 1: only the cluster with the nearest centroid is scanned, so a closer vector in another cluster is missed.",
+    "svg": "<text x='120' y='14' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>nlist = 4 · nprobe = 1</text><rect x='120' y='22' width='110' height='66' rx='0' fill='#FFF6E0'/><rect x='10' y='22' width='220' height='132' rx='4' fill='none' stroke='#8C95A8' stroke-width='1.2'/><line x1='120' y1='22' x2='120' y2='154' stroke='#8C95A8' stroke-width='1.2' stroke-linecap='round' stroke-dasharray='4 3'/><line x1='10' y1='88' x2='230' y2='88' stroke='#8C95A8' stroke-width='1.2' stroke-linecap='round' stroke-dasharray='4 3'/><polygon points='60,44 66,55 54,55' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><circle cx='40' cy='40' r='3.5' fill='#8C95A8'/><circle cx='85' cy='35' r='3.5' fill='#8C95A8'/><circle cx='112' cy='78' r='3.5' fill='#D1495B'/><polygon points='180,49 186,60 174,60' fill='#FFD27A' stroke='#1B2440' stroke-width='1.3'/><circle cx='190' cy='35' r='3.5' fill='#3452C7'/><circle cx='205' cy='65' r='3.5' fill='#3452C7'/><circle cx='215' cy='40' r='3.5' fill='#3452C7'/><polygon points='60,119 66,130 54,130' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><circle cx='40' cy='110' r='3.5' fill='#8C95A8'/><circle cx='80' cy='140' r='3.5' fill='#8C95A8'/><circle cx='95' cy='115' r='3.5' fill='#8C95A8'/><polygon points='180,119 186,130 174,130' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><circle cx='160' cy='140' r='3.5' fill='#8C95A8'/><circle cx='205' cy='110' r='3.5' fill='#8C95A8'/><circle cx='215' cy='145' r='3.5' fill='#8C95A8'/><line x1='156' y1='66' x2='172' y2='58' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><polyline points='165.5,57.8 172,58 168.3,63.3' fill='none' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><polygon points='150.0,62.0 152.1,67.2 157.6,67.5 153.3,71.1 154.7,76.5 150.0,73.5 145.3,76.5 146.7,71.1 142.4,67.5 147.9,67.2' fill='#D1495B' stroke='#1B2440' stroke-width='1'/><line x1='142' y1='72' x2='118' y2='78' stroke='#D1495B' stroke-width='1.3' stroke-linecap='round' stroke-dasharray='3 2'/><text x='90' y='100' font-size='10.5' fill='#D1495B' text-anchor='middle'>missed: closer,</text><text x='90' y='112' font-size='10.5' fill='#D1495B' text-anchor='middle'>other cluster</text><text x='120' y='167' font-size='10.5' fill='#43506B' text-anchor='middle'>scan 1 of 4 clusters (the nearest centroid)</text>"
+   },
+   "3": {
+    "alt": "HNSW: search enters at the sparse top layer, hops greedily toward the query and drops down layer by layer to the nearest node.",
+    "svg": "<rect x='46' y='10' width='188' height='34' rx='8' fill='#EFF2FF' stroke='#8C95A8' stroke-width='1.1'/><text x='4' y='31.0' font-size='10.5' fill='#43506B'>layer 2</text><rect x='46' y='56' width='188' height='38' rx='8' fill='#EFF2FF' stroke='#8C95A8' stroke-width='1.1'/><text x='4' y='79.0' font-size='10.5' fill='#43506B'>layer 1</text><rect x='46' y='106' width='188' height='50' rx='8' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.1'/><text x='4' y='135.0' font-size='10.5' fill='#43506B'>layer 0</text><line x1='76' y1='27' x2='200' y2='27' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='66' y1='75' x2='112' y2='68' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='112' y1='68' x2='156' y2='84' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='156' y1='84' x2='200' y2='75' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='112' y1='68' x2='200' y2='75' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='62' y1='122' x2='90' y2='144' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='62' y1='122' x2='118' y2='120' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='118' y1='120' x2='156' y2='130' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='156' y1='130' x2='180' y2='146' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='156' y1='130' x2='204' y2='118' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='204' y1='118' x2='224' y2='140' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='180' y1='146' x2='224' y2='140' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='90' y1='144' x2='128' y2='146' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='128' y1='146' x2='156' y2='130' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='118' y1='120' x2='128' y2='146' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='76' y1='27' x2='192' y2='27' stroke='#D1495B' stroke-width='1.8' stroke-linecap='round'/><polyline points='186.3,23.9 192,27 186.3,30.1' fill='none' stroke='#D1495B' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/><line x1='200' y1='31' x2='200' y2='71' stroke='#D1495B' stroke-width='1.4' stroke-linecap='round' stroke-dasharray='3 2'/><line x1='200' y1='75' x2='162' y2='83' stroke='#D1495B' stroke-width='1.8' stroke-linecap='round'/><polyline points='168.2,84.9 162,83 166.9,78.8' fill='none' stroke='#D1495B' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/><line x1='156' y1='88' x2='156' y2='126' stroke='#D1495B' stroke-width='1.4' stroke-linecap='round' stroke-dasharray='3 2'/><line x1='156' y1='130' x2='134' y2='145' stroke='#D1495B' stroke-width='1.8' stroke-linecap='round'/><polyline points='140.5,144.4 134,145 137.0,139.2' fill='none' stroke='#D1495B' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/><circle cx='76' cy='27' r='3.5' fill='#1B2440'/><circle cx='200' cy='27' r='3.5' fill='#1B2440'/><circle cx='66' cy='75' r='3.5' fill='#1B2440'/><circle cx='112' cy='68' r='3.5' fill='#1B2440'/><circle cx='156' cy='84' r='3.5' fill='#1B2440'/><circle cx='200' cy='75' r='3.5' fill='#1B2440'/><circle cx='62' cy='122' r='3.5' fill='#1B2440'/><circle cx='90' cy='144' r='3.5' fill='#1B2440'/><circle cx='118' cy='120' r='3.5' fill='#1B2440'/><circle cx='156' cy='130' r='3.5' fill='#1B2440'/><circle cx='180' cy='146' r='3.5' fill='#1B2440'/><circle cx='204' cy='118' r='3.5' fill='#1B2440'/><circle cx='224' cy='140' r='3.5' fill='#1B2440'/><circle cx='128' cy='146' r='3.5' fill='#1B2440'/><circle cx='76' cy='27' r='4.5' fill='#D1495B'/><text x='76' y='20' font-size='10' fill='#D1495B' text-anchor='middle'>entry</text><circle cx='128' cy='146' r='5' fill='#3452C7'/><text x='104' y='158' font-size='10' fill='#3452C7' text-anchor='middle'>nearest</text><text x='144' y='168' font-size='10.5' fill='#43506B' text-anchor='middle'>greedy hops, top layer down</text>"
+   },
+   "4": {
+    "alt": "Product quantization: a 768-dimension vector is split into 96 sub-vectors, each replaced by a 1-byte centroid code, shrinking 3,072 bytes to 96 bytes.",
+    "svg": "<text x='120' y='14' font-size='11' fill='#43506B' text-anchor='middle'>one 768-dim vector</text><rect x='10' y='20' width='30' height='18' rx='2' fill='#EFF2FF' stroke='#1B2440' stroke-width='1'/><rect x='42' y='20' width='30' height='18' rx='2' fill='#E9F8F4' stroke='#1B2440' stroke-width='1'/><rect x='74' y='20' width='30' height='18' rx='2' fill='#EFF2FF' stroke='#1B2440' stroke-width='1'/><rect x='106' y='20' width='30' height='18' rx='2' fill='#E9F8F4' stroke='#1B2440' stroke-width='1'/><rect x='138' y='20' width='30' height='18' rx='2' fill='#EFF2FF' stroke='#1B2440' stroke-width='1'/><rect x='198' y='20' width='30' height='18' rx='2' fill='#E9F8F4' stroke='#1B2440' stroke-width='1'/><text x='184' y='33' font-size='12' fill='#1B2440' text-anchor='middle'>…</text><text x='120' y='51' font-size='10.5' fill='#43506B' text-anchor='middle'>96 sub-vectors × 8 dims</text><line x1='25' y1='55' x2='25' y2='65' stroke='#D1495B' stroke-width='1.2' stroke-linecap='round'/><polyline points='28.1,59.3 25,65 21.9,59.3' fill='none' stroke='#D1495B' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='10' y='66' width='30' height='16' rx='6' fill='#FFD27A' stroke='#D1495B' stroke-width='1.3'/><text x='25.0' y='77.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>17</text><line x1='57' y1='55' x2='57' y2='65' stroke='#D1495B' stroke-width='1.2' stroke-linecap='round'/><polyline points='60.1,59.3 57,65 53.9,59.3' fill='none' stroke='#D1495B' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='42' y='66' width='30' height='16' rx='6' fill='#FFD27A' stroke='#D1495B' stroke-width='1.3'/><text x='57.0' y='77.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>203</text><line x1='89' y1='55' x2='89' y2='65' stroke='#D1495B' stroke-width='1.2' stroke-linecap='round'/><polyline points='92.1,59.3 89,65 85.9,59.3' fill='none' stroke='#D1495B' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='74' y='66' width='30' height='16' rx='6' fill='#FFD27A' stroke='#D1495B' stroke-width='1.3'/><text x='89.0' y='77.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>4</text><line x1='121' y1='55' x2='121' y2='65' stroke='#D1495B' stroke-width='1.2' stroke-linecap='round'/><polyline points='124.1,59.3 121,65 117.9,59.3' fill='none' stroke='#D1495B' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='106' y='66' width='30' height='16' rx='6' fill='#FFD27A' stroke='#D1495B' stroke-width='1.3'/><text x='121.0' y='77.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>88</text><line x1='153' y1='55' x2='153' y2='65' stroke='#D1495B' stroke-width='1.2' stroke-linecap='round'/><polyline points='156.1,59.3 153,65 149.9,59.3' fill='none' stroke='#D1495B' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='138' y='66' width='30' height='16' rx='6' fill='#FFD27A' stroke='#D1495B' stroke-width='1.3'/><text x='153.0' y='77.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>151</text><line x1='213' y1='55' x2='213' y2='65' stroke='#D1495B' stroke-width='1.2' stroke-linecap='round'/><polyline points='216.1,59.3 213,65 209.9,59.3' fill='none' stroke='#D1495B' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='198' y='66' width='30' height='16' rx='6' fill='#FFD27A' stroke='#D1495B' stroke-width='1.3'/><text x='213.0' y='77.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>62</text><text x='184' y='78' font-size='12' fill='#1B2440' text-anchor='middle'>…</text><text x='120' y='97' font-size='10.5' fill='#43506B' text-anchor='middle'>each → nearest of 256 centroids = 1 byte</text><text x='120' y='120' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>float32: 768 × 4 = 3,072 B</text><text x='120' y='137' font-size='10.5' fill='#D1495B' text-anchor='middle' data-f='sans'>PQ codes: 96 × 1 = 96 B</text><text x='120' y='157' font-size='10.5' fill='#43506B' text-anchor='middle'>32× smaller · distances become approximate</text>"
+   },
+   "5": {
+    "alt": "LSH: two random lines give each vector a 2-bit hash; the query lands in bucket 10 and is compared only with vectors in that bucket.",
+    "svg": "<text x='120' y='14' font-size='11' fill='#43506B' text-anchor='middle'>2 random lines → 2-bit hash</text><rect x='10' y='22' width='220' height='124' rx='4' fill='none' stroke='#8C95A8' stroke-width='1.1'/><line x1='10' y1='140' x2='230' y2='40' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round'/><line x1='60' y1='22' x2='180' y2='146' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round'/><circle cx='190' cy='45' r='4' fill='#3452C7'/><circle cx='130' cy='40' r='4' fill='#3452C7'/><circle cx='205' cy='30' r='4' fill='#3452C7'/><circle cx='40' cy='60' r='3.5' fill='#8C95A8'/><circle cx='70' cy='120' r='3.5' fill='#8C95A8'/><circle cx='200' cy='120' r='3.5' fill='#8C95A8'/><circle cx='120' cy='135' r='3.5' fill='#8C95A8'/><circle cx='95' cy='85' r='3.5' fill='#8C95A8'/><text x='100' y='34' font-size='11' fill='#D1495B' text-anchor='middle' data-f='sans'>10</text><text x='30' y='50' font-size='11' fill='#8C95A8' text-anchor='middle' data-f='sans'>11</text><text x='60' y='138' font-size='11' fill='#8C95A8' text-anchor='middle' data-f='sans'>01</text><text x='215' y='135' font-size='11' fill='#8C95A8' text-anchor='middle' data-f='sans'>00</text><polygon points='150.0,52.0 152.1,57.2 157.6,57.5 153.3,61.1 154.7,66.5 150.0,63.5 145.3,66.5 146.7,61.1 142.4,57.5 147.9,57.2' fill='#D1495B' stroke='#1B2440' stroke-width='1'/><text x='120' y='162' font-size='10.5' fill='#D1495B' text-anchor='middle' data-f='sans'>compare only bucket 10</text>"
+   },
+   "6": {
+    "alt": "DiskANN: compressed PQ codes in RAM score candidates while the graph and full vectors are read from SSD, then the best hits are re-ranked with full vectors.",
+    "svg": "<rect x='6' y='8' width='228' height='50' rx='6' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.4'/><text x='16' y='24' font-size='11' fill='#1B2440' data-f='sans'>RAM</text><rect x='16' y='34' width='9' height='10' rx='1.5' fill='#FFD27A' stroke='#D1495B' stroke-width='0.8'/><rect x='27' y='34' width='9' height='10' rx='1.5' fill='#FFD27A' stroke='#D1495B' stroke-width='0.8'/><rect x='38' y='34' width='9' height='10' rx='1.5' fill='#FFD27A' stroke='#D1495B' stroke-width='0.8'/><rect x='49' y='34' width='9' height='10' rx='1.5' fill='#FFD27A' stroke='#D1495B' stroke-width='0.8'/><rect x='60' y='34' width='9' height='10' rx='1.5' fill='#FFD27A' stroke='#D1495B' stroke-width='0.8'/><rect x='71' y='34' width='9' height='10' rx='1.5' fill='#FFD27A' stroke='#D1495B' stroke-width='0.8'/><rect x='82' y='34' width='9' height='10' rx='1.5' fill='#FFD27A' stroke='#D1495B' stroke-width='0.8'/><rect x='93' y='34' width='9' height='10' rx='1.5' fill='#FFD27A' stroke='#D1495B' stroke-width='0.8'/><text x='108' y='34' font-size='10.5' fill='#1B2440'>PQ codes (small)</text><text x='108' y='48' font-size='10.5' fill='#43506B'>guide the graph walk</text><rect x='6' y='90' width='228' height='72' rx='6' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.4' stroke-dasharray='5 3'/><text x='16' y='106' font-size='11' fill='#1B2440' data-f='sans'>SSD</text><text x='108' y='106' font-size='10.5' fill='#43506B'>graph + full vectors</text><line x1='34' y1='132' x2='70' y2='122' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='70' y1='122' x2='104' y2='140' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='104' y1='140' x2='140' y2='120' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='140' y1='120' x2='176' y2='136' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='176' y1='136' x2='212' y2='122' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='70' y1='122' x2='140' y2='120' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><line x1='70' y1='122' x2='100' y2='138' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round'/><polyline points='96.4,132.6 100,138 93.5,138.1' fill='none' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><line x1='104' y1='140' x2='136' y2='122' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round'/><polyline points='129.5,122.1 136,122 132.6,127.5' fill='none' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><circle cx='34' cy='132' r='3.5' fill='#1B2440'/><circle cx='70' cy='122' r='3.5' fill='#1B2440'/><circle cx='104' cy='140' r='3.5' fill='#1B2440'/><circle cx='140' cy='120' r='3.5' fill='#1B2440'/><circle cx='176' cy='136' r='3.5' fill='#1B2440'/><circle cx='212' cy='122' r='3.5' fill='#1B2440'/><circle cx='140' cy='120' r='4.5' fill='#3452C7'/><line x1='60' y1='60' x2='60' y2='88' stroke='#D1495B' stroke-width='1.4' stroke-linecap='round'/><polyline points='63.1,82.3 60,88 56.9,82.3' fill='none' stroke='#D1495B' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><text x='66' y='78' font-size='10' fill='#D1495B'>read neighbours</text><line x1='184' y1='88' x2='184' y2='60' stroke='#3452C7' stroke-width='1.4' stroke-linecap='round'/><polyline points='180.9,65.7 184,60 187.1,65.7' fill='none' stroke='#3452C7' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><text x='178' y='78' font-size='10' fill='#3452C7' text-anchor='end'>score with PQ</text><text x='120' y='156' font-size='10.5' fill='#1B2440' text-anchor='middle'>re-rank the best with full vectors</text>"
+   }
+  }
+ }
+}
