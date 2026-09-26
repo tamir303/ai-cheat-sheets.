@@ -1,0 +1,350 @@
+{
+ "title": "Same Request. Different Caches. Different Savings.",
+ "concept": "LLM caching strategies",
+ "createdAt": "2026-09-24T18:26:00Z",
+ "data": {
+  "concept": "LLM caching strategies",
+  "kicker": "LLM cost cheat sheet · 6 caching layers",
+  "title": [
+   "Same Request.",
+   "Different Caches.",
+   "Different Savings."
+  ],
+  "sticky": [
+   "Same prompt.",
+   "Paid once.",
+   "Served twice!"
+  ],
+  "note": [
+   "Compute once,",
+   "serve many."
+  ],
+  "intro": {
+   "before": "A lot of LLM traffic repeats: the same prompts, prefixes, documents and tool calls. Caching decides",
+   "highlight": "what you never pay for twice",
+   "after": ", at each layer of the stack."
+  },
+  "items": [
+   {
+    "n": 1,
+    "title": "Exact-Match Cache",
+    "short": "Exact cache",
+    "tagline": "Same prompt, stored answer",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Hashes the full prompt; repeats return instantly"
+     },
+     {
+      "sign": "+",
+      "text": "Zero model cost on a hit"
+     },
+     {
+      "sign": "+",
+      "text": "Deterministic and easy to invalidate"
+     },
+     {
+      "sign": "-",
+      "text": "Misses any rewording, even one character"
+     }
+    ],
+    "latency": 1,
+    "cost": 1,
+    "tools": [
+     "Redis",
+     "LangChain InMemoryCache"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 2,
+    "title": "Semantic Cache",
+    "short": "Semantic",
+    "tagline": "Similar question, reuse answer",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Reuses answers above a similarity threshold"
+     },
+     {
+      "sign": "+",
+      "text": "Catches paraphrased repeat questions"
+     },
+     {
+      "sign": "+",
+      "text": "Big savings on FAQ-style traffic"
+     },
+     {
+      "sign": "-",
+      "text": "A loose threshold serves wrong answers"
+     }
+    ],
+    "latency": 2,
+    "cost": 1,
+    "tools": [
+     "GPTCache",
+     "LangChain RedisSemanticCache"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 3,
+    "title": "Prompt Caching",
+    "short": "Prompt cache",
+    "tagline": "Reuse a long shared prefix",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Provider stores the processed prompt prefix"
+     },
+     {
+      "sign": "+",
+      "text": "Cached input tokens billed at a discount"
+     },
+     {
+      "sign": "+",
+      "text": "Faster first token on long prompts"
+     },
+     {
+      "sign": "-",
+      "text": "Exact prefixes only; entries expire"
+     }
+    ],
+    "latency": 1,
+    "cost": 1,
+    "tools": [
+     "Anthropic prompt caching",
+     "OpenAI prompt caching",
+     "Gemini context caching"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 4,
+    "title": "KV Cache",
+    "short": "KV cache",
+    "tagline": "Don't recompute past tokens",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Stores attention keys and values per token"
+     },
+     {
+      "sign": "+",
+      "text": "New tokens attend to the cache only"
+     },
+     {
+      "sign": "+",
+      "text": "Avoids recomputing the prefix each step"
+     },
+     {
+      "sign": "-",
+      "text": "Memory grows with context length and batch"
+     }
+    ],
+    "latency": 1,
+    "cost": 2,
+    "tools": [
+     "Transformers use_cache=True",
+     "vLLM PagedAttention"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 5,
+    "title": "Embedding Cache",
+    "short": "Embed cache",
+    "tagline": "Embed each text once",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Stores vectors keyed by a hash of the text"
+     },
+     {
+      "sign": "+",
+      "text": "Re-indexing skips unchanged documents"
+     },
+     {
+      "sign": "+",
+      "text": "Cuts embedding spend and indexing time"
+     },
+     {
+      "sign": "-",
+      "text": "A new embedding model means re-embed all"
+     }
+    ],
+    "latency": 1,
+    "cost": 1,
+    "tools": [
+     "LangChain CacheBackedEmbeddings",
+     "Redis"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 6,
+    "title": "Tool-Result Cache",
+    "short": "Tool cache",
+    "tagline": "Remember slow lookups",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Caches tool or API results by arguments"
+     },
+     {
+      "sign": "+",
+      "text": "Agents stop repeating the same calls"
+     },
+     {
+      "sign": "+",
+      "text": "A TTL keeps results reasonably fresh"
+     },
+     {
+      "sign": "-",
+      "text": "Stale answers if the TTL is too long"
+     }
+    ],
+    "latency": 1,
+    "cost": 1,
+    "tools": [
+     "functools.lru_cache",
+     "Redis with TTL"
+    ],
+    "diagram": ""
+   }
+  ],
+  "overview_title": "Where each cache sits",
+  "overview": {
+   "label": "per request",
+   "online": [
+    {
+     "name": "User request",
+     "note": "prompt arrives",
+     "items": []
+    },
+    {
+     "name": "Before the LLM",
+     "note": "answer from the cache",
+     "items": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "Build context",
+     "note": "embeddings, tool results",
+     "items": [
+      5,
+      6
+     ]
+    },
+    {
+     "name": "Send the prompt",
+     "note": "provider reuses the prefix",
+     "items": [
+      3
+     ]
+    },
+    {
+     "name": "Generate",
+     "note": "reuse K/V every token",
+     "items": [
+      4
+     ]
+    }
+   ],
+   "offline": [],
+   "feeds": -1,
+   "loop": null,
+   "side": ""
+  },
+  "principles": [
+   {
+    "lead": "Cache at every layer, ",
+    "hl": "but measure hit rate.",
+    "sub": "A cache that rarely hits only adds latency; log hits, misses and savings."
+   },
+   {
+    "lead": "Put stable content first ",
+    "hl": "to reuse the prefix.",
+    "sub": "System prompt, tools and documents first; the user's question last."
+   },
+   {
+    "lead": "Semantic cache: ",
+    "hl": "tune the threshold.",
+    "sub": "Too loose serves wrong answers; test on real paraphrases and near-misses."
+   }
+  ],
+  "which": {
+   "title": "Which cache?",
+   "rows": [
+    {
+     "q": "Identical repeated prompts",
+     "items": [
+      1
+     ]
+    },
+    {
+     "q": "FAQ traffic with rewording",
+     "items": [
+      2
+     ]
+    },
+    {
+     "q": "Long shared system prompt or docs",
+     "items": [
+      3
+     ]
+    },
+    {
+     "q": "Long outputs on your own GPUs",
+     "items": [
+      4
+     ]
+    },
+    {
+     "q": "Re-indexing a large corpus",
+     "items": [
+      5
+     ]
+    },
+    {
+     "q": "Agents calling slow APIs",
+     "items": [
+      6
+     ]
+    }
+   ]
+  },
+  "quote": {
+   "big": "The cheapest token is the one you never compute.",
+   "small": "Cache what repeats; measure what hits."
+  },
+  "diagrams": {
+   "1": {
+    "alt": "Exact-match cache: 'What is RAG?' hashes to a stored key and hits, while 'What's RAG?' hashes differently and goes to the LLM.",
+    "svg": "<rect x='6' y='16' width='96' height='22' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='54.0' y='30.96' font-size='11' fill='#1B2440' text-anchor='middle'>“What is RAG?”</text><line x1='102' y1='27' x2='110' y2='27' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><polyline points='104.3,23.9 110,27 104.3,30.1' fill='none' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='112' y='16' width='54' height='22' rx='6' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.5'/><text x='139.0' y='30.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>hash a91f</text><line x1='166' y1='27' x2='174' y2='27' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><polyline points='168.3,23.9 174,27 168.3,30.1' fill='none' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='176' y='16' width='60' height='22' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.6'/><text x='206.0' y='30.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>hit ✓</text><rect x='6' y='58' width='96' height='22' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='54.0' y='72.96' font-size='11' fill='#1B2440' text-anchor='middle'>“What's RAG?”</text><line x1='102' y1='69' x2='110' y2='69' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><polyline points='104.3,65.9 110,69 104.3,72.1' fill='none' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='112' y='58' width='54' height='22' rx='6' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.5'/><text x='139.0' y='72.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>hash 7c02</text><line x1='166' y1='69' x2='174' y2='69' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><polyline points='168.3,65.9 174,69 168.3,72.1' fill='none' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='176' y='58' width='60' height='22' rx='6' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.6'/><text x='206.0' y='72.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>miss ✗</text><text x='120' y='100' font-size='10.5' fill='#D1495B' text-anchor='middle'>1 character changed → new hash → LLM</text><text x='120' y='128' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>key = hash(prompt + settings)</text><text x='120' y='148' font-size='10.5' fill='#3452C7' text-anchor='middle'>hit = instant, zero model cost</text>"
+   },
+   "2": {
+    "alt": "Semantic cache with a 0.90 threshold: 'How do I reset my password?' scores 0.93 against a cached question and hits; 'reset my router' scores 0.82 and misses.",
+    "svg": "<rect x='6' y='8' width='228' height='22' rx='6' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.2'/><text x='120' y='23' font-size='10' fill='#1B2440' text-anchor='middle'>cached: “How can I change my password?”</text><rect x='6' y='44' width='160' height='22' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='86.0' y='58.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>“How do I reset my password?”</text><rect x='170' y='44' width='30' height='22' rx='6' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.1'/><text x='185.0' y='58.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>0.93</text><rect x='204' y='44' width='32' height='22' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.6'/><text x='220.0' y='58.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>hit</text><rect x='6' y='78' width='160' height='22' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='86.0' y='92.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>“How do I reset my router?”</text><rect x='170' y='78' width='30' height='22' rx='6' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.1'/><text x='185.0' y='92.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>0.82</text><rect x='204' y='78' width='32' height='22' rx='6' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.6'/><text x='220.0' y='92.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>miss</text><text x='120' y='120' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>threshold 0.90 (example)</text><text x='120' y='138' font-size='10.5' fill='#3452C7' text-anchor='middle'>similarity ≥ threshold → reuse the answer</text><text x='120' y='156' font-size='10.5' fill='#D1495B' text-anchor='middle'>too loose → wrong answers get served</text>"
+   },
+   "3": {
+    "alt": "Prompt caching: request 1 writes a 50K-token system-and-docs prefix to the cache; request 2 reads it at a discount and only processes the new question.",
+    "svg": "<text x='6' y='20' font-size='10.5' fill='#43506B'>request 1</text><rect x='6' y='24' width='170' height='22' rx='6' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.5'/><text x='91.0' y='38.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>system + docs · 50K tokens</text><rect x='180' y='24' width='54' height='22' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='207.0' y='38.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>Q1</text><text x='91' y='58' font-size='10' fill='#D1495B' text-anchor='middle'>cache write</text><text x='6' y='80' font-size='10.5' fill='#43506B'>request 2</text><rect x='6' y='84' width='170' height='22' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.7'/><text x='91.0' y='98.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>cached prefix</text><rect x='180' y='84' width='54' height='22' rx='6' fill='#FFD27A' stroke='#D1495B' stroke-width='1.4'/><text x='207.0' y='98.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>Q2</text><text x='91' y='118' font-size='10' fill='#3452C7' text-anchor='middle'>cache read: discounted, faster</text><text x='120' y='140' font-size='10.5' fill='#43506B' text-anchor='middle'>only the new question is processed</text><text x='120' y='158' font-size='10.5' fill='#D1495B' text-anchor='middle'>the prefix must match exactly</text>"
+   },
+   "4": {
+    "alt": "KV cache: when generating token 4, tokens 1–3 already have cached keys and values; at 2 × 32 layers × 4096 × 2 bytes that is 0.5 MB per token, about 2 GB for 4K tokens.",
+    "svg": "<text x='120' y='14' font-size='10.5' fill='#43506B' text-anchor='middle'>generating token 4</text><rect x='20' y='34' width='40' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.5'/><text x='40.0' y='47.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>t1</text><text x='40' y='66' font-size='9.5' fill='#3452C7' text-anchor='middle'>K,V cached</text><path d='M196 34 Q118.0 14 40 34' fill='none' stroke='#D1495B' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='70' y='34' width='40' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.5'/><text x='90.0' y='47.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>t2</text><text x='90' y='66' font-size='9.5' fill='#3452C7' text-anchor='middle'>K,V cached</text><path d='M196 34 Q143.0 18 90 34' fill='none' stroke='#D1495B' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='120' y='34' width='40' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.5'/><text x='140.0' y='47.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>t3</text><text x='140' y='66' font-size='9.5' fill='#3452C7' text-anchor='middle'>K,V cached</text><path d='M196 34 Q168.0 22 140 34' fill='none' stroke='#D1495B' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='176' y='34' width='40' height='20' rx='6' fill='#FFD27A' stroke='#D1495B' stroke-width='1.6'/><text x='196.0' y='47.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>t4</text><text x='196' y='66' font-size='9.5' fill='#D1495B' text-anchor='middle'>new K,V</text><text x='120' y='94' font-size='10.5' fill='#1B2440' text-anchor='middle'>per token: 2 × 32 layers × 4096 × 2 B</text><text x='120' y='112' font-size='10.5' fill='#D1495B' text-anchor='middle' data-f='sans'>= 0.5 MB · 4K tokens ≈ 2 GB</text><text x='120' y='132' font-size='10' fill='#43506B' text-anchor='middle'>7B-class model, fp16, no GQA</text><text x='120' y='152' font-size='10.5' fill='#D1495B' text-anchor='middle'>memory grows with context × batch</text>"
+   },
+   "5": {
+    "alt": "Embedding cache: three unchanged documents hit the cache and are skipped; only the edited one is embedded and stored.",
+    "svg": "<rect x='6' y='8' width='96' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='54.0' y='21.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>doc A</text><line x1='102' y1='18' x2='118' y2='18' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round'/><polyline points='112.3,14.9 118,18 112.3,21.1' fill='none' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='120' y='8' width='44' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.5'/><text x='142.0' y='21.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>hit</text><text x='172' y='22' font-size='10.5' fill='#3452C7'>skip</text><rect x='6' y='34' width='96' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='54.0' y='47.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>doc B</text><line x1='102' y1='44' x2='118' y2='44' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round'/><polyline points='112.3,40.9 118,44 112.3,47.1' fill='none' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='120' y='34' width='44' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.5'/><text x='142.0' y='47.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>hit</text><text x='172' y='48' font-size='10.5' fill='#3452C7'>skip</text><rect x='6' y='60' width='96' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='54.0' y='73.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>doc C</text><line x1='102' y1='70' x2='118' y2='70' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round'/><polyline points='112.3,66.9 118,70 112.3,73.1' fill='none' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='120' y='60' width='44' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.5'/><text x='142.0' y='73.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>hit</text><text x='172' y='74' font-size='10.5' fill='#3452C7'>skip</text><rect x='6' y='86' width='96' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='54.0' y='99.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>doc D (edited)</text><line x1='102' y1='96' x2='118' y2='96' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round'/><polyline points='112.3,92.9 118,96 112.3,99.1' fill='none' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='120' y='86' width='44' height='20' rx='6' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.5'/><text x='142.0' y='99.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>miss</text><line x1='164' y1='96' x2='172' y2='96' stroke='#D1495B' stroke-width='1.2' stroke-linecap='round'/><polyline points='166.3,92.9 172,96 166.3,99.1' fill='none' stroke='#D1495B' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='174' y='86' width='62' height='20' rx='6' fill='#FFD27A' stroke='#D1495B' stroke-width='1.4'/><text x='205.0' y='99.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>embed</text><text x='120' y='126' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>key = hash(text + model name)</text><text x='120' y='144' font-size='10.5' fill='#3452C7' text-anchor='middle'>3 of 4 skipped on re-index</text><text x='120' y='162' font-size='10.5' fill='#D1495B' text-anchor='middle'>new embedding model → re-embed all</text>"
+   },
+   "6": {
+    "alt": "Tool-result cache with a 10-minute TTL: the 12:00 call hits the API, 12:04 is served from cache, and 12:15 has expired and calls the API again.",
+    "svg": "<text x='120' y='12' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>TTL = 10 min (example)</text><text x='6' y='37' font-size='10.5' fill='#43506B'>12:00</text><rect x='40' y='22' width='124' height='22' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='102.0' y='36.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>get_weather(“Tel Aviv”)</text><line x1='164' y1='33' x2='172' y2='33' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round'/><polyline points='166.3,29.9 172,33 166.3,36.1' fill='none' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='174' y='22' width='62' height='22' rx='6' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.5'/><text x='205.0' y='36.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>API call</text><text x='6' y='81' font-size='10.5' fill='#43506B'>12:04</text><rect x='40' y='66' width='124' height='22' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='102.0' y='80.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>get_weather(“Tel Aviv”)</text><line x1='164' y1='77' x2='172' y2='77' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round'/><polyline points='166.3,73.9 172,77 166.3,80.1' fill='none' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='174' y='66' width='62' height='22' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.5'/><text x='205.0' y='80.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>cache hit</text><text x='6' y='125' font-size='10.5' fill='#43506B'>12:15</text><rect x='40' y='110' width='124' height='22' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='102.0' y='124.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>get_weather(“Tel Aviv”)</text><line x1='164' y1='121' x2='172' y2='121' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round'/><polyline points='166.3,117.9 172,121 166.3,124.1' fill='none' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='174' y='110' width='62' height='22' rx='6' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.5'/><text x='205.0' y='124.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>expired</text><text x='102' y='56' font-size='10' fill='#43506B' text-anchor='middle'>store the result</text><text x='102' y='100' font-size='10' fill='#3452C7' text-anchor='middle'>no API call</text><text x='205' y='146' font-size='10' fill='#D1495B' text-anchor='middle'>call API again</text><text x='120' y='164' font-size='10.5' fill='#D1495B' text-anchor='middle'>longer TTL → more stale answers</text>"
+   }
+  }
+ }
+}
