@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cheat sheet renderer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Nunito:wght@400;600;700;800&family=Patrick+Hand&display=swap">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#EEF1F6;color:#1B2440;font-family:'Nunito',system-ui,sans-serif;font-size:15px;line-height:1.45}
+#stage{width:1200px}
+/* ===== cheat sheet (fixed light poster) ===== */
+.cs{width:1200px;padding:44px 40px 48px;display:flex;flex-direction:column;gap:30px;color:#1B2440;font-family:'Nunito',sans-serif;line-height:1.4;
+  background-color:#F1F4F8;background-image:linear-gradient(rgba(52,82,199,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(52,82,199,.06) 1px,transparent 1px);background-size:24px 24px}
+.cs *{box-sizing:border-box}
+.cs p,.cs h1,.cs h2,.cs h3,.cs ul{margin:0}
+.cs-hl{background:linear-gradient(180deg,transparent 56%,var(--h) 56%,var(--h) 94%,transparent 94%);padding:0 4px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.cs-nw{white-space:nowrap}
+.cs-head{display:flex;flex-direction:column;gap:22px}
+.cs-hrow{display:flex;align-items:center;gap:28px}
+.cs-sticky{position:relative;width:196px;flex-shrink:0;padding:24px 18px 20px;background:#FFD27A;box-shadow:0 10px 18px -12px rgba(27,36,64,.45);transform:rotate(-4deg);font-family:'Kalam',cursive;font-weight:700;font-size:22px;line-height:1.25}
+.cs-tape{position:absolute;top:-11px;left:50%;width:74px;height:22px;margin-left:-37px;background:rgba(255,255,255,.62);border:1px solid rgba(27,36,64,.08);transform:rotate(3deg);box-shadow:0 1px 2px rgba(27,36,64,.08)}
+.cs-center{flex-grow:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.cs-kicker{font-weight:800;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#43506B}
+.cs-h1{font-family:'Kalam',cursive;font-weight:700;font-size:60px;line-height:1.08}
+.cs-bigpill{display:inline-block;margin-top:6px;transform:rotate(-1.5deg);font-family:'Kalam',cursive;font-weight:700;font-size:34px;line-height:1.1;background:#FFB9A6;padding:4px 18px;border:2px solid #1B2440;border-radius:999px;box-shadow:3px 3px 0 #1B2440}
+.cs-note{width:230px;flex-shrink:0;display:flex;align-items:center;gap:10px}
+.cs-note p{font-family:'Kalam',cursive;font-size:20px;line-height:1.3;transform:rotate(3deg)}
+.cs-intro{margin:0 auto!important;max-width:980px;text-align:center;font-weight:600;font-size:19px;line-height:1.55;color:#2A3350}
+.cs-card{background:#FFFFFF;border:1px solid #DCE2EC;border-radius:18px;box-shadow:0 1px 0 rgba(27,36,64,.04),0 16px 30px -22px rgba(27,36,64,.45)}
+.cs-ov{display:flex;flex-direction:column;gap:14px;padding:22px 24px 24px}
+.cs-ovtop{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+.cs-h2{font-family:'Kalam',cursive;font-weight:700;font-size:28px;line-height:1.1}
+.cs-legend{display:flex;align-items:center;gap:10px;font-weight:700;font-size:13px;color:#43506B}
+.cs-ov svg text{font-family:'Patrick Hand',cursive}
+.cs-ov svg text.s{font-family:'Nunito',sans-serif;font-weight:800}
+.cs-ov svg text.k{font-family:'Kalam',cursive;font-weight:700}
+.cs-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.cs-panel{display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #DCE2EC;border-radius:18px;overflow:hidden;box-shadow:0 1px 0 rgba(27,36,64,.04),0 16px 30px -22px rgba(27,36,64,.45)}
+.cs-ph{display:flex;align-items:center;gap:14px;padding:14px 18px 13px;border-bottom:1px solid #E3E8F0}
+.cs-badge{width:40px;height:40px;flex-shrink:0;border:2.5px solid #1B2440;border-radius:12px;transform:rotate(-4deg);box-shadow:2px 2px 0 #1B2440;display:flex;align-items:center;justify-content:center;font-family:'Kalam',cursive;font-weight:700;font-size:21px;line-height:1}
+.cs-pt{display:flex;flex-direction:column;min-width:0}
+.cs-ptitle{font-family:'Kalam',cursive;font-weight:700;font-size:22px;line-height:1.15;text-wrap:balance}
+.cs-tag{font-family:'Patrick Hand',cursive;font-size:18px;line-height:1.2;color:#43506B}
+.cs-pb{display:flex;flex-direction:column;gap:14px;padding:16px 18px 18px;flex-grow:1}
+.cs-tile{padding:10px 6px;background-color:#F8FAFC;background-image:radial-gradient(rgba(27,36,64,.10) 1px,transparent 1.3px);background-size:14px 14px;border:1px solid #E3E8F0;border-radius:12px}
+.cs-diag{display:block;margin:0 auto;overflow:visible}
+.cs-diag text{font-family:'Patrick Hand',cursive}
+.cs-diag text[data-f="sans"]{font-family:'Nunito',sans-serif;font-weight:800}
+.cs-bul{list-style:none;padding:0 2px;display:flex;flex-direction:column;gap:8px;font-size:15px;font-weight:600;line-height:1.4;color:#2A3350;flex-grow:1}
+.cs-bul li{display:flex;gap:9px;align-items:flex-start}
+.cs-bul svg{flex-shrink:0;position:relative;top:2px}
+.cs-foot{display:flex;flex-direction:column;gap:6px;padding:10px 2px 0;border-top:1px dashed #D9DFEA}
+.cs-meters{display:flex;gap:18px;align-items:center}
+.cs-meter{display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#43506B}
+.cs-try{font-weight:600;font-size:13.5px;line-height:1.4;color:#2A3350}
+.cs-try b{font-weight:800;color:#1B2440}
+.cs-take{display:flex;gap:32px;align-items:stretch;padding:28px 30px}
+.cs-prin{width:300px;flex-shrink:0;display:flex;flex-direction:column;gap:18px}
+.cs-prin h2{font-family:'Kalam',cursive;font-weight:700;font-size:33px;line-height:1;white-space:nowrap}
+.cs-prin ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:12px;font-weight:600;font-size:17px;line-height:1.4;color:#2A3350}
+.cs-prin li{display:flex;gap:10px;align-items:flex-start}
+.cs-prin .sub{display:block;margin-top:3px;font-size:14.5px;color:#43506B}
+.cs-vdiv{width:1px;flex-shrink:0;background-image:linear-gradient(180deg,#CDD5E3 50%,transparent 50%);background-size:1px 10px}
+.cs-which{flex-grow:1;display:flex;flex-direction:column;gap:6px;min-width:0}
+.cs-which h3{font-family:'Kalam',cursive;font-weight:700;font-size:26px;line-height:1.1;margin-bottom:4px}
+.cs-which ul{list-style:none;padding:0;display:flex;flex-direction:column}
+.cs-which li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 2px;border-bottom:1px dashed #D9DFEA}
+.cs-which li:last-child{border-bottom:0}
+.cs-which li>span:first-child{font-weight:600;font-size:16px;line-height:1.3;color:#2A3350}
+.cs-pills{display:flex;gap:6px;flex-shrink:0}
+.cs-pill{display:inline-flex;align-items:center;gap:6px;padding:3px 11px 3px 3px;border:1.5px solid #1B2440;border-radius:999px;font-weight:800;font-size:14px;line-height:1;white-space:nowrap}
+.cs-pill i{font-style:normal;width:20px;height:20px;border-radius:6px;background:#FFFFFF;display:inline-flex;align-items:center;justify-content:center;font-family:'Kalam',cursive;font-weight:700;font-size:13px}
+.cs-quote{width:190px;flex-shrink:0;display:flex;flex-direction:column;justify-content:center}
+.cs-quote>div{position:relative;padding:26px 18px 20px;background:#FFB9A6;transform:rotate(3deg);box-shadow:0 10px 18px -12px rgba(27,36,64,.45);display:flex;flex-direction:column;gap:12px}
+.cs-quote .cs-tape{transform:rotate(-5deg)}
+.cs-quote .big{font-family:'Kalam',cursive;font-weight:700;font-size:24px;line-height:1.22}
+.cs-quote .small{font-family:'Patrick Hand',cursive;font-size:18px;line-height:1.25;color:#43506B}
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+/* Sheet renderer extracted from Cheat Sheet Studio. Reads window.DOC = {title, concept, data}. */
+(() => {
+"use strict";
+/* ---------- palette (from the visual-cheat-sheet skill) ---------- */
+const P = {ink:'#1B2440', soft:'#43506B', body:'#2A3350', red:'#D1495B', blue:'#3452C7', gray:'#8C95A8', bar:'#C8CFDC'};
+const HL = {amber:'#FFD27A', coral:'#FFB9A6', teal:'#9FE0D2', lime:'#D2EA8E', peri:'#BCC6FF', lilac:'#E3BDF4'};
+const TINT = {amber:'#FFF6E0', coral:'#FFF1EC', teal:'#E9F8F4', lime:'#F6FBE6', peri:'#EFF2FF', lilac:'#FAF0FE'};
+const CYCLE = ['coral','teal','lime','peri','lilac','coral','teal','lime','peri'];
+const colOf = (n) => CYCLE[(n - 1) % CYCLE.length];
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clip = (s, n) => { s = String(s ?? '').trim(); return s.length > n ? s.slice(0, n - 1).trimEnd() + '…' : s; };
+const clamp = (v, a, b) => Math.max(a, Math.min(b, Math.round(Number(v) || a)));
+
+/* ---------- sheet renderer ---------- */
+const hl = (col, html) => `<span class="cs-hl" style="--h:${HL[col]}">${html}</span>`;
+const marker = (sign) => sign === '+'
+  ? `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#E6EAFF" stroke="${P.blue}" stroke-width="1.4"></circle><path d="M8 4.6 L8 11.4 M4.6 8 L11.4 8" stroke="${P.blue}" stroke-width="1.8" stroke-linecap="round" fill="none"></path></svg>`
+  : `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#FFE7E3" stroke="${P.red}" stroke-width="1.4"></circle><path d="M4.6 8 L11.4 8" stroke="${P.red}" stroke-width="1.8" stroke-linecap="round" fill="none"></path></svg>`;
+const LEVEL = {1:'low', 2:'medium', 3:'high'};
+const dots = (n, label) => {
+  let c = '';
+  for (let i = 0; i < 3; i++) c += i < n
+    ? `<circle cx="${5 + i * 12}" cy="5" r="4" fill="${P.ink}"></circle>`
+    : `<circle cx="${5 + i * 12}" cy="5" r="3.4" fill="#FFFFFF" stroke="${P.ink}" stroke-width="1.2"></circle>`;
+  return `<svg width="34" height="10" viewBox="0 0 34 10" role="img" aria-label="${esc(label)}: ${LEVEL[n]}">${c}</svg>`;
+};
+const CHECK = `<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" style="flex-shrink:0;position:relative;top:2px"><rect x="2" y="2" width="16" height="16" rx="3" fill="#E9F8F4" stroke="${P.ink}" stroke-width="1.8"></rect><polyline points="5.5,10 9,13.5 15.5,6" fill="none" stroke="#1F7A5C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>`;
+const BULB = `<svg width="48" height="56" viewBox="0 0 64 72" aria-hidden="true" style="flex-shrink:0"><path d="M32 10 C19 10 11 19 11 30 C11 38 16 43 20 48 C22 51 23 54 23 57 L41 57 C41 54 42 51 44 48 C48 43 53 38 53 30 C53 19 45 10 32 10 Z" fill="#FFD27A" stroke="${P.ink}" stroke-width="3" stroke-linejoin="round"></path><path d="M24 63 L40 63 M26 69 L38 69" stroke="${P.ink}" stroke-width="3" stroke-linecap="round" fill="none"></path><path d="M27 44 C27 36 32 34 32 28 M37 44 C37 36 32 34 32 28" stroke="${P.ink}" stroke-width="2" fill="none" stroke-linecap="round"></path><path d="M32 1 L32 5 M6 12 L9 15 M58 12 L55 15 M1 32 L5 32 M63 32 L59 32" stroke="${P.ink}" stroke-width="3" stroke-linecap="round" fill="none"></path></svg>`;
+const BRACE = `<svg width="22" height="96" viewBox="0 0 26 120" aria-hidden="true" style="flex-shrink:0"><path d="M22 4 C10 4 12 20 12 40 C12 54 10 58 3 60 C10 62 12 66 12 80 C12 100 10 116 22 116" fill="none" stroke="${P.ink}" stroke-width="3" stroke-linecap="round"></path></svg>`;
+const pill = (it) => `<span class="cs-pill" style="background:${HL[colOf(it.n)]}"><i>${it.n}</i>${esc(it.short)}</span>`;
+
+/* overview strip as one SVG */
+function head(x1, y1, x2, y2, color, sw, L = 8) {
+  const g = Math.atan2(y2 - y1, x2 - x1);
+  const p = [0.5, -0.5].map(d => [x2 - L * Math.cos(g + d), y2 - L * Math.sin(g + d)]);
+  return `<polyline points="${p[0][0].toFixed(1)},${p[0][1].toFixed(1)} ${x2},${y2} ${p[1][0].toFixed(1)},${p[1][1].toFixed(1)}" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"></polyline>`;
+}
+const arrow = (x1, y1, x2, y2, color, sw = 1.8) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="${sw}" stroke-linecap="round"></line>` + head(x1, y1, x2, y2, color, sw);
+const rct = (x, y, w, h, fill, stroke, sw = 1.5, rx = 10, dash) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${fill}"${stroke ? ` stroke="${stroke}" stroke-width="${sw}"` : ''}${dash ? ` stroke-dasharray="${dash}"` : ''}></rect>`;
+const tx = (x, y, s, size, cls, color = P.ink, anchor) => `<text x="${x}" y="${y}" font-size="${size}" fill="${color}"${cls ? ` class="${cls}"` : ''}${anchor ? ` text-anchor="${anchor}"` : ''}>${esc(s)}</text>`;
+const chipW = (name) => 30 + [...String(name)].reduce((a, c) => a + (/[A-Z]/.test(c) ? 8.9 : /[0-9]/.test(c) ? 7.4 : c === ' ' ? 3.6 : /[a-z]/.test(c) ? 7.1 : 5.5), 0);
+function chipSVG(x, y, it) {
+  const w = chipW(it.short);
+  return [rct(x, y, w, 22, HL[colOf(it.n)], P.ink, 1.3, 11) + rct(x + 3.5, y + 3.5, 15, 15, '#FFFFFF', null, 0, 4) +
+    tx(x + 11, y + 15.5, String(it.n), 11, 'k', P.ink, 'middle') + tx(x + 23, y + 15.5, it.short, 12.5, 's'), w];
+}
+function wrapWords(s, maxChars, maxLines) {
+  const words = String(s || '').split(/\s+/).filter(Boolean); const lines = []; let cur = '';
+  for (const w of words) {
+    if (!cur) cur = w; else if ((cur + ' ' + w).length <= maxChars) cur += ' ' + w; else { lines.push(cur); cur = w; }
+  }
+  if (cur) lines.push(cur);
+  if (lines.length > maxLines) { const keep = lines.slice(0, maxLines); keep[maxLines - 1] = clip(keep[maxLines - 1], maxChars); return keep; }
+  return lines;
+}
+function overviewSVG(ov, items) {
+  const W = 1080, gap = 40, on = ov.online, n = on.length;
+  const byN = Object.fromEntries(items.map(i => [i.n, i]));
+  /* stage widths: sized to their chips (aim for at most two rows), scaled to fill the row */
+  const want = on.map(st => {
+    const cw = st.items.filter(k => byN[k]).map(k => chipW(byN[k].short));
+    const sum = cw.reduce((x, y) => x + y, 0) + 6 * Math.max(0, cw.length - 1);
+    const chipsNeed = cw.length > 2 ? Math.ceil(sum / 2) + 40 : (cw.length ? Math.max(...cw) + 24 : 0);
+    return Math.max(130, String(st.name).length * 8.2 + 24, chipsNeed);
+  });
+  const f = (W - gap * (n - 1)) / want.reduce((x, y) => x + y, 0);
+  const ws = want.map(v => v * f);
+  const xs = ws.map((_, i) => ws.slice(0, i).reduce((x, y) => x + y, 0) + gap * i);
+  const mid = (i) => xs[i] + ws[i] / 2;
+  const loop = ov.loop && byN[ov.loop.item] && on[ov.loop.from] && on[ov.loop.to] ? ov.loop : null;
+  const y0 = loop ? 44 : 22;
+  const layouts = on.map((st, si) => {
+    const inner = ws[si] - 24; const rows = []; let row = [], rw = 0;
+    for (const num of st.items) {
+      const it = byN[num]; if (!it) continue; const cw = chipW(it.short);
+      if (row.length && rw + 6 + cw > inner) { rows.push(row); row = []; rw = 0; }
+      row.push(it); rw += (row.length > 1 ? 6 : 0) + cw;
+    }
+    if (row.length) rows.push(row);
+    return {rows, notes: wrapWords(st.note, Math.floor(inner / 6.3), 2)};
+  });
+  const h0 = Math.max(86, ...layouts.map(l => 34 + l.rows.length * 26 + l.notes.length * 17 + 10));
+  let c = ov.label ? tx(0, loop ? 24 : 12, String(ov.label).toUpperCase(), 11, 's', P.soft) : '';
+  if (loop) {
+    const xf = mid(loop.from), xt = mid(loop.to);
+    c += `<path d="M${xf} ${y0} L${xf} 16 L${xt} 16 L${xt} ${y0 - 2}" fill="none" stroke="${P.red}" stroke-width="1.8" stroke-dasharray="6 4" stroke-linecap="round" stroke-linejoin="round"></path>` + head(xt, 16, xt, y0 - 2, P.red, 1.8);
+    const it = byN[loop.item]; const cw = chipW(it.short); const label = clip(loop.label, 48); const lw = label.length * 6.6 + 12;
+    const lo = Math.min(xf, xt), hi = Math.max(xf, xt);
+    const cx0 = Math.max(lo + 20, Math.min((lo + hi) / 2 - (cw + lw) / 2, W - cw - lw - 8));
+    c += rct(cx0 - 6, 3, cw + lw + 12, 26, '#FFFFFF', null, 0, 6);
+    c += chipSVG(cx0, 5, it)[0] + tx(cx0 + cw + 8, 21, label, 15, '', P.red);
+  }
+  on.forEach((st, i) => {
+    const x = xs[i], w = ws[i], L = layouts[i];
+    const fill = (!st.items.length && i === 0) ? HL.amber : (!st.items.length && i === n - 1) ? TINT.teal : '#FFFFFF';
+    c += rct(x, y0, w, h0, fill, P.ink, 1.5, 10) + tx(x + 12, y0 + 22, clip(st.name, 22), 14, 's');
+    L.rows.forEach((row, r) => { let cx = x + 12; for (const it of row) { const [sv, cw] = chipSVG(cx, y0 + 32 + r * 26, it); c += sv; cx += cw + 6; } });
+    const ny = y0 + 34 + L.rows.length * 26 + 12;
+    L.notes.forEach((ln, k) => { c += tx(x + 12, ny + k * 17, ln, 14, '', P.soft); });
+    if (i < n - 1) c += arrow(x + w + 2, y0 + h0 / 2, x + w + gap - 2, y0 + h0 / 2, P.ink, 1.8);
+  });
+  let bottom = y0 + h0;
+  const off = ov.offline;
+  if (off.length) {
+    const ow = Math.min(300, (W - gap * (Math.max(off.length, 3) - 1)) / Math.max(off.length + 1, 3));
+    const ly = y0 + h0 + 32, y1 = y0 + h0 + 44;
+    const onotes = off.map(o => wrapWords(o.note, Math.floor((ow - 24) / 6.3), 2));
+    const h1 = Math.max(50, ...onotes.map(l => 30 + l.length * 17 + 4));
+    c += tx(0, ly, 'ONCE, AHEAD OF TIME (OFFLINE)', 11, 's', P.soft);
+    off.forEach((o, i) => {
+      const x = i * (ow + gap);
+      c += rct(x, y1, ow, h1, '#F8FAFC', P.gray, 1.3, 10, '5 3') + tx(x + 12, y1 + 21, clip(o.name, 22), 14, 's');
+      onotes[i].forEach((ln, k) => { c += tx(x + 12, y1 + 40 + k * 17, ln, 14, '', P.soft); });
+      if (i < off.length - 1) c += arrow(x + ow + 2, y1 + h1 / 2, x + ow + gap - 2, y1 + h1 / 2, P.gray, 1.6);
+    });
+    if (ov.feeds >= 0 && ov.feeds < n) {
+      const xo = (off.length - 1) * (ow + gap) + ow / 2, xt = mid(ov.feeds), yt = y0 + h0 + 4, ym = (y0 + h0 + y1) / 2 + 4;
+      if (Math.abs(xo - xt) < 1) c += arrow(xo, y1 - 2, xt, yt, P.blue, 1.8);
+      else c += `<path d="M${xo} ${y1 - 2} L${xo} ${ym} L${xt} ${ym} L${xt} ${yt}" fill="none" stroke="${P.blue}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>` + head(xt, ym, xt, yt, P.blue, 1.8);
+    }
+    const sx = off.length * (ow + gap);
+    bottom = y1 + h1;
+    if (ov.side) {
+      if (W - sx >= 220) wrapWords(ov.side, Math.floor((W - sx) / 7.2), 3).forEach((ln, k) => { c += tx(sx, y1 + 18 + k * 20, ln, 15, '', P.ink); });
+      else { const lines = wrapWords(ov.side, 140, 2); lines.forEach((ln, k) => { c += tx(0, y1 + h1 + 24 + k * 20, ln, 15, '', P.ink); }); bottom = y1 + h1 + 24 + (lines.length - 1) * 20 + 6; }
+    }
+  } else if (ov.side) {
+    c += tx(0, bottom + 26, clip(ov.side, 140), 15, '', P.ink); bottom += 32;
+  }
+  const H = Math.ceil(bottom + 4);
+  const alt = 'Pipeline: ' + on.map(st => st.name + (st.items.length ? ' (' + st.items.map(k => byN[k] && byN[k].short).filter(Boolean).join(', ') + ')' : '')).join(' → ');
+  return `<svg width="1070" height="${Math.round(H * 1070 / 1080)}" viewBox="0 0 1080 ${H}" role="img" aria-label="${esc(alt)}" style="display:block;overflow:visible">${c}</svg>`;
+}
+
+function sheetHTML(d) {
+  const items = d.items;
+  const panels = items.map(it => {
+    const col = colOf(it.n);
+    const lis = it.bullets.map(b => `<li>${marker(b.sign)}<span>${esc(b.text)}</span></li>`).join('');
+    return `<section class="cs-panel">
+<div class="cs-ph" style="background:${TINT[col]}"><div class="cs-badge" style="background:${HL[col]}">${it.n}</div>
+<div class="cs-pt"><h2 class="cs-ptitle">${esc(it.title)}</h2><p class="cs-tag">“${esc(it.tagline)}”</p></div></div>
+<div class="cs-pb"><div class="cs-tile"><svg class="cs-diag" data-n="${it.n}" width="312" height="221" viewBox="0 0 240 170" role="img" aria-label="Diagram for ${esc(it.title)}"><text x="120" y="90" font-size="14" fill="${P.gray}" text-anchor="middle">Drawing diagram…</text></svg></div>
+<ul class="cs-bul">${lis}</ul>
+<div class="cs-foot"><div class="cs-meters"><span class="cs-meter">Latency${dots(it.latency, 'Latency')}</span><span class="cs-meter">Cost${dots(it.cost, 'Cost')}</span></div>
+<p class="cs-try"><b>Try: </b>${it.tools.map(t => `<span class="cs-nw">${esc(t)}</span>`).join(' · ')}</p></div></div></section>`;
+  }).join('');
+  const byN = Object.fromEntries(items.map(i => [i.n, i]));
+  const prin = d.principles.map(p => `<li>${CHECK}<span>${esc(p.lead)} <span class="cs-nw">${hl('amber', esc(p.hl))}</span><span class="sub">${esc(p.sub)}</span></span></li>`).join('');
+  const rows = d.which.rows.map(r => `<li><span>${esc(r.q)}</span><span class="cs-pills">${r.items.map(k => byN[k] ? pill(byN[k]) : '').join('')}</span></li>`).join('');
+  const ov = d.overview && d.overview.online.length >= 2 ? `<section class="cs-card cs-ov"><div class="cs-ovtop"><h2 class="cs-h2">${hl('amber', esc(d.overview_title))}</h2>
+<div class="cs-legend">Latency / cost, relative: ${dots(1, 'Low')} low ${dots(3, 'High')} high</div></div>${overviewSVG(d.overview, items)}</section>` : '';
+  return `<div class="cs" lang="en">
+<header class="cs-head"><div class="cs-hrow">
+<div class="cs-sticky"><div class="cs-tape" aria-hidden="true"></div>${d.sticky.map(esc).join('<br>')}</div>
+<div class="cs-center"><div class="cs-kicker">${esc(d.kicker)}</div>
+<h1 class="cs-h1">${hl('amber', esc(d.title[0]))}<br>${esc(d.title[1])}</h1>
+<div><span class="cs-bigpill">${esc(d.title[2])}</span></div></div>
+<div class="cs-note">${BRACE}<p>${esc(d.note[0])}<br>${hl('amber', esc(d.note[1]))}</p></div></div>
+<p class="cs-intro">${esc(d.intro.before)} <span class="cs-nw">${hl('peri', esc(d.intro.highlight))}</span>${/^[,.;:!?]/.test(d.intro.after) ? '' : ' '}${esc(d.intro.after)}</p></header>
+${ov}
+<div class="cs-grid" style="grid-template-columns:repeat(3,minmax(0,1fr))">${panels}</div>
+<section class="cs-card cs-take">
+<div class="cs-prin"><div style="display:flex;align-items:center;gap:12px">${BULB}<h2>${hl('coral', 'Key Takeaways')}</h2></div><ul>${prin}</ul></div>
+<div class="cs-vdiv" aria-hidden="true"></div>
+<div class="cs-which"><h3>${esc(d.which.title)}</h3><ul>${rows}</ul></div>
+<div class="cs-quote"><div><div class="cs-tape" aria-hidden="true"></div><p class="big">${esc(d.quote.big)}</p><p class="small">${esc(d.quote.small)}</p></div></div>
+</section></div>`;
+}
+
+/* ---------- SVG sanitizer for Claude-drawn diagrams ---------- */
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const OK_EL = new Set(['g','rect','circle','ellipse','line','polyline','polygon','path','text','tspan']);
+const OK_AT = new Set(['x','y','x1','y1','x2','y2','cx','cy','r','rx','ry','width','height','d','points','fill','stroke','stroke-width',
+  'stroke-dasharray','stroke-linecap','stroke-linejoin','opacity','fill-opacity','stroke-opacity','font-size','font-weight','font-style',
+  'text-anchor','dominant-baseline','transform','letter-spacing','dx','dy','data-f']);
+function mountDiagram(svgEl, markup) {
+  if (!svgEl || typeof markup !== 'string' || !markup.trim()) return false;
+  let src = markup.replace(/<\/?svg[^>]*>/gi, '').replace(/&(?!amp;|lt;|gt;|quot;|apos;|#\d+;|#x[0-9a-f]+;)/gi, '&amp;');
+  const doc = new DOMParser().parseFromString(`<svg xmlns="${SVG_NS}">${src}</svg>`, 'image/svg+xml');
+  if (doc.getElementsByTagName('parsererror').length) return false;
+  let count = 0;
+  const walk = (from, to) => {
+    for (const node of Array.from(from.childNodes)) {
+      if (node.nodeType === 3) { if (to.localName === 'text' || to.localName === 'tspan') to.appendChild(document.createTextNode(node.nodeValue)); continue; }
+      if (node.nodeType !== 1 || !OK_EL.has(node.localName) || ++count > 400) continue;
+      const el = document.createElementNS(SVG_NS, node.localName);
+      for (const a of Array.from(node.attributes)) {
+        if (!OK_AT.has(a.name)) continue;
+        const v = a.value;
+        if (v.length > 4000 || /url\s*\(|javascript:|expression|[<>]/i.test(v)) continue;
+        el.setAttribute(a.name, v);
+      }
+      walk(node, el); to.appendChild(el);
+    }
+  };
+  const frag = document.createElementNS(SVG_NS, 'g');
+  walk(doc.documentElement, frag);
+  if (!frag.childNodes.length) return false;
+  svgEl.textContent = '';
+  while (frag.firstChild) svgEl.appendChild(frag.firstChild);
+  fitDiagram(svgEl);
+  return true;
+}
+function fitDiagram(svgEl) {
+  try {
+    if (!svgEl || !svgEl.isConnected) return;
+    svgEl.setAttribute('viewBox', '0 0 240 170');
+    const bb = svgEl.getBBox(); const pad = 4;
+    const x0 = Math.min(0, bb.x - pad), y0 = Math.min(0, bb.y - pad);
+    const x1 = Math.max(240, bb.x + bb.width + pad), y1 = Math.max(170, bb.y + bb.height + pad);
+    if (x0 < 0 || y0 < 0 || x1 > 240 || y1 > 170) svgEl.setAttribute('viewBox', `${x0.toFixed(1)} ${y0.toFixed(1)} ${(x1 - x0).toFixed(1)} ${(y1 - y0).toFixed(1)}`);
+  } catch (_) { /* not rendered yet */ }
+}
+function fitAllDiagrams() { document.querySelectorAll('#stage .cs-diag').forEach(fitDiagram); }
+function failDiagram(svgEl) {
+  if (!svgEl) return;
+  svgEl.innerHTML = `<rect x="20" y="40" width="200" height="90" rx="10" fill="#FFFFFF" stroke="${P.gray}" stroke-width="1.3" stroke-dasharray="5 3"></rect><text x="120" y="82" font-size="14" fill="${P.soft}" text-anchor="middle">Diagram didn’t draw.</text><text x="120" y="102" font-size="13" fill="${P.gray}" text-anchor="middle">Use “Redraw missing diagrams”.</text>`;
+}
+
+const d = window.DOC.data;
+const stage = $('stage');
+stage.innerHTML = sheetHTML(d);
+for (const it of d.items) {
+  const el = stage.querySelector(`.cs-diag[data-n="${it.n}"]`);
+  const dg = (d.diagrams || {})[it.n];
+  if (dg && mountDiagram(el, dg.svg)) { if (dg.alt) el.setAttribute('aria-label', dg.alt); }
+  else failDiagram(el);
+}
+(document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { fitAllDiagrams(); window.RENDERED = true; });
+})();
+</script>
+</body>
+</html>
