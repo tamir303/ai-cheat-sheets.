@@ -1,0 +1,344 @@
+{
+ "title": "Same Question. Different Prompts. Different Accuracy.",
+ "concept": "Prompting techniques",
+ "createdAt": "2026-09-24T18:25:00Z",
+ "data": {
+  "concept": "Prompting techniques",
+  "kicker": "Prompting cheat sheet · 6 techniques",
+  "title": [
+   "Same Question.",
+   "Different Prompts.",
+   "Different Accuracy."
+  ],
+  "sticky": [
+   "Same model.",
+   "New prompt.",
+   "New answer!"
+  ],
+  "note": [
+   "Ask it better,",
+   "not bigger."
+  ],
+  "intro": {
+   "before": "Before fine-tuning or a bigger model, change how you ask. The prompting technique decides",
+   "highlight": "how the model reasons",
+   "after": ", and how many calls you pay for."
+  },
+  "items": [
+   {
+    "n": 1,
+    "title": "Zero-Shot",
+    "short": "Zero-shot",
+    "tagline": "Just ask clearly",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Instruction only; no examples needed"
+     },
+     {
+      "sign": "+",
+      "text": "Cheapest and fastest thing to try"
+     },
+     {
+      "sign": "+",
+      "text": "Works well with instruction-tuned models"
+     },
+     {
+      "sign": "-",
+      "text": "Format and style can drift without examples"
+     }
+    ],
+    "latency": 1,
+    "cost": 1,
+    "tools": [
+     "LangChain PromptTemplate",
+     "DSPy Predict"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 2,
+    "title": "Few-Shot",
+    "short": "Few-shot",
+    "tagline": "Show, don't tell",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "A few input → output examples set the pattern"
+     },
+     {
+      "sign": "+",
+      "text": "Locks in format, labels and tone"
+     },
+     {
+      "sign": "+",
+      "text": "No training; swap examples instantly"
+     },
+     {
+      "sign": "-",
+      "text": "Longer prompts; examples can bias outputs"
+     }
+    ],
+    "latency": 1,
+    "cost": 2,
+    "tools": [
+     "LangChain FewShotPromptTemplate",
+     "DSPy LabeledFewShot"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 3,
+    "title": "Chain-of-Thought",
+    "short": "CoT",
+    "tagline": "Think step by step",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Model writes out intermediate steps"
+     },
+     {
+      "sign": "+",
+      "text": "Big gains on math and multi-step logic"
+     },
+     {
+      "sign": "+",
+      "text": "Reasoning is visible and debuggable"
+     },
+     {
+      "sign": "-",
+      "text": "More tokens; steps can still be wrong"
+     }
+    ],
+    "latency": 2,
+    "cost": 2,
+    "tools": [
+     "DSPy ChainOfThought",
+     "Claude extended thinking"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 4,
+    "title": "Self-Consistency",
+    "short": "Voting",
+    "tagline": "Sample many, take the vote",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Samples several reasoning paths"
+     },
+     {
+      "sign": "+",
+      "text": "Majority vote on the final answer"
+     },
+     {
+      "sign": "+",
+      "text": "More robust than a single chain"
+     },
+     {
+      "sign": "-",
+      "text": "N samples means N times the cost"
+     }
+    ],
+    "latency": 3,
+    "cost": 3,
+    "tools": [
+     "dspy.majority",
+     "vLLM SamplingParams(n=5)"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 5,
+    "title": "Least-to-Most",
+    "short": "Decompose",
+    "tagline": "Solve easy parts first",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "First asks the model to split the problem"
+     },
+     {
+      "sign": "+",
+      "text": "Solves subproblems in order, reusing answers"
+     },
+     {
+      "sign": "+",
+      "text": "Generalises to harder problems than examples"
+     },
+     {
+      "sign": "-",
+      "text": "Several calls; needs a good decomposition"
+     }
+    ],
+    "latency": 2,
+    "cost": 2,
+    "tools": [
+     "DSPy custom Module",
+     "LangChain LCEL"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 6,
+    "title": "Tree of Thoughts",
+    "short": "ToT",
+    "tagline": "Branch, score, prune",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Explores several partial solutions as a tree"
+     },
+     {
+      "sign": "+",
+      "text": "Model scores branches, prunes weak ones"
+     },
+     {
+      "sign": "+",
+      "text": "Backtracks when a path dead-ends"
+     },
+     {
+      "sign": "-",
+      "text": "Many calls: slow and expensive"
+     }
+    ],
+    "latency": 3,
+    "cost": 3,
+    "tools": [
+     "princeton-nlp/tree-of-thought-llm",
+     "LangGraph ToT tutorial"
+    ],
+    "diagram": ""
+   }
+  ],
+  "overview_title": "More calls, more reliability",
+  "overview": {
+   "label": "cost grows left to right",
+   "online": [
+    {
+     "name": "One call",
+     "note": "instruction ± examples",
+     "items": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "One call + reasoning",
+     "note": "steps before the answer",
+     "items": [
+      3
+     ]
+    },
+    {
+     "name": "Many samples",
+     "note": "vote on the answer",
+     "items": [
+      4
+     ]
+    },
+    {
+     "name": "Many calls",
+     "note": "decompose or search a tree",
+     "items": [
+      5,
+      6
+     ]
+    }
+   ],
+   "offline": [],
+   "feeds": -1,
+   "loop": null,
+   "side": ""
+  },
+  "principles": [
+   {
+    "lead": "Start zero-shot, ",
+    "hl": "add examples for format.",
+    "sub": "Few-shot examples fix output shape and labels faster than longer instructions."
+   },
+   {
+    "lead": "Reasoning helps ",
+    "hl": "multi-step problems.",
+    "sub": "Ask for steps on math, logic and planning; skip it for lookups and short answers."
+   },
+   {
+    "lead": "Pay for sampling ",
+    "hl": "only where accuracy pays.",
+    "sub": "Self-consistency and tree search multiply calls; save them for high-value questions."
+   }
+  ],
+  "which": {
+   "title": "Which technique?",
+   "rows": [
+    {
+     "q": "Simple, well-defined tasks",
+     "items": [
+      1
+     ]
+    },
+    {
+     "q": "Strict output format or labels",
+     "items": [
+      2
+     ]
+    },
+    {
+     "q": "Math and multi-step logic",
+     "items": [
+      3
+     ]
+    },
+    {
+     "q": "Need a more reliable final answer",
+     "items": [
+      4
+     ]
+    },
+    {
+     "q": "Hard problem with clear sub-steps",
+     "items": [
+      5
+     ]
+    },
+    {
+     "q": "Puzzles and plans with dead ends",
+     "items": [
+      6
+     ]
+    }
+   ]
+  },
+  "quote": {
+   "big": "Ask better, then ask more.",
+   "small": "Every extra call should buy accuracy."
+  },
+  "diagrams": {
+   "1": {
+    "alt": "Zero-shot: a single instruction asks the model to classify 'Loved the cast.' and it answers 'positive'.",
+    "svg": "<rect x='8' y='8' width='224' height='62' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='16' y='24' font-size='11' fill='#1B2440'>Classify the review as positive</text><text x='16' y='40' font-size='11' fill='#1B2440'>or negative. Answer with one word.</text><text x='16' y='60' font-size='11' fill='#3452C7'>Review: “Loved the cast.”</text><line x1='120' y1='70' x2='120' y2='88' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round'/><polyline points='123.1,82.3 120,88 116.9,82.3' fill='none' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><rect x='88' y='90' width='64' height='20' rx='6' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.5'/><text x='120.0' y='103.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>LLM</text><line x1='120' y1='110' x2='120' y2='124' stroke='#3452C7' stroke-width='1.5' stroke-linecap='round'/><polyline points='123.1,118.3 120,124 116.9,118.3' fill='none' stroke='#3452C7' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><rect x='80' y='126' width='80' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.7'/><text x='120.0' y='139.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>positive</text><text x='120' y='162' font-size='10.5' fill='#43506B' text-anchor='middle'>no examples, just a clear instruction</text>"
+   },
+   "2": {
+    "alt": "Few-shot: two labelled examples ('great movie' positive, 'boring plot' negative) come before the new review, which the model labels 'positive'.",
+    "svg": "<rect x='8' y='6' width='224' height='92' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='16' y='21' font-size='10' fill='#43506B' data-f='sans'>examples</text><rect x='14' y='28' width='212' height='16' rx='3' fill='#FFF6E0'/><text x='20' y='40' font-size='11' fill='#1B2440'>“great movie”  →  positive</text><rect x='14' y='48' width='212' height='16' rx='3' fill='#FFF6E0'/><text x='20' y='60' font-size='11' fill='#1B2440'>“boring plot”  →  negative</text><text x='20' y='86' font-size='11' fill='#3452C7'>“loved the cast”  →  ?</text><line x1='120' y1='98' x2='120' y2='112' stroke='#3452C7' stroke-width='1.5' stroke-linecap='round'/><polyline points='123.1,106.3 120,112 116.9,106.3' fill='none' stroke='#3452C7' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><rect x='80' y='114' width='80' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.7'/><text x='120.0' y='127.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>positive</text><text x='120' y='156' font-size='10.5' fill='#43506B' text-anchor='middle'>examples lock in format and labels</text>"
+   },
+   "3": {
+    "alt": "Chain-of-thought: for 5 boxes of 12 pens with 7 lost, the model writes 5 × 12 = 60, then 60 − 7 = 53, then answers 53.",
+    "svg": "<rect x='8' y='6' width='224' height='36' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='120' y='20' font-size='11' fill='#1B2440' text-anchor='middle'>5 boxes of 12 pens, 7 are lost.</text><text x='120' y='35' font-size='11' fill='#1B2440' text-anchor='middle'>How many pens are left?</text><line x1='110' y1='42' x2='110' y2='52' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round'/><polyline points='113.1,46.3 110,52 106.9,46.3' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><rect x='30' y='54' width='160' height='20' rx='6' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.5'/><text x='110.0' y='67.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>step 1: 5 × 12 = 60</text><line x1='110' y1='74' x2='110' y2='84' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round'/><polyline points='113.1,78.3 110,84 106.9,78.3' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><rect x='30' y='86' width='160' height='20' rx='6' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.5'/><text x='110.0' y='99.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>step 2: 60 − 7 = 53</text><line x1='110' y1='106' x2='110' y2='116' stroke='#3452C7' stroke-width='1.4' stroke-linecap='round'/><polyline points='113.1,110.3 110,116 106.9,110.3' fill='none' stroke='#3452C7' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><rect x='30' y='118' width='160' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.7'/><text x='110.0' y='131.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>answer: 53</text><path d='M196 54 L202 54 L202 106 L196 106' fill='none' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><text x='206' y='84' font-size='10.5' fill='#D1495B'>shown</text><text x='120' y='158' font-size='10.5' fill='#43506B' text-anchor='middle'>prompt: “Let's think step by step.”</text>"
+   },
+   "4": {
+    "alt": "Self-consistency: five sampled answers are 53, 53, 47, 53 and 55, so the majority vote is 53 with 3 of 5.",
+    "svg": "<rect x='70' y='6' width='100' height='18' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='120.0' y='18.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>same question</text><line x1='120' y1='24' x2='28' y2='48' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round'/><polyline points='34.3,49.6 28,48 32.7,43.5' fill='none' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='10' y='50' width='36' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.6'/><text x='28.0' y='63.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>53</text><line x1='120' y1='24' x2='74' y2='48' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round'/><polyline points='80.5,48.1 74,48 77.6,42.6' fill='none' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='56' y='50' width='36' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.6'/><text x='74.0' y='63.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>53</text><line x1='120' y1='24' x2='120' y2='48' stroke='#C8CFDC' stroke-width='1.1' stroke-linecap='round'/><polyline points='123.1,42.3 120,48 116.9,42.3' fill='none' stroke='#C8CFDC' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='102' y='50' width='36' height='20' rx='6' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.1'/><text x='120.0' y='63.96' font-size='11' fill='#8C95A8' text-anchor='middle' data-f='sans'>47</text><line x1='120' y1='24' x2='166' y2='48' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round'/><polyline points='162.4,42.6 166,48 159.5,48.1' fill='none' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='148' y='50' width='36' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.6'/><text x='166.0' y='63.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>53</text><line x1='120' y1='24' x2='212' y2='48' stroke='#C8CFDC' stroke-width='1.1' stroke-linecap='round'/><polyline points='207.3,43.5 212,48 205.7,49.6' fill='none' stroke='#C8CFDC' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='194' y='50' width='36' height='20' rx='6' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.1'/><text x='212.0' y='63.96' font-size='11' fill='#8C95A8' text-anchor='middle' data-f='sans'>55</text><text x='120' y='88' font-size='10.5' fill='#43506B' text-anchor='middle'>5 samples at temperature &gt; 0</text><rect x='40' y='98' width='160' height='24' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.7'/><text x='120.0' y='113.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>majority vote: 53 (3 of 5)</text><text x='120' y='148' font-size='10.5' fill='#D1495B' text-anchor='middle'>N samples = N × the cost</text>"
+   },
+   "5": {
+    "alt": "Least-to-most: a trip-cost question is split into flights (3 × 200 = 600) and hotel (150 × 2 = 300), then combined into 900.",
+    "svg": "<rect x='8' y='6' width='224' height='48' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='16' y='19' font-size='10.5' fill='#1B2440'>Total trip cost? 3 people fly at</text><text x='16' y='33' font-size='10.5' fill='#1B2440'>$200 each; one hotel room is $150</text><text x='16' y='47' font-size='10.5' fill='#1B2440'>a night for 2 nights.</text><line x1='120' y1='54' x2='120' y2='70' stroke='#D1495B' stroke-width='1.4' stroke-linecap='round'/><polyline points='123.1,64.3 120,70 116.9,64.3' fill='none' stroke='#D1495B' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><text x='126' y='66' font-size='10.5' fill='#D1495B'>decompose</text><rect x='20' y='72' width='200' height='18' rx='6' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.5'/><text x='120.0' y='84.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>flights: 3 × 200 = 600</text><rect x='20' y='96' width='200' height='18' rx='6' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.5'/><text x='120.0' y='108.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>hotel: 150 × 2 = 300</text><line x1='120' y1='114' x2='120' y2='126' stroke='#3452C7' stroke-width='1.4' stroke-linecap='round'/><polyline points='123.1,120.3 120,126 116.9,120.3' fill='none' stroke='#3452C7' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><text x='126' y='123' font-size='10.5' fill='#3452C7'>reuse answers</text><rect x='20' y='128' width='200' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.7'/><text x='120.0' y='141.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>total: 600 + 300 = 900</text><text x='120' y='164' font-size='10.5' fill='#43506B' text-anchor='middle'>easy parts first, then combine</text>"
+   },
+   "6": {
+    "alt": "Tree of thoughts on Game of 24 with 4, 9, 10, 13: three first moves are scored sure, maybe and impossible; the best branch leads to (10 − 4) × 4 = 24.",
+    "svg": "<rect x='80' y='6' width='80' height='20' rx='6' fill='#FFD27A' stroke='#1B2440' stroke-width='1.5'/><text x='120.0' y='19.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>4 9 10 13</text><line x1='120' y1='26' x2='40' y2='44' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><rect x='4' y='44' width='72' height='34' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='40' y='58' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>13 − 9 = 4</text><text x='40' y='71' font-size='10' fill='#43506B' text-anchor='middle'>left: 4 4 10</text><rect x='25.799999999999997' y='82' width='28.4' height='15' rx='4' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.2'/><text x='40.0' y='93' font-size='10' fill='#3452C7' text-anchor='middle'>sure</text><line x1='120' y1='26' x2='120' y2='44' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><rect x='84' y='44' width='72' height='34' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='120' y='58' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>4 + 9 = 13</text><text x='120' y='71' font-size='10' fill='#43506B' text-anchor='middle'>left: 10 13 13</text><rect x='103.5' y='82' width='33.0' height='15' rx='4' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.2'/><text x='120.0' y='93' font-size='10' fill='#1B2440' text-anchor='middle'>maybe</text><line x1='120' y1='26' x2='200' y2='44' stroke='#8C95A8' stroke-width='1.2' stroke-linecap='round' stroke-dasharray='3 2'/><rect x='164' y='44' width='72' height='34' rx='6' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.3' stroke-dasharray='4 3'/><text x='200' y='58' font-size='10' fill='#8C95A8' text-anchor='middle' data-f='sans'>10 × 13 = 130</text><text x='200' y='71' font-size='10' fill='#8C95A8' text-anchor='middle'>left: 4 9 130</text><rect x='172.0' y='82' width='56.0' height='15' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.2'/><text x='200.0' y='93' font-size='10' fill='#D1495B' text-anchor='middle'>impossible</text><line x1='40' y1='98' x2='40' y2='116' stroke='#3452C7' stroke-width='1.5' stroke-linecap='round'/><polyline points='43.1,110.3 40,116 36.9,110.3' fill='none' stroke='#3452C7' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><rect x='4' y='118' width='132' height='22' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.7'/><text x='70.0' y='132.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>(10 − 4) × 4 = 24 ✓</text><text x='144' y='124' font-size='10.5' fill='#D1495B'>prune weak branches,</text><text x='144' y='138' font-size='10.5' fill='#D1495B'>expand the best</text><text x='120' y='162' font-size='10.5' fill='#43506B' text-anchor='middle'>Game of 24: use every number once</text>"
+   }
+  }
+ }
+}
