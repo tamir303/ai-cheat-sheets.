@@ -8,3 +8,4 @@
 08-post-training {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2374}
 09-tokenization {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2307}
 10-prompt-injection {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2349}
+11-response-caching {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2439}
