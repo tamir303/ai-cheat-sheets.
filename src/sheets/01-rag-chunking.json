@@ -1,0 +1,343 @@
+{
+ "title": "Same Document. Different Chunkers. Different Recall.",
+ "concept": "RAG chunking strategies",
+ "createdAt": "2026-09-24T18:20:00Z",
+ "data": {
+  "concept": "RAG chunking strategies",
+  "kicker": "RAG cheat sheet · 6 chunking strategies",
+  "title": [
+   "Same Document.",
+   "Different Chunkers.",
+   "Different Recall."
+  ],
+  "sticky": [
+   "Same PDF.",
+   "New splits.",
+   "New answers!"
+  ],
+  "note": [
+   "Split it right,",
+   "find it later."
+  ],
+  "intro": {
+   "before": "A retriever can only return the chunks you gave it. Where you cut the text decides",
+   "highlight": "what each chunk can answer",
+   "after": ", long before embeddings or ranking."
+  },
+  "items": [
+   {
+    "n": 1,
+    "title": "Fixed-size + Overlap",
+    "short": "Fixed-size",
+    "tagline": "Cut every N tokens",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Splits every N tokens, overlapping the edges"
+     },
+     {
+      "sign": "+",
+      "text": "Simple, fast and predictable chunk sizes"
+     },
+     {
+      "sign": "+",
+      "text": "Overlap keeps facts that sit on a boundary"
+     },
+     {
+      "sign": "-",
+      "text": "Cuts through sentences, tables and code"
+     }
+    ],
+    "latency": 1,
+    "cost": 1,
+    "tools": [
+     "LangChain CharacterTextSplitter",
+     "LlamaIndex TokenTextSplitter"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 2,
+    "title": "Recursive Split",
+    "short": "Recursive",
+    "tagline": "Try big separators first",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Tries paragraphs, then lines, then words"
+     },
+     {
+      "sign": "+",
+      "text": "Keeps paragraphs whole when they fit"
+     },
+     {
+      "sign": "+",
+      "text": "A solid default for mixed prose"
+     },
+     {
+      "sign": "-",
+      "text": "Still size-driven, not meaning-driven"
+     }
+    ],
+    "latency": 1,
+    "cost": 1,
+    "tools": [
+     "LangChain RecursiveCharacterTextSplitter",
+     "Chonkie RecursiveChunker"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 3,
+    "title": "Structure-Aware",
+    "short": "Structure",
+    "tagline": "Follow the headings",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Splits on Markdown or HTML headings"
+     },
+     {
+      "sign": "+",
+      "text": "Keeps tables and code blocks intact"
+     },
+     {
+      "sign": "+",
+      "text": "Adds the heading path as chunk metadata"
+     },
+     {
+      "sign": "-",
+      "text": "Needs clean, well-structured source docs"
+     }
+    ],
+    "latency": 1,
+    "cost": 1,
+    "tools": [
+     "LangChain MarkdownHeaderTextSplitter",
+     "Unstructured chunk_by_title"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 4,
+    "title": "Semantic Chunking",
+    "short": "Semantic",
+    "tagline": "Cut where the topic shifts",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Embeds sentences, splits where meaning jumps"
+     },
+     {
+      "sign": "+",
+      "text": "Chunks follow topics, not character counts"
+     },
+     {
+      "sign": "+",
+      "text": "Fewer mixed-topic chunks in the index"
+     },
+     {
+      "sign": "-",
+      "text": "An embedding call per sentence to index"
+     }
+    ],
+    "latency": 2,
+    "cost": 2,
+    "tools": [
+     "LangChain SemanticChunker",
+     "LlamaIndex SemanticSplitterNodeParser"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 5,
+    "title": "Late Chunking",
+    "short": "Late",
+    "tagline": "Embed first, cut after",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Encodes the whole document in one pass"
+     },
+     {
+      "sign": "+",
+      "text": "Pools token vectors per chunk afterwards"
+     },
+     {
+      "sign": "+",
+      "text": "Chunk vectors keep document-wide context"
+     },
+     {
+      "sign": "-",
+      "text": "Needs a long-context embedding model"
+     }
+    ],
+    "latency": 2,
+    "cost": 2,
+    "tools": [
+     "Jina embeddings late_chunking option",
+     "jina-ai/late-chunking (GitHub)"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 6,
+    "title": "Proposition Chunking",
+    "short": "Propositions",
+    "tagline": "One fact per chunk",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "LLM rewrites text into standalone facts"
+     },
+     {
+      "sign": "+",
+      "text": "Resolves pronouns so each fact stands alone"
+     },
+     {
+      "sign": "+",
+      "text": "Precise matches for fact-lookup questions"
+     },
+     {
+      "sign": "-",
+      "text": "An LLM call per passage; slow to index"
+     }
+    ],
+    "latency": 3,
+    "cost": 3,
+    "tools": [
+     "LlamaIndex DenseXRetrievalPack",
+     "LangChain propositional-retrieval"
+    ],
+    "diagram": ""
+   }
+  ],
+  "overview_title": "Where each chunker plugs in",
+  "overview": {
+   "label": "indexing pipeline",
+   "online": [
+    {
+     "name": "Load documents",
+     "note": "PDF, HTML, Markdown",
+     "items": []
+    },
+    {
+     "name": "Split",
+     "note": "by size or structure",
+     "items": [
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "name": "Split by meaning",
+     "note": "embeddings or an LLM",
+     "items": [
+      4,
+      6
+     ]
+    },
+    {
+     "name": "Embed & index",
+     "note": "late chunking splits here",
+     "items": [
+      5
+     ]
+    }
+   ],
+   "offline": [],
+   "feeds": -1,
+   "loop": null,
+   "side": ""
+  },
+  "principles": [
+   {
+    "lead": "Start simple: ",
+    "hl": "recursive split first.",
+    "sub": "Measure retrieval recall before paying for semantic or LLM-based chunking."
+   },
+   {
+    "lead": "Test on your questions: ",
+    "hl": "recall@k per strategy.",
+    "sub": "Chunk one corpus several ways; compare how often the right passage lands in the top k."
+   },
+   {
+    "lead": "Keep context with chunks: ",
+    "hl": "titles and headings.",
+    "sub": "Store the heading path as metadata or prepend it to the chunk text."
+   }
+  ],
+  "which": {
+   "title": "Which chunker?",
+   "rows": [
+    {
+     "q": "Quick baseline for any text",
+     "items": [
+      1
+     ]
+    },
+    {
+     "q": "Mixed prose with paragraphs",
+     "items": [
+      2
+     ]
+    },
+    {
+     "q": "Markdown, HTML, docs with headings",
+     "items": [
+      3
+     ]
+    },
+    {
+     "q": "Long docs that drift across topics",
+     "items": [
+      4
+     ]
+    },
+    {
+     "q": "Pronouns that need wider context",
+     "items": [
+      5
+     ]
+    },
+    {
+     "q": "Fact lookup, FAQ-style questions",
+     "items": [
+      6
+     ]
+    }
+   ]
+  },
+  "quote": {
+   "big": "A retriever can't find what you cut apart.",
+   "small": "Chunking sets the ceiling for recall."
+  },
+  "diagrams": {
+   "1": {
+    "alt": "Fixed-size chunking of 12 tokens with size 5 and overlap 1: chunks cover tokens 1–5, 5–9 and 9–12, and chunk 2 straddles two sentences.",
+    "svg": "<text x='120' y='18' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>size = 5 tokens · overlap = 1</text><rect x='12' y='34' width='16' height='18' rx='3' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.1'/><text x='20' y='47' font-size='10' fill='#1B2440' text-anchor='middle'>1</text><rect x='30' y='34' width='16' height='18' rx='3' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.1'/><text x='38' y='47' font-size='10' fill='#1B2440' text-anchor='middle'>2</text><rect x='48' y='34' width='16' height='18' rx='3' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.1'/><text x='56' y='47' font-size='10' fill='#1B2440' text-anchor='middle'>3</text><rect x='66' y='34' width='16' height='18' rx='3' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.1'/><text x='74' y='47' font-size='10' fill='#1B2440' text-anchor='middle'>4</text><rect x='84' y='34' width='16' height='18' rx='3' fill='#FFD27A' stroke='#1B2440' stroke-width='1.1'/><text x='92' y='47' font-size='10' fill='#1B2440' text-anchor='middle'>5</text><rect x='102' y='34' width='16' height='18' rx='3' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.1'/><text x='110' y='47' font-size='10' fill='#1B2440' text-anchor='middle'>6</text><rect x='120' y='34' width='16' height='18' rx='3' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.1'/><text x='128' y='47' font-size='10' fill='#1B2440' text-anchor='middle'>7</text><rect x='138' y='34' width='16' height='18' rx='3' fill='#E9F8F4' stroke='#1B2440' stroke-width='1.1'/><text x='146' y='47' font-size='10' fill='#1B2440' text-anchor='middle'>8</text><rect x='156' y='34' width='16' height='18' rx='3' fill='#FFD27A' stroke='#1B2440' stroke-width='1.1'/><text x='164' y='47' font-size='10' fill='#1B2440' text-anchor='middle'>9</text><rect x='174' y='34' width='16' height='18' rx='3' fill='#E9F8F4' stroke='#1B2440' stroke-width='1.1'/><text x='182' y='47' font-size='10' fill='#1B2440' text-anchor='middle'>10</text><rect x='192' y='34' width='16' height='18' rx='3' fill='#E9F8F4' stroke='#1B2440' stroke-width='1.1'/><text x='200' y='47' font-size='10' fill='#1B2440' text-anchor='middle'>11</text><rect x='210' y='34' width='16' height='18' rx='3' fill='#E9F8F4' stroke='#1B2440' stroke-width='1.1'/><text x='218' y='47' font-size='10' fill='#1B2440' text-anchor='middle'>12</text><path d='M12 64 L12 70 L100 70 L100 64' fill='none' stroke='#3452C7' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/><text x='104' y='74' font-size='10.5' fill='#3452C7'>chunk 1</text><path d='M84 80 L84 86 L172 86 L172 80' fill='none' stroke='#D1495B' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/><text x='176' y='90' font-size='10.5' fill='#D1495B'>chunk 2</text><path d='M156 96 L156 102 L226 102 L226 96' fill='none' stroke='#3452C7' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/><text x='152' y='106' font-size='10.5' fill='#3452C7' text-anchor='end'>chunk 3</text><text x='120' y='126' font-size='11' fill='#D1495B' text-anchor='middle'>chunk 2 straddles two sentences</text><rect x='14' y='144' width='12' height='10' rx='2' fill='#EFF2FF' stroke='#1B2440' stroke-width='1'/><text x='30' y='153' font-size='10.5' fill='#43506B'>sentence A</text><rect x='92' y='144' width='12' height='10' rx='2' fill='#E9F8F4' stroke='#1B2440' stroke-width='1'/><text x='108' y='153' font-size='10.5' fill='#43506B'>sentence B</text><rect x='170' y='144' width='12' height='10' rx='2' fill='#FFD27A' stroke='#1B2440' stroke-width='1'/><text x='186' y='153' font-size='10.5' fill='#43506B'>overlap</text>"
+   },
+   "2": {
+    "alt": "Recursive split with a 300-token limit: a 180-token paragraph stays whole, a 520-token paragraph is split by line into two 260-token chunks.",
+    "svg": "<text x='4' y='18' font-size='11' fill='#43506B'>separators, in order</text><rect x='4' y='28' width='88' height='20' rx='6' fill='#FFD27A' stroke='#1B2440' stroke-width='1.3'/><text x='48.0' y='41.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>1 · paragraph</text><rect x='4' y='54' width='88' height='20' rx='6' fill='#FFD27A' stroke='#1B2440' stroke-width='1.3'/><text x='48.0' y='67.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>2 · line</text><rect x='4' y='80' width='88' height='20' rx='6' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.3' stroke-dasharray='4 3'/><text x='48.0' y='93.78' font-size='10.5' fill='#8C95A8' text-anchor='middle' data-f='sans'>3 · sentence</text><rect x='4' y='106' width='88' height='20' rx='6' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.3' stroke-dasharray='4 3'/><text x='48.0' y='119.78' font-size='10.5' fill='#8C95A8' text-anchor='middle' data-f='sans'>4 · word</text><text x='172' y='18' font-size='10.5' fill='#D1495B' text-anchor='middle' data-f='sans'>max 300 tokens</text><rect x='110' y='26' width='124' height='30' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.8'/><text x='172.0' y='40.0' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>para A · 180</text><text x='172.0' y='52.0' font-size='10.5' fill='#43506B' text-anchor='middle'>fits → 1 chunk</text><rect x='110' y='66' width='124' height='30' rx='6' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.3' stroke-dasharray='4 3'/><text x='172.0' y='80.0' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>para B · 520</text><text x='172.0' y='92.0' font-size='10.5' fill='#43506B' text-anchor='middle'>too big → split</text><line x1='141' y1='96' x2='141' y2='114' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round'/><polyline points='144.1,108.3 141,114 137.9,108.3' fill='none' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><line x1='203' y1='96' x2='203' y2='114' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round'/><polyline points='206.1,108.3 203,114 199.9,108.3' fill='none' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><text x='172' y='110' font-size='10.5' fill='#D1495B' text-anchor='middle'>by line</text><rect x='110' y='116' width='60' height='26' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.8'/><text x='140.0' y='132.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>260</text><rect x='174' y='116' width='60' height='26' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.8'/><text x='204.0' y='132.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>260</text><line x1='92' y1='38' x2='108' y2='40' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round'/><polyline points='102.7,36.2 108,40 102.0,42.4' fill='none' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><line x1='92' y1='64' x2='108' y2='78' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round'/><polyline points='105.8,71.9 108,78 101.7,76.6' fill='none' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><text x='120' y='160' font-size='11' fill='#43506B' text-anchor='middle'>stops at the first separator that fits</text>"
+   },
+   "3": {
+    "alt": "Structure-aware chunking: a Markdown doc is split at its headings, so Setup › Install keeps text and code together and Setup › Config keeps the whole table.",
+    "svg": "<rect x='4' y='6' width='100' height='158' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='12' y='22' font-size='11' fill='#1B2440' data-f='sans'># Setup</text><text x='12' y='40' font-size='10.5' fill='#1B2440' data-f='sans'>## Install</text><rect x='12' y='46' width='80' height='4' rx='2' fill='#C8CFDC'/><rect x='12' y='54' width='64' height='4' rx='2' fill='#C8CFDC'/><rect x='12' y='62' width='84' height='20' rx='3' fill='#EFF2FF' stroke='#1B2440' stroke-width='1'/><text x='16' y='76' font-size='10' fill='#1B2440'>$ pip install x</text><text x='12' y='102' font-size='10.5' fill='#1B2440' data-f='sans'>## Config</text><rect x='12' y='110' width='84' height='36' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1'/><line x1='12' y1='122' x2='96' y2='122' stroke='#1B2440' stroke-width='1' stroke-linecap='round'/><line x1='12' y1='134' x2='96' y2='134' stroke='#1B2440' stroke-width='1' stroke-linecap='round'/><line x1='54' y1='110' x2='54' y2='146' stroke='#1B2440' stroke-width='1' stroke-linecap='round'/><text x='33' y='119' font-size='9.5' fill='#43506B' text-anchor='middle'>key</text><text x='75' y='119' font-size='9.5' fill='#43506B' text-anchor='middle'>value</text><path d='M108 30 L112 30 L112 86 L108 86' fill='none' stroke='#3452C7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/><path d='M108 92 L112 92 L112 150 L108 150' fill='none' stroke='#3452C7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/><line x1='114' y1='58' x2='130' y2='52' stroke='#3452C7' stroke-width='1.6' stroke-linecap='round'/><polyline points='123.6,51.1 130,52 125.8,56.9' fill='none' stroke='#3452C7' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><line x1='114' y1='121' x2='130' y2='124' stroke='#3452C7' stroke-width='1.6' stroke-linecap='round'/><polyline points='125.0,119.9 130,124 123.8,126.0' fill='none' stroke='#3452C7' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><rect x='132' y='22' width='104' height='52' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.8'/><rect x='136' y='28' width='107.7' height='15' rx='4' fill='#FFD27A'/><text x='189.8' y='39' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>Setup › Install</text><text x='184' y='60' font-size='10.5' fill='#1B2440' text-anchor='middle'>text + code kept</text><text x='184' y='70' font-size='10.5' fill='#1B2440' text-anchor='middle'>together</text><rect x='132' y='94' width='104' height='52' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.8'/><rect x='136' y='100' width='101.1' height='15' rx='4' fill='#FFD27A'/><text x='186.6' y='111' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>Setup › Config</text><text x='184' y='132' font-size='10.5' fill='#1B2440' text-anchor='middle'>whole table kept</text><text x='184' y='162' font-size='10' fill='#43506B' text-anchor='middle'>heading path = metadata</text>"
+   },
+   "4": {
+    "alt": "Semantic chunking: distances between neighbouring sentences peak at 0.62 and 0.55, above a 0.4 threshold, so the text splits after sentences 3 and 6 into three chunks.",
+    "svg": "<text x='30' y='16' font-size='10' fill='#43506B'>distance between neighbouring sentences</text><line x1='30' y1='20' x2='30' y2='110' stroke='#8C95A8' stroke-width='1.2' stroke-linecap='round'/><line x1='30' y1='110' x2='230' y2='110' stroke='#8C95A8' stroke-width='1.2' stroke-linecap='round'/><line x1='30' y1='54.0' x2='230' y2='54.0' stroke='#D1495B' stroke-width='1.4' stroke-linecap='round' stroke-dasharray='5 3'/><text x='34' y='50.0' font-size='10' fill='#D1495B'>threshold 0.4</text><path d='M44 93.2 L72 89.0 L100 23.2 L128 96.0 L156 84.8 L184 33.0 L212 90.4' fill='none' stroke='#3452C7' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><circle cx='44' cy='93.2' r='3' fill='#3452C7'/><circle cx='72' cy='89.0' r='3' fill='#3452C7'/><circle cx='100' cy='23.2' r='4' fill='#D1495B'/><circle cx='128' cy='96.0' r='3' fill='#3452C7'/><circle cx='156' cy='84.8' r='3' fill='#3452C7'/><circle cx='184' cy='33.0' r='4' fill='#D1495B'/><circle cx='212' cy='90.4' r='3' fill='#3452C7'/><text x='107' y='27.2' font-size='10' fill='#D1495B'>0.62</text><text x='191' y='37.0' font-size='10' fill='#D1495B'>0.55</text><line x1='100' y1='54.0' x2='100' y2='128' stroke='#D1495B' stroke-width='1.2' stroke-linecap='round' stroke-dasharray='3 2'/><line x1='184' y1='54.0' x2='184' y2='128' stroke='#D1495B' stroke-width='1.2' stroke-linecap='round' stroke-dasharray='3 2'/><circle cx='30' cy='122' r='3' fill='#1B2440'/><text x='30' y='138' font-size='10' fill='#43506B' text-anchor='middle'>s1</text><circle cx='58' cy='122' r='3' fill='#1B2440'/><text x='58' y='138' font-size='10' fill='#43506B' text-anchor='middle'>s2</text><circle cx='86' cy='122' r='3' fill='#1B2440'/><text x='86' y='138' font-size='10' fill='#43506B' text-anchor='middle'>s3</text><circle cx='114' cy='122' r='3' fill='#1B2440'/><text x='114' y='138' font-size='10' fill='#43506B' text-anchor='middle'>s4</text><circle cx='142' cy='122' r='3' fill='#1B2440'/><text x='142' y='138' font-size='10' fill='#43506B' text-anchor='middle'>s5</text><circle cx='170' cy='122' r='3' fill='#1B2440'/><text x='170' y='138' font-size='10' fill='#43506B' text-anchor='middle'>s6</text><circle cx='198' cy='122' r='3' fill='#1B2440'/><text x='198' y='138' font-size='10' fill='#43506B' text-anchor='middle'>s7</text><circle cx='226' cy='122' r='3' fill='#1B2440'/><text x='226' y='138' font-size='10' fill='#43506B' text-anchor='middle'>s8</text><path d='M26 144 L26 148 L90 148 L90 144' fill='none' stroke='#3452C7' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><text x='58.0' y='162' font-size='10.5' fill='#3452C7' text-anchor='middle'>chunk 1</text><path d='M110 144 L110 148 L174 148 L174 144' fill='none' stroke='#3452C7' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><text x='142.0' y='162' font-size='10.5' fill='#3452C7' text-anchor='middle'>chunk 2</text><path d='M194 144 L194 148 L230 148 L230 144' fill='none' stroke='#3452C7' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><text x='212.0' y='162' font-size='10.5' fill='#3452C7' text-anchor='middle'>chunk 3</text>"
+   },
+   "5": {
+    "alt": "Late chunking: naive chunking embeds 'Its zoo…' alone and loses 'Berlin'; late chunking encodes the whole document first, then pools token vectors per chunk.",
+    "svg": "<text x='4' y='16' font-size='11' fill='#D1495B' data-f='sans'>naive</text><rect x='46' y='6' width='80' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='86.0' y='19.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>Berlin is…</text><rect x='134' y='6' width='80' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='174.0' y='19.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>Its zoo…</text><line x1='86' y1='26' x2='86' y2='38' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round'/><polyline points='89.1,32.3 86,38 82.9,32.3' fill='none' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><line x1='174' y1='26' x2='174' y2='38' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round'/><polyline points='177.1,32.3 174,38 170.9,32.3' fill='none' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><rect x='56' y='40' width='60' height='16' rx='6' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.5'/><text x='86.0' y='51.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>v1</text><rect x='144' y='40' width='60' height='16' rx='6' fill='#FFFFFF' stroke='#D1495B' stroke-width='1.8'/><text x='174.0' y='51.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>v2</text><text x='174' y='70' font-size='10.5' fill='#D1495B' text-anchor='middle'>v2 lost “Berlin”</text><line x1='4' y1='78' x2='236' y2='78' stroke='#C8CFDC' stroke-width='1' stroke-linecap='round' stroke-dasharray='3 3'/><text x='4' y='94' font-size='11' fill='#3452C7' data-f='sans'>late</text><rect x='46' y='84' width='168' height='18' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='130.0' y='96.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>Berlin is… Its zoo…</text><line x1='130' y1='102' x2='130' y2='110' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round'/><polyline points='133.1,104.3 130,110 126.9,104.3' fill='none' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><rect x='46' y='112' width='168' height='18' rx='6' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.5'/><text x='130.0' y='124.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>encoder reads whole doc</text><rect x='52' y='136' width='12' height='8' rx='2' fill='#F6FBE6' stroke='#1B2440' stroke-width='1'/><rect x='70' y='136' width='12' height='8' rx='2' fill='#F6FBE6' stroke='#1B2440' stroke-width='1'/><rect x='88' y='136' width='12' height='8' rx='2' fill='#F6FBE6' stroke='#1B2440' stroke-width='1'/><rect x='106' y='136' width='12' height='8' rx='2' fill='#F6FBE6' stroke='#1B2440' stroke-width='1'/><rect x='124' y='136' width='12' height='8' rx='2' fill='#F6FBE6' stroke='#1B2440' stroke-width='1'/><rect x='148' y='136' width='12' height='8' rx='2' fill='#E9F8F4' stroke='#1B2440' stroke-width='1'/><rect x='166' y='136' width='12' height='8' rx='2' fill='#E9F8F4' stroke='#1B2440' stroke-width='1'/><rect x='184' y='136' width='12' height='8' rx='2' fill='#E9F8F4' stroke='#1B2440' stroke-width='1'/><rect x='202' y='136' width='12' height='8' rx='2' fill='#E9F8F4' stroke='#1B2440' stroke-width='1'/><path d='M52 148 L52 152 L136 152 L136 148' fill='none' stroke='#3452C7' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><path d='M148 148 L148 152 L208 152 L208 148' fill='none' stroke='#3452C7' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><text x='94' y='164' font-size='10.5' fill='#3452C7' text-anchor='middle'>pool → v1</text><text x='178' y='164' font-size='10.5' fill='#3452C7' text-anchor='middle'>pool → v2 ✓</text>"
+   },
+   "6": {
+    "alt": "Proposition chunking: an LLM rewrites two sentences into two standalone facts, replacing 'She' with 'Marie Curie'.",
+    "svg": "<rect x='4' y='6' width='232' height='44' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='12' y='22' font-size='11' fill='#1B2440'>Marie Curie won two Nobel Prizes.</text><rect x='10' y='29' width='19' height='13' rx='3' fill='#FFD27A'/><text x='12' y='40' font-size='11' fill='#1B2440'>She was the first woman to win one.</text><line x1='120' y1='50' x2='120' y2='64' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round'/><polyline points='123.1,58.3 120,64 116.9,58.3' fill='none' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><text x='126' y='61' font-size='10.5' fill='#D1495B'>LLM rewrites</text><rect x='4' y='66' width='232' height='24' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.8'/><text x='12' y='82' font-size='11' fill='#1B2440'>1  Marie Curie won two Nobel Prizes.</text><rect x='4' y='96' width='232' height='38' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.8'/><text x='12' y='111' font-size='11' fill='#1B2440'>2  Marie Curie was the first woman</text><text x='24' y='126' font-size='11' fill='#1B2440'>to win a Nobel Prize.</text><text x='120' y='156' font-size='11' fill='#43506B' text-anchor='middle'>each fact becomes its own chunk</text>"
+   }
+  }
+ }
+}
