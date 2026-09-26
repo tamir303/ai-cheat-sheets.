@@ -1,0 +1,349 @@
+{
+ "title": "Same Raw Model. Different Feedback. Different Behavior.",
+ "concept": "LLM post-training and alignment methods",
+ "createdAt": "2026-09-24T18:40:00Z",
+ "data": {
+  "concept": "LLM post-training and alignment methods",
+  "kicker": "LLM training cheat sheet · 6 post-training methods",
+  "title": [
+   "Same Raw Model.",
+   "Different Feedback.",
+   "Different Behavior."
+  ],
+  "sticky": [
+   "Same weights.",
+   "New signal.",
+   "New habits!"
+  ],
+  "note": [
+   "You get what",
+   "you reward."
+  ],
+  "intro": {
+   "before": "Pretraining gives a model knowledge, not manners. Post-training decides",
+   "highlight": "which feedback shapes its behavior",
+   "after": ": demonstrations, preferences or rewards."
+  },
+  "items": [
+   {
+    "n": 1,
+    "title": "Supervised Fine-Tuning (SFT)",
+    "short": "SFT",
+    "tagline": "Learn from ideal answers",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Trains on prompt and ideal-response pairs"
+     },
+     {
+      "sign": "+",
+      "text": "Teaches format, tone and instruction following"
+     },
+     {
+      "sign": "+",
+      "text": "Simple, stable and cheap to run"
+     },
+     {
+      "sign": "-",
+      "text": "Only imitates; never sees what a bad answer is"
+     }
+    ],
+    "latency": 1,
+    "cost": 1,
+    "tools": [
+     "TRL SFTTrainer",
+     "Axolotl",
+     "Unsloth"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 2,
+    "title": "RLHF with PPO",
+    "short": "RLHF",
+    "tagline": "Reward model + RL loop",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "A reward model learns from human rankings"
+     },
+     {
+      "sign": "+",
+      "text": "PPO optimizes the model against that reward"
+     },
+     {
+      "sign": "+",
+      "text": "The classic recipe behind InstructGPT"
+     },
+     {
+      "sign": "-",
+      "text": "Four models in memory; unstable and costly"
+     }
+    ],
+    "latency": 3,
+    "cost": 3,
+    "tools": [
+     "OpenRLHF",
+     "veRL"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 3,
+    "title": "Direct Preference (DPO)",
+    "short": "DPO",
+    "tagline": "Preferences, no RL",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Learns directly from chosen vs rejected pairs"
+     },
+     {
+      "sign": "+",
+      "text": "No reward model and no RL sampling loop"
+     },
+     {
+      "sign": "+",
+      "text": "Stable, simple loss; popular for open models"
+     },
+     {
+      "sign": "-",
+      "text": "Needs paired data and a frozen reference"
+     }
+    ],
+    "latency": 2,
+    "cost": 2,
+    "tools": [
+     "TRL DPOTrainer",
+     "LLaMA-Factory"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 4,
+    "title": "Odds Ratio Preference (ORPO)",
+    "short": "ORPO",
+    "tagline": "SFT and preferences at once",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Adds an odds-ratio penalty to the SFT loss"
+     },
+     {
+      "sign": "+",
+      "text": "One stage for instructions and preferences"
+     },
+     {
+      "sign": "+",
+      "text": "No reference model, so less memory"
+     },
+     {
+      "sign": "-",
+      "text": "Newer; less proven at large scale"
+     }
+    ],
+    "latency": 1,
+    "cost": 1,
+    "tools": [
+     "TRL experimental ORPO",
+     "Axolotl"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 5,
+    "title": "Kahneman–Tversky (KTO)",
+    "short": "KTO",
+    "tagline": "Learn from thumbs up/down",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Uses one desirable or undesirable label per answer"
+     },
+     {
+      "sign": "+",
+      "text": "No pairs; copes with imbalanced feedback"
+     },
+     {
+      "sign": "+",
+      "text": "Loss shaped by prospect theory"
+     },
+     {
+      "sign": "-",
+      "text": "Weaker signal than a direct comparison"
+     }
+    ],
+    "latency": 2,
+    "cost": 2,
+    "tools": [
+     "TRL experimental KTO",
+     "LLaMA-Factory"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 6,
+    "title": "Group Relative (GRPO)",
+    "short": "GRPO",
+    "tagline": "Score answers within a group",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Samples a group of answers for each prompt"
+     },
+     {
+      "sign": "+",
+      "text": "Advantage = reward vs the group average"
+     },
+     {
+      "sign": "+",
+      "text": "No critic model; shines with checkable rewards"
+     },
+     {
+      "sign": "-",
+      "text": "Many samples per prompt; reward design is key"
+     }
+    ],
+    "latency": 3,
+    "cost": 2,
+    "tools": [
+     "TRL GRPOTrainer",
+     "veRL"
+    ],
+    "diagram": ""
+   }
+  ],
+  "overview_title": "Where each method fits",
+  "overview": {
+   "label": "per model",
+   "online": [
+    {
+     "name": "Pretrained base",
+     "note": "predicts the next token",
+     "items": []
+    },
+    {
+     "name": "Instruction tuning",
+     "note": "ORPO also adds preferences",
+     "items": [
+      1,
+      4
+     ]
+    },
+    {
+     "name": "Preference tuning",
+     "note": "pairs or thumbs up/down",
+     "items": [
+      2,
+      3,
+      5
+     ]
+    },
+    {
+     "name": "Reasoning RL",
+     "note": "checkable rewards",
+     "items": [
+      6
+     ]
+    },
+    {
+     "name": "Assistant",
+     "note": "evaluate, then ship",
+     "items": []
+    }
+   ],
+   "offline": [],
+   "feeds": -1,
+   "loop": null,
+   "side": ""
+  },
+  "principles": [
+   {
+    "lead": "Start with SFT; ",
+    "hl": "data quality beats volume.",
+    "sub": "A few thousand clean demonstrations often beat a large noisy set."
+   },
+   {
+    "lead": "Try DPO before RLHF: ",
+    "hl": "simpler and cheaper.",
+    "sub": "No reward model or PPO loop; you only need chosen vs rejected pairs."
+   },
+   {
+    "lead": "Keep a KL leash, ",
+    "hl": "or it games the reward.",
+    "sub": "Without a reference penalty, the model drifts and exploits reward flaws."
+   }
+  ],
+  "which": {
+   "title": "Which method?",
+   "rows": [
+    {
+     "q": "Teach format and tone from examples",
+     "items": [
+      1
+     ]
+    },
+    {
+     "q": "You have chosen vs rejected pairs",
+     "items": [
+      3
+     ]
+    },
+    {
+     "q": "One stage, no reference model",
+     "items": [
+      4
+     ]
+    },
+    {
+     "q": "Only thumbs up / down feedback",
+     "items": [
+      5
+     ]
+    },
+    {
+     "q": "Math or code with checkable answers",
+     "items": [
+      6
+     ]
+    },
+    {
+     "q": "Max control, big budget and team",
+     "items": [
+      2
+     ]
+    }
+   ]
+  },
+  "quote": {
+   "big": "You get the behavior you reward.",
+   "small": "Choose the feedback signal before the algorithm."
+  },
+  "diagrams": {
+   "1": {
+    "alt": "SFT: for the prompt 'Capital of France?' only the response tokens 'Paris.' carry loss; with p('Paris') = 0.80 the loss is −ln 0.80 = 0.22.",
+    "svg": "<text x='120' y='14' font-size='10.5' fill='#43506B' text-anchor='middle'>one training example</text><rect x='6' y='24' width='128' height='24' rx='6' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.2' stroke-dasharray='4 3'/><text x='70.0' y='39.78' font-size='10.5' fill='#43506B' text-anchor='middle'>“Capital of France?”</text><rect x='140' y='24' width='52' height='24' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.7'/><text x='166.0' y='39.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>Paris</text><rect x='196' y='24' width='38' height='24' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.7'/><text x='215.0' y='39.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>.</text><text x='70' y='62' font-size='10' fill='#8C95A8' text-anchor='middle'>prompt: no loss</text><text x='187' y='62' font-size='10' fill='#3452C7' text-anchor='middle'>response: loss</text><text x='120' y='88' font-size='10.5' fill='#1B2440' text-anchor='middle'>model gives p(“Paris”) = 0.80</text><text x='120' y='108' font-size='11' fill='#D1495B' text-anchor='middle' data-f='sans'>loss = −ln 0.80 = 0.22</text><text x='120' y='132' font-size='10.5' fill='#3452C7' text-anchor='middle'>imitates the demonstration</text><text x='120' y='152' font-size='10.5' fill='#43506B' text-anchor='middle'>LIMA: 1,000 curated examples</text>"
+   },
+   "2": {
+    "alt": "RLHF: humans rank A over B, a reward model learns to score answers (r = 0.80), and PPO maximises reward minus β·KL: 0.80 − 0.1 × 2.0 = 0.60.",
+    "svg": "<text x='6' y='13' font-size='10.5' fill='#43506B'>1 · humans rank, reward model learns</text><rect x='6' y='20' width='52' height='22' rx='6' fill='#FFD27A' stroke='#1B2440' stroke-width='1.5'/><text x='32.0' y='34.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>A &gt; B</text><line x1='58' y1='31' x2='72' y2='31' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><polyline points='66.3,27.9 72,31 66.3,34.1' fill='none' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='74' y='20' width='86' height='22' rx='6' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.5'/><text x='117.0' y='34.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>reward model</text><line x1='160' y1='31' x2='174' y2='31' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><polyline points='168.3,27.9 174,31 168.3,34.1' fill='none' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='176' y='20' width='58' height='22' rx='6' fill='#FFFFFF' stroke='#3452C7' stroke-width='1.5'/><text x='205.0' y='34.78' font-size='10.5' fill='#3452C7' text-anchor='middle' data-f='sans'>r = 0.80</text><text x='6' y='64' font-size='10.5' fill='#43506B'>2 · PPO maximises</text><text x='120' y='84' font-size='10.5' fill='#1B2440' text-anchor='middle'>reward − β · KL(policy ‖ reference)</text><text x='120' y='106' font-size='11' fill='#D1495B' text-anchor='middle' data-f='sans'>0.80 − 0.1 × 2.0 = 0.60</text><text x='120' y='128' font-size='10.5' fill='#43506B' text-anchor='middle'>4 models: policy, ref, reward, critic</text><text x='120' y='150' font-size='10.5' fill='#3452C7' text-anchor='middle'>KL term curbs reward hacking</text>"
+   },
+   "3": {
+    "alt": "DPO: the chosen answer has log-ratio +1.0 and the rejected −1.0; margin 0.1 × 2 = 0.2, loss −ln σ(0.2) = 0.60, with no reward model.",
+    "svg": "<rect x='6' y='8' width='110' height='22' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.6'/><text x='61.0' y='22.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>chosen answer</text><text x='126' y='23' font-size='10.5' fill='#3452C7'>log-ratio +1.0</text><rect x='6' y='38' width='110' height='22' rx='6' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.6'/><text x='61.0' y='52.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>rejected answer</text><text x='126' y='53' font-size='10.5' fill='#D1495B'>log-ratio −1.0</text><text x='120' y='80' font-size='10' fill='#43506B' text-anchor='middle'>log-ratio = log π(policy) − log π(ref)</text><text x='120' y='100' font-size='10.5' fill='#1B2440' text-anchor='middle'>margin = 0.1 × (1.0 − (−1.0)) = 0.2</text><text x='120' y='120' font-size='11' fill='#D1495B' text-anchor='middle' data-f='sans'>loss = −ln σ(0.2) = 0.60</text><text x='120' y='142' font-size='10.5' fill='#3452C7' text-anchor='middle'>no reward model, no RL loop</text><text x='120' y='160' font-size='10.5' fill='#43506B' text-anchor='middle'>pushes chosen up, rejected down</text>"
+   },
+   "4": {
+    "alt": "ORPO: chosen p = 0.6 gives odds 1.5, rejected p = 0.2 gives odds 0.25; odds ratio 6, penalty −ln(6/7) = 0.15, added to the SFT loss.",
+    "svg": "<rect x='6' y='8' width='110' height='22' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.6'/><text x='61.0' y='22.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>p(chosen) = 0.6</text><text x='126' y='23' font-size='10.5' fill='#3452C7'>odds 0.6/0.4 = 1.5</text><rect x='6' y='38' width='110' height='22' rx='6' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.6'/><text x='61.0' y='52.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>p(rejected) = 0.2</text><text x='126' y='53' font-size='10.5' fill='#D1495B'>odds 0.2/0.8 = 0.25</text><text x='120' y='82' font-size='10.5' fill='#1B2440' text-anchor='middle'>odds ratio = 1.5 / 0.25 = 6</text><text x='120' y='102' font-size='10.5' fill='#D1495B' text-anchor='middle'>penalty = −ln σ(ln 6) = −ln 6/7 = 0.15</text><text x='120' y='124' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>loss = SFT loss + λ · penalty</text><text x='120' y='146' font-size='10.5' fill='#3452C7' text-anchor='middle'>no reference model needed</text><text x='120' y='164' font-size='10.5' fill='#43506B' text-anchor='middle'>one stage replaces SFT → DPO</text>"
+   },
+   "5": {
+    "alt": "KTO: an S-shaped prospect-theory value curve where losses weigh more than gains; each answer gets a single thumbs-up or thumbs-down label, no pairs.",
+    "svg": "<line x1='30' y1='50' x2='222' y2='50' stroke='#8C95A8' stroke-width='1.1' stroke-linecap='round'/><line x1='120' y1='6' x2='120' y2='96' stroke='#8C95A8' stroke-width='1.1' stroke-linecap='round'/><path d='M40.0 89.9 L44.0 89.9 L48.0 89.9 L52.0 89.8 L56.0 89.8 L60.0 89.7 L64.0 89.5 L68.0 89.3 L72.0 89.0 L76.0 88.6 L80.0 87.9 L84.0 87.1 L88.0 85.9 L92.0 84.2 L96.0 81.9 L100.0 78.8 L104.0 74.9 L108.0 69.9 L112.0 63.9 L116.0 57.2 L120.0 50.0 L124.0 46.8 L128.0 43.7 L132.0 40.7 L136.0 37.8 L140.0 35.2 L144.0 32.8 L148.0 30.7 L152.0 28.8 L156.0 27.1 L160.0 25.6 L164.0 24.4 L168.0 23.3 L172.0 22.4 L176.0 21.7 L180.0 21.0 L184.0 20.5 L188.0 20.1 L192.0 19.7 L196.0 19.4 L200.0 19.2 L204.0 18.9 L208.0 18.8' fill='none' stroke='#1B2440' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/><text x='160' y='13' font-size='10.5' fill='#3452C7' text-anchor='middle'>gain</text><text x='56' y='72' font-size='10.5' fill='#D1495B' text-anchor='middle'>loss</text><text x='66' y='24' font-size='10' fill='#D1495B' text-anchor='middle'>losses weigh more</text><rect x='8' y='106' width='68' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.5'/><text x='42.0' y='119.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>answer A ✓</text><rect x='86' y='106' width='68' height='20' rx='6' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.5'/><text x='120.0' y='119.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>answer B ✗</text><rect x='164' y='106' width='68' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.5'/><text x='198.0' y='119.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>answer C ✓</text><text x='120' y='144' font-size='10.5' fill='#1B2440' text-anchor='middle'>one thumbs up/down per answer</text><text x='120' y='162' font-size='10.5' fill='#3452C7' text-anchor='middle'>no pairs needed</text>"
+   },
+   "6": {
+    "alt": "GRPO: four sampled answers to 17 × 24 get rewards 1, 0, 1, 0; mean 0.5 and std 0.5 give advantages +1, −1, +1, −1 with no critic model.",
+    "svg": "<rect x='40' y='6' width='160' height='22' rx='6' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.5'/><text x='120.0' y='20.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>prompt: “17 × 24 = ?”</text><line x1='120' y1='28' x2='34' y2='40' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><polyline points='40.1,42.3 34,40 39.2,36.1' fill='none' stroke='#8C95A8' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/><rect x='12' y='42' width='44' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='34.0' y='55.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>408</text><text x='34' y='78' font-size='10.5' fill='#3452C7' text-anchor='middle'>r = 1</text><rect x='14' y='86' width='40' height='18' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.5'/><text x='34.0' y='98.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>+1</text><line x1='120' y1='28' x2='91' y2='40' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><polyline points='97.5,40.7 91,40 95.1,34.9' fill='none' stroke='#8C95A8' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/><rect x='69' y='42' width='44' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='91.0' y='55.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>418</text><text x='91' y='78' font-size='10.5' fill='#D1495B' text-anchor='middle'>r = 0</text><rect x='71' y='86' width='40' height='18' rx='6' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.5'/><text x='91.0' y='98.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>−1</text><line x1='120' y1='28' x2='148' y2='40' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><polyline points='144.0,34.9 148,40 141.5,40.6' fill='none' stroke='#8C95A8' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/><rect x='126' y='42' width='44' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='148.0' y='55.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>408</text><text x='148' y='78' font-size='10.5' fill='#3452C7' text-anchor='middle'>r = 1</text><rect x='128' y='86' width='40' height='18' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.5'/><text x='148.0' y='98.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>+1</text><line x1='120' y1='28' x2='205' y2='40' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><polyline points='199.8,36.1 205,40 198.9,42.3' fill='none' stroke='#8C95A8' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/><rect x='183' y='42' width='44' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='205.0' y='55.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>398</text><text x='205' y='78' font-size='10.5' fill='#D1495B' text-anchor='middle'>r = 0</text><rect x='185' y='86' width='40' height='18' rx='6' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.5'/><text x='205.0' y='98.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>−1</text><text x='120' y='124' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>A = (r − mean) / std</text><text x='120' y='142' font-size='10.5' fill='#43506B' text-anchor='middle'>mean 0.5 · std 0.5</text><text x='120' y='162' font-size='10.5' fill='#3452C7' text-anchor='middle'>no critic: the group is the baseline</text>"
+   }
+  }
+ }
+}
