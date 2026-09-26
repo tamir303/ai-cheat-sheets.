@@ -1,0 +1,52 @@
+name: Render cheat sheets
+
+on:
+  push:
+    branches: [main]
+    paths: ["src/**", ".github/workflows/render.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Playwright and fonts
+        run: |
+          pip install playwright
+          python -m playwright install --with-deps chromium
+          mkdir -p fonts && cd fonts
+          npm init -y > /dev/null
+          npm install @fontsource/kalam@5 @fontsource/nunito@5 @fontsource/patrick-hand@5
+
+      - name: Render one PNG per sheet into its folder
+        run: |
+          : > render-log.txt
+          for f in src/sheets/*.json; do
+            [ -e "$f" ] || continue
+            s=$(basename "$f" .json)
+            mkdir -p "$s"
+            out=$(python src/render_sheet.py "$f" "$s/$s.png" 1.5 fonts 2>&1 | tail -n 1) || true
+            echo "$s $out" | tee -a render-log.txt
+          done
+
+      - name: Commit images
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A -- '*/*.png' render-log.txt
+          git diff --cached --quiet || git commit -m "Render cheat sheet images"
+          git push
