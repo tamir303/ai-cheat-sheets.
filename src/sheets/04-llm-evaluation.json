@@ -1,0 +1,351 @@
+{
+ "title": "Same Output. Different Evaluators. Different Verdicts.",
+ "concept": "LLM output evaluation",
+ "createdAt": "2026-09-24T18:23:00Z",
+ "data": {
+  "concept": "LLM output evaluation",
+  "kicker": "LLM eval cheat sheet · 6 evaluators",
+  "title": [
+   "Same Output.",
+   "Different Evaluators.",
+   "Different Verdicts."
+  ],
+  "sticky": [
+   "Same answer.",
+   "New grader.",
+   "New score!"
+  ],
+  "note": [
+   "Measure first,",
+   "then optimize."
+  ],
+  "intro": {
+   "before": "Every prompt or model change needs a verdict. The evaluator you pick decides",
+   "highlight": "which failures you can see",
+   "after": ", and which ones slip through."
+  },
+  "items": [
+   {
+    "n": 1,
+    "title": "Exact Match",
+    "short": "Exact",
+    "tagline": "Right or wrong, no nuance",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Checks the output equals the reference"
+     },
+     {
+      "sign": "+",
+      "text": "Free, instant and fully reproducible"
+     },
+     {
+      "sign": "+",
+      "text": "Ideal for labels, numbers and JSON fields"
+     },
+     {
+      "sign": "-",
+      "text": "Fails correct answers worded differently"
+     }
+    ],
+    "latency": 1,
+    "cost": 1,
+    "tools": [
+     "Hugging Face evaluate exact_match",
+     "OpenAI Evals"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 2,
+    "title": "N-gram Overlap",
+    "short": "BLEU/ROUGE",
+    "tagline": "Count shared words",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Scores shared words and phrases vs a reference"
+     },
+     {
+      "sign": "+",
+      "text": "Standard for translation and summaries"
+     },
+     {
+      "sign": "+",
+      "text": "Deterministic and easy to track over time"
+     },
+     {
+      "sign": "-",
+      "text": "Misses paraphrases; rewards surface matches"
+     }
+    ],
+    "latency": 1,
+    "cost": 1,
+    "tools": [
+     "sacreBLEU",
+     "rouge-score",
+     "Hugging Face evaluate"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 3,
+    "title": "Embedding Similarity",
+    "short": "Embedding",
+    "tagline": "Compare meaning, not words",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Compares meaning with embeddings (BERTScore)"
+     },
+     {
+      "sign": "+",
+      "text": "Credits paraphrases that n-grams miss"
+     },
+     {
+      "sign": "+",
+      "text": "Cheap once the model is loaded"
+     },
+     {
+      "sign": "-",
+      "text": "Similar text can still be wrong (negation)"
+     }
+    ],
+    "latency": 2,
+    "cost": 1,
+    "tools": [
+     "bert-score",
+     "sentence-transformers"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 4,
+    "title": "LLM-as-Judge",
+    "short": "LLM judge",
+    "tagline": "A model grades the answer",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Grades against a rubric and explains why"
+     },
+     {
+      "sign": "+",
+      "text": "Handles open-ended answers at scale"
+     },
+     {
+      "sign": "+",
+      "text": "Can check faithfulness to given context"
+     },
+     {
+      "sign": "-",
+      "text": "Biased by position, length, self-preference"
+     }
+    ],
+    "latency": 2,
+    "cost": 2,
+    "tools": [
+     "OpenAI Evals",
+     "DeepEval GEval",
+     "Ragas"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 5,
+    "title": "Pairwise Comparison",
+    "short": "Pairwise",
+    "tagline": "Which answer is better?",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Judge picks the better of two answers"
+     },
+     {
+      "sign": "+",
+      "text": "Often more consistent than absolute scores"
+     },
+     {
+      "sign": "+",
+      "text": "Win rates feed Elo-style leaderboards"
+     },
+     {
+      "sign": "-",
+      "text": "Relative only: A beats B, not A is good"
+     }
+    ],
+    "latency": 3,
+    "cost": 2,
+    "tools": [
+     "AlpacaEval",
+     "Chatbot Arena"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 6,
+    "title": "Human Review",
+    "short": "Human",
+    "tagline": "Experts score real outputs",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Captures nuance, tone and domain correctness"
+     },
+     {
+      "sign": "+",
+      "text": "Ground truth for calibrating LLM judges"
+     },
+     {
+      "sign": "+",
+      "text": "Catches failures no metric was built for"
+     },
+     {
+      "sign": "-",
+      "text": "Slow and costly; reviewers disagree"
+     }
+    ],
+    "latency": 3,
+    "cost": 3,
+    "tools": [
+     "Label Studio",
+     "Argilla",
+     "LangSmith annotation queues"
+    ],
+    "diagram": ""
+   }
+  ],
+  "overview_title": "Where each evaluator fits",
+  "overview": {
+   "label": "per eval run",
+   "online": [
+    {
+     "name": "Model output",
+     "note": "for each test case",
+     "items": []
+    },
+    {
+     "name": "Compare to reference",
+     "note": "needs a gold answer",
+     "items": [
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "name": "Model grades it",
+     "note": "rubric or head-to-head",
+     "items": [
+      4,
+      5
+     ]
+    },
+    {
+     "name": "People grade it",
+     "note": "sample and calibrate",
+     "items": [
+      6
+     ]
+    },
+    {
+     "name": "Ship or block",
+     "note": "compare with baseline",
+     "items": []
+    }
+   ],
+   "offline": [],
+   "feeds": -1,
+   "loop": null,
+   "side": ""
+  },
+  "principles": [
+   {
+    "lead": "Use the cheapest check ",
+    "hl": "that catches the failure.",
+    "sub": "Exact match and schema checks first; LLM judges for open-ended quality."
+   },
+   {
+    "lead": "Calibrate your judge: ",
+    "hl": "compare it with humans.",
+    "sub": "Grade a sample by hand and check agreement before trusting automated scores."
+   },
+   {
+    "lead": "Build a golden set ",
+    "hl": "from real user traffic.",
+    "sub": "Evals on real, messy inputs catch what synthetic benchmarks miss."
+   }
+  ],
+  "which": {
+   "title": "Which evaluator?",
+   "rows": [
+    {
+     "q": "Labels, numbers, JSON fields",
+     "items": [
+      1
+     ]
+    },
+    {
+     "q": "Translation or summary vs a gold",
+     "items": [
+      2
+     ]
+    },
+    {
+     "q": "Paraphrases should still count",
+     "items": [
+      3
+     ]
+    },
+    {
+     "q": "Open-ended answers at scale",
+     "items": [
+      4
+     ]
+    },
+    {
+     "q": "Choosing between two prompts",
+     "items": [
+      5
+     ]
+    },
+    {
+     "q": "High stakes or a new domain",
+     "items": [
+      6
+     ]
+    }
+   ]
+  },
+  "quote": {
+   "big": "An eval you trust beats ten you don't.",
+   "small": "Measure the failure you actually fear."
+  },
+  "diagrams": {
+   "1": {
+    "alt": "Exact match against 'Paris': 'Paris' and ' paris ' match after lowercasing and trimming, but the correct answer 'It's Paris.' scores 0.",
+    "svg": "<text x='120' y='16' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>reference: “Paris”</text><rect x='8' y='26' width='100' height='24' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='58.0' y='41.96' font-size='11' fill='#1B2440' text-anchor='middle'>“Paris”</text><line x1='112' y1='38' x2='132' y2='38' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round'/><polyline points='126.3,34.9 132,38 126.3,41.1' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><rect x='136' y='26' width='96' height='24' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.6'/><text x='184.0' y='41.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>match · 1</text><rect x='8' y='58' width='100' height='24' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='58.0' y='73.96' font-size='11' fill='#1B2440' text-anchor='middle'>“ paris ”</text><line x1='112' y1='70' x2='132' y2='70' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round'/><polyline points='126.3,66.9 132,70 126.3,73.1' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><rect x='136' y='58' width='96' height='24' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.6'/><text x='184.0' y='73.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>match · 1</text><rect x='8' y='90' width='100' height='24' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='58.0' y='105.96' font-size='11' fill='#1B2440' text-anchor='middle'>“It's Paris.”</text><line x1='112' y1='102' x2='132' y2='102' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round'/><polyline points='126.3,98.9 132,102 126.3,105.1' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><rect x='136' y='90' width='96' height='24' rx='6' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.6'/><text x='184.0' y='105.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>no match · 0</text><text x='184' y='136' font-size='10.5' fill='#D1495B' text-anchor='middle'>correct, still scored 0</text><text x='120' y='158' font-size='10.5' fill='#43506B' text-anchor='middle'>lowercase + trim before comparing</text>"
+   },
+   "2": {
+    "alt": "N-gram overlap: candidate 'the cat is on the mat' against reference 'the cat sat on the mat' has unigram precision 5/6 = 0.83 and bigram precision 3/5 = 0.60.",
+    "svg": "<text x='8' y='22' font-size='10.5' fill='#43506B'>ref</text><rect x='36' y='11' width='24.5' height='15' rx='4' fill='#FFD27A'/><text x='48.2' y='22' font-size='10.5' fill='#1B2440' text-anchor='middle'>the</text><rect x='63.49' y='11' width='24.5' height='15' rx='4' fill='#FFD27A'/><text x='75.7' y='22' font-size='10.5' fill='#1B2440' text-anchor='middle'>cat</text><rect x='90.98' y='11' width='24.5' height='15' rx='4' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.2'/><text x='103.2' y='22' font-size='10.5' fill='#8C95A8' text-anchor='middle'>sat</text><rect x='118.47' y='11' width='19.7' height='15' rx='4' fill='#FFD27A'/><text x='128.3' y='22' font-size='10.5' fill='#1B2440' text-anchor='middle'>on</text><rect x='141.13' y='11' width='24.5' height='15' rx='4' fill='#FFD27A'/><text x='153.4' y='22' font-size='10.5' fill='#1B2440' text-anchor='middle'>the</text><rect x='168.62' y='11' width='24.5' height='15' rx='4' fill='#FFD27A'/><text x='180.9' y='22' font-size='10.5' fill='#1B2440' text-anchor='middle'>mat</text><text x='8' y='48' font-size='10.5' fill='#43506B'>cand</text><rect x='36' y='37' width='24.5' height='15' rx='4' fill='#FFD27A'/><text x='48.2' y='48' font-size='10.5' fill='#1B2440' text-anchor='middle'>the</text><rect x='63.49' y='37' width='24.5' height='15' rx='4' fill='#FFD27A'/><text x='75.7' y='48' font-size='10.5' fill='#1B2440' text-anchor='middle'>cat</text><rect x='90.98' y='37' width='19.7' height='15' rx='4' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.2'/><text x='100.8' y='48' font-size='10.5' fill='#8C95A8' text-anchor='middle'>is</text><rect x='113.64' y='37' width='19.7' height='15' rx='4' fill='#FFD27A'/><text x='123.5' y='48' font-size='10.5' fill='#1B2440' text-anchor='middle'>on</text><rect x='136.3' y='37' width='24.5' height='15' rx='4' fill='#FFD27A'/><text x='148.5' y='48' font-size='10.5' fill='#1B2440' text-anchor='middle'>the</text><rect x='163.79000000000002' y='37' width='24.5' height='15' rx='4' fill='#FFD27A'/><text x='176.0' y='48' font-size='10.5' fill='#1B2440' text-anchor='middle'>mat</text><text x='120' y='76' font-size='10.5' fill='#3452C7' text-anchor='middle'>shared bigrams: the cat · on the · the mat</text><text x='120' y='100' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>unigram precision 5/6 = 0.83</text><text x='120' y='117' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>bigram precision 3/5 = 0.60</text><text x='120' y='140' font-size='10.5' fill='#43506B' text-anchor='middle'>BLEU mixes these; ROUGE counts recall</text><text x='120' y='158' font-size='10.5' fill='#D1495B' text-anchor='middle'>a good paraphrase would score far lower</text>"
+   },
+   "3": {
+    "alt": "Embedding similarity: a paraphrase and a negated sentence both land close to the reference, while an unrelated sentence is far away.",
+    "svg": "<rect x='10' y='20' width='220' height='94' rx='6' fill='none' stroke='#C8CFDC' stroke-width='1' stroke-dasharray='3 3'/><text x='16' y='34' font-size='10' fill='#43506B'>ref: “meeting moved to Friday”</text><circle cx='112' cy='70' r='30' fill='none' stroke='#8C95A8' stroke-width='1'/><text x='112' y='112' font-size='9.5' fill='#8C95A8' text-anchor='middle'>high similarity</text><polygon points='112.0,63.0 113.8,67.6 118.7,67.8 114.9,70.9 116.1,75.7 112.0,73.0 107.9,75.7 109.1,70.9 105.3,67.8 110.2,67.6' fill='#D1495B' stroke='#1B2440' stroke-width='1'/><circle cx='130' cy='58' r='4' fill='#3452C7'/><text x='139' y='62' font-size='10.5' fill='#3452C7' data-f='sans'>A</text><circle cx='96' cy='88' r='4' fill='#D1495B'/><text x='105' y='92' font-size='10.5' fill='#D1495B' data-f='sans'>B</text><circle cx='205' cy='48' r='4' fill='#8C95A8'/><text x='214' y='52' font-size='10.5' fill='#8C95A8' data-f='sans'>C</text><text x='10' y='130' font-size='10.5' fill='#3452C7'>A “rescheduled to Friday” · close ✓</text><text x='10' y='146' font-size='10.5' fill='#D1495B'>B “did not move to Friday” · close ✗</text><text x='10' y='162' font-size='10.5' fill='#8C95A8'>C “lunch menu for today” · far</text>"
+   },
+   "4": {
+    "alt": "LLM-as-judge: question, answer and a 1–5 rubric go to a judge model that returns score 3/5 with a reason; known biases are position, length and self-preference.",
+    "svg": "<rect x='6' y='10' width='80' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='46.0' y='23.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>question</text><line x1='86' y1='20' x2='106' y2='46' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><polyline points='105.0,39.6 106,46 100.1,43.4' fill='none' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='6' y='36' width='80' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='46.0' y='49.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>answer</text><line x1='86' y1='46' x2='106' y2='46' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><polyline points='100.3,42.9 106,46 100.3,49.1' fill='none' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='6' y='62' width='80' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='46.0' y='75.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>rubric 1–5</text><line x1='86' y1='72' x2='106' y2='46' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><polyline points='100.1,48.6 106,46 105.0,52.4' fill='none' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='108' y='30' width='58' height='32' rx='6' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.5'/><text x='137.0' y='49.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>LLM judge</text><line x1='166' y1='46' x2='176' y2='46' stroke='#D1495B' stroke-width='1.4' stroke-linecap='round'/><polyline points='170.3,42.9 176,46 170.3,49.1' fill='none' stroke='#D1495B' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><rect x='178' y='18' width='58' height='56' rx='6' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.6'/><text x='207' y='36' font-size='10.5' fill='#D1495B' text-anchor='middle' data-f='sans'>score 3/5</text><text x='207' y='52' font-size='10' fill='#1B2440' text-anchor='middle'>“misses</text><text x='207' y='64' font-size='10' fill='#1B2440' text-anchor='middle'>the date”</text><text x='120' y='102' font-size='10.5' fill='#D1495B' text-anchor='middle' data-f='sans'>known biases</text><rect x='26' y='110' width='48.6' height='15' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.2'/><text x='50.3' y='121' font-size='10.5' fill='#1B2440' text-anchor='middle'>position</text><rect x='80.64' y='110' width='39.0' height='15' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.2'/><text x='100.1' y='121' font-size='10.5' fill='#1B2440' text-anchor='middle'>length</text><rect x='125.62' y='110' width='82.5' height='15' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.2'/><text x='166.8' y='121' font-size='10.5' fill='#1B2440' text-anchor='middle'>self-preference</text><text x='120' y='152' font-size='10.5' fill='#43506B' text-anchor='middle'>swap order, cap length, fix the rubric</text>"
+   },
+   "5": {
+    "alt": "Pairwise comparison: a judge sees answers A and B in both orders and prefers A both times, so A wins 2 out of 2.",
+    "svg": "<rect x='70' y='6' width='100' height='18' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='120.0' y='18.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>same prompt</text><line x1='100' y1='24' x2='50' y2='36' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><polyline points='56.3,37.7 50,36 54.8,31.6' fill='none' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><line x1='140' y1='24' x2='190' y2='36' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><polyline points='185.2,31.6 190,36 183.7,37.7' fill='none' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='10' y='38' width='80' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.5'/><text x='50.0' y='51.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>answer A</text><rect x='150' y='38' width='80' height='20' rx='6' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.5'/><text x='190.0' y='51.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>answer B</text><text x='10' y='88' font-size='10.5' fill='#1B2440'>run 1: A shown first</text><rect x='150' y='74' width='80' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.5'/><text x='190.0' y='87.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>A better</text><text x='10' y='120' font-size='10.5' fill='#1B2440'>run 2: B shown first</text><rect x='150' y='106' width='80' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.5'/><text x='190.0' y='119.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>A better</text><line x1='116' y1='84' x2='146' y2='84' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><polyline points='140.3,80.9 146,84 140.3,87.1' fill='none' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><line x1='116' y1='116' x2='146' y2='116' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><polyline points='140.3,112.9 146,116 140.3,119.1' fill='none' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><text x='120' y='146' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>consistent → A wins 2/2</text><text x='120' y='164' font-size='10.5' fill='#43506B' text-anchor='middle'>swap order to cancel position bias</text>"
+   },
+   "6": {
+    "alt": "Human review: three reviewers score the same answer 4, 5 and 3, a mean of 4.0; the spread suggests tightening the rubric.",
+    "svg": "<rect x='50' y='6' width='140' height='30' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='120' y='20' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>model answer</text><rect x='80' y='26' width='80' height='4' rx='2' fill='#C8CFDC'/><line x1='120' y1='36' x2='50' y2='54' stroke='#8C95A8' stroke-width='1.1' stroke-linecap='round'/><circle cx='50' cy='66' r='12' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.4'/><text x='50' y='70' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>R1</text><rect x='36' y='84' width='28' height='18' rx='6' fill='#FFD27A' stroke='#D1495B' stroke-width='1.3'/><text x='50.0' y='96.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>4</text><line x1='120' y1='36' x2='120' y2='54' stroke='#8C95A8' stroke-width='1.1' stroke-linecap='round'/><circle cx='120' cy='66' r='12' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.4'/><text x='120' y='70' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>R2</text><rect x='106' y='84' width='28' height='18' rx='6' fill='#FFD27A' stroke='#D1495B' stroke-width='1.3'/><text x='120.0' y='96.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>5</text><line x1='120' y1='36' x2='190' y2='54' stroke='#8C95A8' stroke-width='1.1' stroke-linecap='round'/><circle cx='190' cy='66' r='12' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.4'/><text x='190' y='70' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>R3</text><rect x='176' y='84' width='28' height='18' rx='6' fill='#FFD27A' stroke='#D1495B' stroke-width='1.3'/><text x='190.0' y='96.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>3</text><text x='120' y='124' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>mean (4 + 5 + 3) / 3 = 4.0</text><text x='120' y='142' font-size='10.5' fill='#D1495B' text-anchor='middle'>spread 3–5 → tighten the rubric</text><text x='120' y='160' font-size='10.5' fill='#3452C7' text-anchor='middle'>labels become ground truth for judges</text>"
+   }
+  }
+ }
+}
