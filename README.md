@@ -1,6 +1,6 @@
 # AI Cheat Sheets
 
-Ten visual cheat sheets on core LLM engineering topics. Each compares six approaches with worked-example diagrams, trade-offs and a which-one-to-use table.
+Eleven visual cheat sheets on core LLM engineering topics. Each compares six approaches with worked-example diagrams, trade-offs and a which-one-to-use table.
 
 | # | Topic | Sheet title | LinkedIn |
 |---|---|---|---|
@@ -14,6 +14,7 @@ Ten visual cheat sheets on core LLM engineering topics. Each compares six approa
 | 08 | [LLM post-training and alignment methods](08-post-training/) | Same Raw Model. Different Feedback. Different Behavior. | Thu Oct 22 |
 | 09 | [LLM tokenization algorithms](09-tokenization/) | Same Sentence. Different Tokenizers. Different Tokens. | Tue Oct 27 |
 | 10 | [Prompt-injection defenses](10-prompt-injection/) | Same Injection. Different Defenses. Different Risk. | Thu Oct 29 |
+| 11 | [LLM response caching](11-response-caching/) | Same Prompt. Different Caching. Different Latency. | Sun Oct 18 |
 
 Each folder holds the full-size image (1800 px wide), the LinkedIn post and the image alt text.
 
