@@ -1,0 +1,347 @@
+{
+ "title": "Same Sentence. Different Tokenizers. Different Tokens.",
+ "concept": "LLM tokenization algorithms",
+ "createdAt": "2026-09-24T18:55:00Z",
+ "data": {
+  "concept": "LLM tokenization algorithms",
+  "kicker": "LLM basics cheat sheet · 6 tokenization methods",
+  "title": [
+   "Same Sentence.",
+   "Different Tokenizers.",
+   "Different Tokens."
+  ],
+  "sticky": [
+   "Same text.",
+   "New splits.",
+   "New costs!"
+  ],
+  "note": [
+   "Tokens are",
+   "the currency."
+  ],
+  "intro": {
+   "before": "An LLM never sees raw text, only token IDs. The tokenizer decides",
+   "highlight": "how text is cut into pieces",
+   "after": ", which sets cost, context length and multilingual quality."
+  },
+  "items": [
+   {
+    "n": 1,
+    "title": "Byte-Pair Encoding (BPE)",
+    "short": "BPE",
+    "tagline": "Merge the most frequent pair",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Starts from characters, merges frequent pairs"
+     },
+     {
+      "sign": "+",
+      "text": "Common words become one token"
+     },
+     {
+      "sign": "+",
+      "text": "Rare words split into known subwords"
+     },
+     {
+      "sign": "-",
+      "text": "Unseen characters can still be unknown"
+     }
+    ],
+    "latency": 1,
+    "cost": 1,
+    "tools": [
+     "HF tokenizers BPE",
+     "subword-nmt"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 2,
+    "title": "Byte-Level BPE",
+    "short": "Byte BPE",
+    "tagline": "BPE over raw UTF-8 bytes",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Base alphabet is 256 bytes, so no unknowns"
+     },
+     {
+      "sign": "+",
+      "text": "Handles any language, emoji and code"
+     },
+     {
+      "sign": "+",
+      "text": "Standard for GPT-style LLMs"
+     },
+     {
+      "sign": "-",
+      "text": "Non-English text often needs more tokens"
+     }
+    ],
+    "latency": 1,
+    "cost": 1,
+    "tools": [
+     "tiktoken",
+     "HF ByteLevelBPETokenizer"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 3,
+    "title": "WordPiece",
+    "short": "WordPiece",
+    "tagline": "Greedy longest match, ## pieces",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Merges pairs that most raise likelihood"
+     },
+     {
+      "sign": "+",
+      "text": "Splits words greedily, longest piece first"
+     },
+     {
+      "sign": "+",
+      "text": "The tokenizer behind BERT and its family"
+     },
+     {
+      "sign": "-",
+      "text": "Falls back to [UNK] when nothing matches"
+     }
+    ],
+    "latency": 1,
+    "cost": 1,
+    "tools": [
+     "BERT tokenizer",
+     "HF tokenizers WordPiece"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 4,
+    "title": "Unigram (SentencePiece)",
+    "short": "Unigram",
+    "tagline": "Keep the most probable split",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Starts with a big vocab and prunes it down"
+     },
+     {
+      "sign": "+",
+      "text": "Picks the highest-probability segmentation"
+     },
+     {
+      "sign": "+",
+      "text": "Treats spaces as ▁, so no pre-splitting"
+     },
+     {
+      "sign": "-",
+      "text": "Slower to train than BPE"
+     }
+    ],
+    "latency": 1,
+    "cost": 1,
+    "tools": [
+     "SentencePiece",
+     "T5 / ALBERT tokenizers"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 5,
+    "title": "Character-Level",
+    "short": "Characters",
+    "tagline": "One character, one token",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Tiny vocabulary and no rare-word problem"
+     },
+     {
+      "sign": "+",
+      "text": "Sees spelling directly"
+     },
+     {
+      "sign": "-",
+      "text": "Sequences get several times longer"
+     },
+     {
+      "sign": "-",
+      "text": "Attention cost grows with length squared"
+     }
+    ],
+    "latency": 3,
+    "cost": 3,
+    "tools": [
+     "CANINE",
+     "list(text)"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 6,
+    "title": "Byte-Level Models (ByT5)",
+    "short": "Bytes",
+    "tagline": "No tokenizer, just bytes",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Reads raw UTF-8 bytes: 256 symbols"
+     },
+     {
+      "sign": "+",
+      "text": "No tokenizer to train, version or mismatch"
+     },
+     {
+      "sign": "+",
+      "text": "Robust to typos, noise and rare scripts"
+     },
+     {
+      "sign": "-",
+      "text": "Longer sequences make it slower and costlier"
+     }
+    ],
+    "latency": 3,
+    "cost": 3,
+    "tools": [
+     "ByT5",
+     "Meta BLT"
+    ],
+    "diagram": ""
+   }
+  ],
+  "overview_title": "Where each method fits",
+  "overview": {
+   "label": "per text",
+   "online": [
+    {
+     "name": "Raw text",
+     "note": "any language, code, emoji",
+     "items": []
+    },
+    {
+     "name": "Base units",
+     "note": "characters or bytes",
+     "items": [
+      5,
+      6
+     ]
+    },
+    {
+     "name": "Subword vocab",
+     "note": "learned merges or pieces",
+     "items": [
+      1,
+      2,
+      3,
+      4
+     ]
+    },
+    {
+     "name": "Token IDs",
+     "note": "vocabulary lookup",
+     "items": []
+    },
+    {
+     "name": "LLM",
+     "note": "length sets cost",
+     "items": []
+    }
+   ],
+   "offline": [],
+   "feeds": -1,
+   "loop": null,
+   "side": ""
+  },
+  "principles": [
+   {
+    "lead": "Tokens are the unit of ",
+    "hl": "cost and context.",
+    "sub": "Budget in tokens, not words; in English, one token is about ¾ of a word."
+   },
+   {
+    "lead": "Check your languages: ",
+    "hl": "non-English costs more.",
+    "sub": "The same sentence can take several times more tokens in some scripts."
+   },
+   {
+    "lead": "Never mix tokenizers: ",
+    "hl": "IDs are model-specific.",
+    "sub": "Always load the tokenizer that ships with the model checkpoint."
+   }
+  ],
+  "which": {
+   "title": "Which tokenizer?",
+   "rows": [
+    {
+     "q": "General LLM for any text or code",
+     "items": [
+      2
+     ]
+    },
+    {
+     "q": "Fine-tuning a BERT-style encoder",
+     "items": [
+      3
+     ]
+    },
+    {
+     "q": "Languages without spaces",
+     "items": [
+      4
+     ]
+    },
+    {
+     "q": "Custom vocab for a new domain",
+     "items": [
+      1
+     ]
+    },
+    {
+     "q": "Noisy text, typos, rare scripts",
+     "items": [
+      6
+     ]
+    },
+    {
+     "q": "Spelling-heavy or tiny toy models",
+     "items": [
+      5
+     ]
+    }
+   ]
+  },
+  "quote": {
+   "big": "The model never sees your words, only tokens.",
+   "small": "Know your tokenizer before you count costs."
+  },
+  "diagrams": {
+   "1": {
+    "alt": "BPE on the corpus low×5, lower×2, newest×6, widest×3: merges e+s (9), es+t (9), l+o (7), lo+w (7), so the unseen word 'lowest' becomes low + est.",
+    "svg": "<text x='120' y='13' font-size='10' fill='#43506B' text-anchor='middle'>corpus: low×5 lower×2 newest×6 widest×3</text><text x='14' y='36' font-size='10.5' fill='#8C95A8' text-anchor='middle' data-f='sans'>1</text><rect x='26' y='22' width='118' height='19' rx='6' fill='#FFD27A' stroke='#1B2440' stroke-width='1.5'/><text x='85.0' y='35.28' font-size='10.5' fill='#1B2440' text-anchor='middle'>e + s → es</text><text x='152' y='36' font-size='10.5' fill='#3452C7'>seen 9×</text><text x='14' y='59' font-size='10.5' fill='#8C95A8' text-anchor='middle' data-f='sans'>2</text><rect x='26' y='45' width='118' height='19' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='85.0' y='58.28' font-size='10.5' fill='#1B2440' text-anchor='middle'>es + t → est</text><text x='152' y='59' font-size='10.5' fill='#3452C7'>seen 9×</text><text x='14' y='82' font-size='10.5' fill='#8C95A8' text-anchor='middle' data-f='sans'>3</text><rect x='26' y='68' width='118' height='19' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='85.0' y='81.28' font-size='10.5' fill='#1B2440' text-anchor='middle'>l + o → lo</text><text x='152' y='82' font-size='10.5' fill='#3452C7'>seen 7×</text><text x='14' y='105' font-size='10.5' fill='#8C95A8' text-anchor='middle' data-f='sans'>4</text><rect x='26' y='91' width='118' height='19' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='85.0' y='104.28' font-size='10.5' fill='#1B2440' text-anchor='middle'>lo + w → low</text><text x='152' y='105' font-size='10.5' fill='#3452C7'>seen 7×</text><text x='120' y='128' font-size='10.5' fill='#1B2440' text-anchor='middle'>most frequent pair merges first</text><text x='120' y='148' font-size='11' fill='#D1495B' text-anchor='middle' data-f='sans'>unseen “lowest” → low + est</text><text x='120' y='166' font-size='10' fill='#43506B' text-anchor='middle'>vocab = base symbols + merges</text>"
+   },
+   "2": {
+    "alt": "Byte-level BPE: 'a' is 1 byte, 'é' is 2 bytes (C3 A9) and '日' is 3 bytes (E6 97 A5); GPT-2's vocab is 256 bytes + 50,000 merges + 1 = 50,257.",
+    "svg": "<rect x='8' y='8' width='30' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='23.0' y='21.96' font-size='11' fill='#1B2440' text-anchor='middle'>a</text><line x1='38' y1='18' x2='52' y2='18' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round'/><polyline points='46.3,14.9 52,18 46.3,21.1' fill='none' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='54' y='8' width='96' height='20' rx='6' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.5'/><text x='102.0' y='21.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>61</text><text x='160' y='22' font-size='10.5' fill='#3452C7'>1 byte</text><rect x='8' y='34' width='30' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='23.0' y='47.96' font-size='11' fill='#1B2440' text-anchor='middle'>é</text><line x1='38' y1='44' x2='52' y2='44' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round'/><polyline points='46.3,40.9 52,44 46.3,47.1' fill='none' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='54' y='34' width='96' height='20' rx='6' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.5'/><text x='102.0' y='47.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>C3 A9</text><text x='160' y='48' font-size='10.5' fill='#D1495B'>2 bytes</text><rect x='8' y='60' width='30' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'/><text x='23.0' y='73.96' font-size='11' fill='#1B2440' text-anchor='middle'>日</text><line x1='38' y1='70' x2='52' y2='70' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round'/><polyline points='46.3,66.9 52,70 46.3,73.1' fill='none' stroke='#1B2440' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><rect x='54' y='60' width='96' height='20' rx='6' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.5'/><text x='102.0' y='73.78' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>E6 97 A5</text><text x='160' y='74' font-size='10.5' fill='#D1495B'>3 bytes</text><text x='120' y='102' font-size='10.5' fill='#3452C7' text-anchor='middle'>256 byte symbols: never an unknown token</text><text x='120' y='122' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>GPT-2: 256 + 50,000 merges + 1 = 50,257</text><text x='120' y='144' font-size='10.5' fill='#43506B' text-anchor='middle'>the GPT family and Llama 3 use this</text><text x='120' y='162' font-size='10.5' fill='#D1495B' text-anchor='middle'>non-English text costs more tokens</text>"
+   },
+   "3": {
+    "alt": "WordPiece splits 'unaffable' greedily into un, ##aff and ##able; ## marks a continuation, BERT-base has 30,522 tokens, and no match gives [UNK].",
+    "svg": "<text x='120' y='16' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>“unaffable”</text><line x1='120' y1='22' x2='53.0' y2='36' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><polyline points='59.2,37.9 53.0,36 57.9,31.8' fill='none' stroke='#8C95A8' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/><rect x='33.0' y='38' width='40' height='22' rx='6' fill='#FAF0FE' stroke='#1B2440' stroke-width='1.5'/><text x='53.0' y='52.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>un</text><line x1='120' y1='22' x2='108.0' y2='36' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><polyline points='114.1,33.7 108.0,36 109.3,29.6' fill='none' stroke='#8C95A8' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/><rect x='79.0' y='38' width='58' height='22' rx='6' fill='#FAF0FE' stroke='#1B2440' stroke-width='1.5'/><text x='108.0' y='52.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>##aff</text><line x1='120' y1='22' x2='175.0' y2='36' stroke='#8C95A8' stroke-width='1' stroke-linecap='round'/><polyline points='170.2,31.6 175.0,36 168.7,37.6' fill='none' stroke='#8C95A8' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/><rect x='143.0' y='38' width='64' height='22' rx='6' fill='#FAF0FE' stroke='#1B2440' stroke-width='1.5'/><text x='175.0' y='52.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>##able</text><text x='120' y='80' font-size='10.5' fill='#1B2440' text-anchor='middle'>longest match in the vocab, left to right</text><text x='120' y='98' font-size='10.5' fill='#3452C7' text-anchor='middle'>## = continues the same word</text><text x='120' y='120' font-size='10.5' fill='#43506B' text-anchor='middle'>train: score = n(ab) / (n(a) × n(b))</text><text x='120' y='140' font-size='10.5' fill='#1B2440' text-anchor='middle'>BERT-base vocab: 30,522 tokens</text><text x='120' y='160' font-size='10.5' fill='#D1495B' text-anchor='middle'>no match at all → [UNK]</text>"
+   },
+   "4": {
+    "alt": "Unigram picks the most probable split of 'hello': hell + o scores 0.02 × 0.05 = 0.0010, beating he + llo (0.0004) and h + ello (0.0003).",
+    "svg": "<text x='120' y='13' font-size='10.5' fill='#43506B' text-anchor='middle'>split “hello” (example probabilities)</text><rect x='8' y='22' width='74' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.7'/><text x='45.0' y='35.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>hell + o</text><text x='92' y='36' font-size='10.5' fill='#3452C7'>0.02 × 0.05 = 0.0010</text><rect x='8' y='47' width='74' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='45.0' y='60.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>he + llo</text><text x='92' y='61' font-size='10.5' fill='#43506B'>0.04 × 0.01 = 0.0004</text><rect x='8' y='72' width='74' height='20' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='45.0' y='85.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>h + ello</text><text x='92' y='86' font-size='10.5' fill='#43506B'>0.03 × 0.01 = 0.0003</text><text x='120' y='112' font-size='10.5' fill='#3452C7' text-anchor='middle'>highest probability split wins</text><text x='120' y='132' font-size='10.5' fill='#1B2440' text-anchor='middle'>train: start big, prune weak pieces</text><text x='120' y='152' font-size='10.5' fill='#43506B' text-anchor='middle'>spaces kept as ▁: “▁hello▁world”</text>"
+   },
+   "5": {
+    "alt": "Character-level: 'tokenization' is 12 tokens versus 2 subwords (token + ization); attention pairs are 144 versus 4, 36× more work.",
+    "svg": "<rect x='9.0' y='10' width='16' height='20' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.2'/><text x='17.0' y='23.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>t</text><rect x='27.5' y='10' width='16' height='20' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.2'/><text x='35.5' y='23.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>o</text><rect x='46.0' y='10' width='16' height='20' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.2'/><text x='54.0' y='23.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>k</text><rect x='64.5' y='10' width='16' height='20' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.2'/><text x='72.5' y='23.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>e</text><rect x='83.0' y='10' width='16' height='20' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.2'/><text x='91.0' y='23.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>n</text><rect x='101.5' y='10' width='16' height='20' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.2'/><text x='109.5' y='23.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>i</text><rect x='120.0' y='10' width='16' height='20' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.2'/><text x='128.0' y='23.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>z</text><rect x='138.5' y='10' width='16' height='20' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.2'/><text x='146.5' y='23.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>a</text><rect x='157.0' y='10' width='16' height='20' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.2'/><text x='165.0' y='23.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>t</text><rect x='175.5' y='10' width='16' height='20' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.2'/><text x='183.5' y='23.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>i</text><rect x='194.0' y='10' width='16' height='20' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.2'/><text x='202.0' y='23.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>o</text><rect x='212.5' y='10' width='16' height='20' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.2'/><text x='220.5' y='23.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>n</text><text x='120' y='46' font-size='10.5' fill='#D1495B' text-anchor='middle'>characters: 12 tokens</text><rect x='62' y='56' width='52' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.5'/><text x='88.0' y='69.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>token</text><rect x='118' y='56' width='60' height='20' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.5'/><text x='148.0' y='69.78' font-size='10.5' fill='#1B2440' text-anchor='middle'>ization</text><text x='120' y='92' font-size='10.5' fill='#3452C7' text-anchor='middle'>subwords: 2 tokens</text><text x='120' y='116' font-size='10.5' fill='#1B2440' text-anchor='middle'>attention pairs: 12² = 144 vs 2² = 4</text><text x='120' y='136' font-size='11' fill='#D1495B' text-anchor='middle' data-f='sans'>36× more attention work</text><text x='120' y='158' font-size='10.5' fill='#43506B' text-anchor='middle'>tiny vocab, very long sequences</text>"
+   },
+   "6": {
+    "alt": "Byte-level ByT5: 'naïve' is 5 characters but 6 bytes because ï is C3 AF; the vocab is 256 bytes + 3 specials = 259.",
+    "svg": "<text x='29.0' y='16' font-size='12' fill='#1B2440' text-anchor='middle'>n</text><rect x='14' y='24' width='30' height='20' rx='4' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.3'/><text x='29.0' y='37.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>6E</text><text x='65.0' y='16' font-size='12' fill='#1B2440' text-anchor='middle'>a</text><rect x='50' y='24' width='30' height='20' rx='4' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.3'/><text x='65.0' y='37.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>61</text><text x='118.0' y='16' font-size='12' fill='#1B2440' text-anchor='middle'>ï</text><rect x='86' y='24' width='30' height='20' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.3'/><text x='101.0' y='37.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>C3</text><rect x='120' y='24' width='30' height='20' rx='4' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.3'/><text x='135.0' y='37.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>AF</text><text x='171.0' y='16' font-size='12' fill='#1B2440' text-anchor='middle'>v</text><rect x='156' y='24' width='30' height='20' rx='4' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.3'/><text x='171.0' y='37.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>76</text><text x='207.0' y='16' font-size='12' fill='#1B2440' text-anchor='middle'>e</text><rect x='192' y='24' width='30' height='20' rx='4' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.3'/><text x='207.0' y='37.6' font-size='10' fill='#1B2440' text-anchor='middle' data-f='sans'>65</text><text x='120' y='64' font-size='10.5' fill='#D1495B' text-anchor='middle'>“naïve” = 5 characters, 6 bytes</text><text x='120' y='88' font-size='10.5' fill='#1B2440' text-anchor='middle' data-f='sans'>vocab: 256 bytes + 3 specials = 259</text><text x='120' y='110' font-size='10.5' fill='#3452C7' text-anchor='middle'>no tokenizer to train or mismatch</text><text x='120' y='130' font-size='10.5' fill='#3452C7' text-anchor='middle'>robust to typos and rare scripts</text><text x='120' y='152' font-size='10.5' fill='#D1495B' text-anchor='middle'>sequences several times longer</text>"
+   }
+  }
+ }
+}
