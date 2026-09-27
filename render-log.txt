@@ -5,7 +5,7 @@
 05-quantization {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2444}
 06-prompting {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2485}
 07-caching {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2450}
-08-post-training {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2374}
-09-tokenization {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2307}
+08-post-training {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2463}
+09-tokenization {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2412}
 10-prompt-injection {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2349}
 11-response-caching {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2439}
