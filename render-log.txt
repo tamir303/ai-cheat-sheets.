@@ -3,8 +3,8 @@
 03-vector-indexes {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2508}
 04-llm-evaluation {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2470}
 05-quantization {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2444}
-06-prompting {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2382}
-07-caching {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2324}
+06-prompting {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2485}
+07-caching {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2450}
 08-post-training {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2374}
 09-tokenization {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2307}
 10-prompt-injection {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2349}
