@@ -33,19 +33,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "A small model scores text for injection attempts"
+      "text": "A small model (e.g. Llama Prompt Guard) scores each text for injection attempts"
      },
      {
       "sign": "+",
-      "text": "Runs on user input and retrieved content"
+      "text": "Runs on user input and on retrieved pages, emails and tool results"
      },
      {
       "sign": "+",
-      "text": "Cheap, fast first line of defense"
+      "text": "Cheap and fast; blocks blunt attacks like “Ignore previous instructions”"
      },
      {
       "sign": "-",
-      "text": "Paraphrased or encoded attacks slip through"
+      "text": "Paraphrased, translated or encoded attacks can slip under the threshold"
      }
     ],
     "latency": 2,
@@ -64,19 +64,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Wraps outside content in clear delimiters"
+      "text": "Marks untrusted text with delimiters, datamarks (^ between words) or encoding"
      },
      {
       "sign": "+",
-      "text": "Datamarking or encoding flags every word"
+      "text": "The system prompt says marked text is data, never instructions"
      },
      {
       "sign": "+",
-      "text": "Nearly free: just prompt changes"
+      "text": "Nearly free: prompt changes only, with no extra model calls"
      },
      {
       "sign": "-",
-      "text": "Lowers risk, but a strong attack can still win"
+      "text": "Cuts attack success a lot but not to zero; a strong attack can still win"
      }
     ],
     "latency": 1,
@@ -95,19 +95,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Validates schema, links and secrets in output"
+      "text": "Checks output before it’s shown or run: schema, links and secrets"
      },
      {
       "sign": "+",
-      "text": "Stops data leaks through URLs and images"
+      "text": "Blocks exfiltration through markdown images or links to unknown domains"
      },
      {
       "sign": "+",
-      "text": "Catches damage even when input checks miss"
+      "text": "Catches damage even when an injection got past the input checks"
      },
      {
       "sign": "-",
-      "text": "Can't judge every harmful action"
+      "text": "Only catches patterns it knows; it can’t judge every harmful action"
      }
     ],
     "latency": 1,
@@ -127,19 +127,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Allow-lists tools and scopes per task"
+      "text": "Each task gets only the tools and OAuth scopes it needs, read-only by default"
      },
      {
       "sign": "+",
-      "text": "Read-only by default, no broad tokens"
+      "text": "An injected “forward all mail” fails if send_email was never granted"
      },
      {
       "sign": "+",
-      "text": "Limits what a hijacked agent can do"
+      "text": "Limits the blast radius of any hijack that does succeed"
      },
      {
       "sign": "-",
-      "text": "Needs careful design for every workflow"
+      "text": "Needs design per workflow; scopes that are too tight break real tasks"
      }
     ],
     "latency": 1,
@@ -158,19 +158,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "A privileged LLM plans and calls tools"
+      "text": "A privileged LLM plans and calls tools but never reads untrusted text"
      },
      {
       "sign": "+",
-      "text": "A quarantined LLM reads untrusted content"
+      "text": "A quarantined LLM with no tools reads the email or web page"
      },
      {
       "sign": "+",
-      "text": "Passes results as variables, not instructions"
+      "text": "Results come back as variables ($VAR1), never as instructions to follow"
      },
      {
       "sign": "-",
-      "text": "More calls and harder to build"
+      "text": "More calls and engineering; some tasks need data the planner can’t see"
      }
     ],
     "latency": 3,
@@ -189,19 +189,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Pauses before sending, paying or deleting"
+      "text": "Pauses before sending, paying, deleting or anything irreversible"
      },
      {
       "sign": "+",
-      "text": "Shows the exact action and data to approve"
+      "text": "Shows the exact action and data, e.g. “Send email to X with file Y”"
      },
      {
       "sign": "+",
-      "text": "Strong last line for irreversible steps"
+      "text": "A strong last line of defense when every automated check misses"
      },
      {
       "sign": "-",
-      "text": "Too many prompts lead to rubber-stamping"
+      "text": "Too many prompts cause approval fatigue; gate only the risky actions"
      }
     ],
     "latency": 3,

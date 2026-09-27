@@ -22,8 +22,8 @@
     "alt": "Diagram showing token 0-1 K,V stored in a KV cache, then when decoding token 2 the cached K,V for t0,t1 are reused and only t2's K,V is newly computed."
    },
    "5": {
-    "svg": "<rect x='6' y='16' width='48' height='60' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'></rect><text x='30' y='10' font-size='9.5' fill='#1B2440' text-anchor='middle' data-f='sans'>50-page PDF</text><rect x='12' y='26' width='36' height='4' rx='2' fill='#C8CFDC'></rect><rect x='12' y='36' width='36' height='4' rx='2' fill='#C8CFDC'></rect><rect x='12' y='46' width='36' height='4' rx='2' fill='#C8CFDC'></rect><rect x='12' y='56' width='36' height='4' rx='2' fill='#C8CFDC'></rect><text x='30' y='84' font-size='8.5' fill='#8C95A8' text-anchor='middle'>~20k tok</text><line x1='54' y1='46' x2='76' y2='46' stroke='#D1495B' stroke-width='2'></line><polyline points='69,41 76,46 69,51' fill='none' stroke='#D1495B' stroke-width='2'></polyline><text x='65' y='38' font-size='7.5' fill='#43506B' text-anchor='middle'>upload (cache=true)</text><rect x='78' y='30' width='64' height='34' rx='6' fill='#FFD27A' stroke='#D1495B' stroke-width='2'></rect><text x='110' y='44' font-size='9' fill='#1B2440' text-anchor='middle' data-f='sans'>Context Cache</text><text x='110' y='58' font-size='8' fill='#43506B' text-anchor='middle'>id: ctx_abc123</text><line x1='142' y1='46' x2='162' y2='46' stroke='#D1495B' stroke-width='2'></line><polyline points='155,41 162,46 155,51' fill='none' stroke='#D1495B' stroke-width='2'></polyline><text x='194' y='12' font-size='8' fill='#43506B' text-anchor='middle'>x10 calls</text><rect x='170' y='14' width='60' height='26' rx='6' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.5' stroke-dasharray='4 3'></rect><rect x='167' y='17' width='60' height='26' rx='6' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.5' stroke-dasharray='4 3'></rect><rect x='164' y='20' width='60' height='26' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'></rect><text x='194' y='31' font-size='8' fill='#1B2440' text-anchor='middle'>Call: ref id +</text><text x='194' y='41' font-size='7.5' fill='#1B2440' text-anchor='middle'>question (~20 tok)</text><line x1='194' y1='46' x2='194' y2='64' stroke='#3452C7' stroke-width='2'></line><polyline points='188,58 194,65 200,58' fill='none' stroke='#3452C7' stroke-width='2'></polyline><rect x='160' y='68' width='68' height='26' rx='6' fill='#EFF2FF' stroke='#3452C7' stroke-width='2'></rect><text x='194' y='80' font-size='9' fill='#3452C7' text-anchor='middle' data-f='sans'>Answer</text><text x='194' y='91' font-size='7.5' fill='#43506B' text-anchor='middle'>(no PDF re-read)</text><text x='120' y='112' font-size='10' fill='#1B2440' text-anchor='middle'>PDF tokens billed once, not x10</text><text x='120' y='126' font-size='9' fill='#8C95A8' text-anchor='middle'>Vendor manages cache TTL &amp; pricing</text>",
-    "alt": "Diagram showing a 50-page PDF uploaded once and stored under a provider context-cache id, then reused by ten subsequent calls that skip re-reading the PDF."
+    "svg": "<rect x='6' y='16' width='48' height='60' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'></rect><text x='30' y='10' font-size='9.5' fill='#1B2440' text-anchor='middle' data-f='sans'>50-page PDF</text><rect x='12' y='26' width='36' height='4' rx='2' fill='#C8CFDC'></rect><rect x='12' y='36' width='36' height='4' rx='2' fill='#C8CFDC'></rect><rect x='12' y='46' width='36' height='4' rx='2' fill='#C8CFDC'></rect><rect x='12' y='56' width='36' height='4' rx='2' fill='#C8CFDC'></rect><text x='30' y='84' font-size='8.5' fill='#8C95A8' text-anchor='middle'>~20k tok</text><line x1='54' y1='46' x2='76' y2='46' stroke='#D1495B' stroke-width='2'></line><polyline points='69,41 76,46 69,51' fill='none' stroke='#D1495B' stroke-width='2'></polyline><text x='65' y='38' font-size='7.5' fill='#43506B' text-anchor='middle'>upload (cache=true)</text><rect x='78' y='30' width='64' height='34' rx='6' fill='#FFD27A' stroke='#D1495B' stroke-width='2'></rect><text x='110' y='44' font-size='9' fill='#1B2440' text-anchor='middle' data-f='sans'>Context Cache</text><text x='110' y='58' font-size='8' fill='#43506B' text-anchor='middle'>id: ctx_abc123</text><line x1='142' y1='46' x2='162' y2='46' stroke='#D1495B' stroke-width='2'></line><polyline points='155,41 162,46 155,51' fill='none' stroke='#D1495B' stroke-width='2'></polyline><text x='194' y='12' font-size='8' fill='#43506B' text-anchor='middle'>x10 calls</text><rect x='170' y='14' width='60' height='26' rx='6' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.5' stroke-dasharray='4 3'></rect><rect x='167' y='17' width='60' height='26' rx='6' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.5' stroke-dasharray='4 3'></rect><rect x='164' y='20' width='60' height='26' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'></rect><text x='194' y='31' font-size='8' fill='#1B2440' text-anchor='middle'>Call: ref id +</text><text x='194' y='41' font-size='7.5' fill='#1B2440' text-anchor='middle'>question (~20 tok)</text><line x1='194' y1='46' x2='194' y2='64' stroke='#3452C7' stroke-width='2'></line><polyline points='188,58 194,65 200,58' fill='none' stroke='#3452C7' stroke-width='2'></polyline><rect x='160' y='68' width='68' height='26' rx='6' fill='#EFF2FF' stroke='#3452C7' stroke-width='2'></rect><text x='194' y='80' font-size='9' fill='#3452C7' text-anchor='middle' data-f='sans'>Answer</text><text x='194' y='91' font-size='7.5' fill='#43506B' text-anchor='middle'>(no PDF re-read)</text><text x='120' y='112' font-size='10' fill='#1B2440' text-anchor='middle'>Cached tokens billed at a discount</text><text x='120' y='126' font-size='9' fill='#8C95A8' text-anchor='middle'>Vendor manages cache TTL &amp; pricing</text>",
+    "alt": "Diagram showing a 50-page PDF uploaded once and stored under a provider context-cache id, then reused by ten subsequent calls that skip re-reading the PDF; cached tokens are billed at a discount."
    },
    "6": {
     "svg": "<rect x='6' y='14' width='64' height='50' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'></rect><text x='38' y='10' font-size='9.5' fill='#1B2440' text-anchor='middle' data-f='sans'>10,000 tickets</text><rect x='14' y='24' width='48' height='4' rx='2' fill='#FFD27A'></rect><rect x='14' y='32' width='48' height='4' rx='2' fill='#FFD27A'></rect><rect x='14' y='40' width='48' height='4' rx='2' fill='#E9F8F4'></rect><rect x='14' y='48' width='48' height='4' rx='2' fill='#FFD27A'></rect><line x1='70' y1='39' x2='90' y2='39' stroke='#D1495B' stroke-width='2'></line><polyline points='83,34 90,39 83,44' fill='none' stroke='#D1495B' stroke-width='2'></polyline><rect x='92' y='26' width='46' height='26' rx='6' fill='#FFD27A' stroke='#D1495B' stroke-width='2'></rect><text x='115' y='42' font-size='9' fill='#1B2440' text-anchor='middle' data-f='sans'>Dedupe</text><line x1='138' y1='39' x2='158' y2='39' stroke='#D1495B' stroke-width='2'></line><polyline points='151,34 158,39 151,44' fill='none' stroke='#D1495B' stroke-width='2'></polyline><rect x='160' y='14' width='70' height='50' rx='6' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.5'></rect><text x='195' y='10' font-size='9' fill='#1B2440' text-anchor='middle' data-f='sans'>3,000 unique</text><text x='195' y='24' font-size='8' fill='#43506B' text-anchor='middle'>texts</text><rect x='170' y='32' width='50' height='4' rx='2' fill='#FFD27A'></rect><rect x='170' y='42' width='50' height='4' rx='2' fill='#E9F8F4'></rect><line x1='195' y1='64' x2='195' y2='82' stroke='#1B2440' stroke-width='2'></line><polyline points='189,76 195,82 201,76' fill='none' stroke='#1B2440' stroke-width='2'></polyline><rect x='160' y='86' width='70' height='24' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.5'></rect><text x='195' y='101' font-size='8.5' fill='#1B2440' text-anchor='middle'>LLM x 3,000 calls</text><line x1='195' y1='110' x2='195' y2='124' stroke='#3452C7' stroke-width='2'></line><polyline points='189,118 195,124 201,118' fill='none' stroke='#3452C7' stroke-width='2'></polyline><rect x='90' y='128' width='150' height='26' rx='6' fill='#EFF2FF' stroke='#3452C7' stroke-width='2'></rect><text x='165' y='144' font-size='9' fill='#3452C7' text-anchor='middle' data-f='sans'>Map results -&gt; all 10,000 rows</text><text x='165' y='160' font-size='9' fill='#8C95A8' text-anchor='middle'>Same result reused for duplicate rows</text>",
@@ -40,19 +40,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Dead simple hash lookup (Redis, dict)"
+      "text": "Hashes prompt + model + settings into a key and looks it up in Redis"
      },
      {
       "sign": "+",
-      "text": "Zero risk of wrong answers"
+      "text": "A hit returns in about a millisecond and spends zero tokens"
      },
      {
       "sign": "+",
-      "text": "Near-zero added latency on hit"
+      "text": "Only replays what the model already said for that exact input"
      },
      {
       "sign": "-",
-      "text": "Misses paraphrases or reordered text"
+      "text": "One changed character is a miss, so hit rates are low for free-form chat"
      }
     ],
     "cost": 1,
@@ -72,19 +72,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Catches paraphrased/reworded prompts"
+      "text": "Reuses the nearest cached answer if similarity clears a threshold (0.85)"
      },
      {
       "sign": "+",
-      "text": "Reduces LLM calls beyond exact strings"
+      "text": "Catches rewordings like “Capital of France?” vs “What’s France’s capital?”"
      },
      {
       "sign": "+",
-      "text": "Tunable similarity threshold"
+      "text": "A higher threshold means fewer hits but fewer mistakes; tune it on real logs"
      },
      {
       "sign": "-",
-      "text": "Risk of returning subtly wrong answer"
+      "text": "False hits: “refund order 123” and “refund order 456” look alike but differ"
      }
     ],
     "cost": 2,
@@ -104,19 +104,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Speeds up long shared system prompts"
+      "text": "Keeps the attention state of a shared prompt start and skips recomputing it"
      },
      {
       "sign": "+",
-      "text": "Works across many different user turns"
+      "text": "Here 1,022 prompt tokens drop to 522 computed: a faster first token"
      },
      {
       "sign": "+",
-      "text": "Common in chat/agent frameworks"
+      "text": "vLLM (automatic prefix caching) and SGLang (RadixAttention) do it for you"
      },
      {
       "sign": "-",
-      "text": "Only helps prompts sharing exact prefix"
+      "text": "An early change (a timestamp, a user name) breaks the cache after it"
      }
     ],
     "cost": 2,
@@ -136,19 +136,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Avoids recomputing attention per token"
+      "text": "Stores each token’s key and value vectors, so each step computes only the new token"
      },
      {
       "sign": "+",
-      "text": "Core to fast autoregressive decoding"
+      "text": "Without it, every step recomputes K and V for all earlier tokens (quadratic work)"
      },
      {
       "sign": "+",
-      "text": "Enables prefix & multi-turn speedups"
+      "text": "vLLM’s PagedAttention stores it in blocks, cutting wasted memory to under 4%"
      },
      {
       "sign": "-",
-      "text": "Memory-hungry, grows with context length"
+      "text": "Grows with length: Llama-2-7B needs ~0.5 MB per token, ~2 GB for a 4K context"
      }
     ],
     "cost": 2,
@@ -168,19 +168,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "No infra to build, managed by provider"
+      "text": "Marks a big block (docs, tools, system prompt) as cacheable across calls"
      },
      {
       "sign": "+",
-      "text": "Cuts cost/latency on repeated large context"
+      "text": "Cache reads are billed at a discount (10% of input price on most Claude models)"
      },
      {
       "sign": "+",
-      "text": "Works with prefix + KV-cache under hood"
+      "text": "OpenAI does it automatically for prompts of 1,024+ tokens"
      },
      {
       "sign": "-",
-      "text": "Vendor lock-in, pricing/TTL varies by API"
+      "text": "Rules vary by vendor: minimum size, TTL (5 min on Claude), write fees"
      }
     ],
     "cost": 1,
@@ -200,19 +200,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Great for offline/bulk jobs (millions of rows)"
+      "text": "Dedupes identical rows first: 10,000 tickets become 3,000 calls (70% fewer)"
      },
      {
       "sign": "+",
-      "text": "Dedupes identical rows before calling API"
+      "text": "Batch APIs add a 50% discount on top, with results within 24 hours"
      },
      {
       "sign": "+",
-      "text": "Combines with exact/semantic cache layers"
+      "text": "Stores results by input hash, so the next run only pays for new or changed rows"
      },
      {
       "sign": "-",
-      "text": "Not useful for single live user request"
+      "text": "Offline only: batches can take hours, so they can’t serve a live user"
      }
     ],
     "cost": 1,
