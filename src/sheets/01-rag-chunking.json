@@ -33,19 +33,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Splits every N tokens, overlapping the edges"
+      "text": "Cuts every N tokens (e.g. 512), repeating the last 50–100 tokens in the next chunk"
      },
      {
       "sign": "+",
-      "text": "Simple, fast and predictable chunk sizes"
+      "text": "Predictable sizes make embedding cost and the context budget easy to plan"
      },
      {
       "sign": "+",
-      "text": "Overlap keeps facts that sit on a boundary"
+      "text": "Overlap keeps a fact that straddles a boundary whole in at least one chunk"
      },
      {
       "sign": "-",
-      "text": "Cuts through sentences, tables and code"
+      "text": "Blind to structure: can split a sentence, a table row or a code block in half"
      }
     ],
     "latency": 1,
@@ -64,19 +64,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Tries paragraphs, then lines, then words"
+      "text": "Splits on paragraphs, then lines, then spaces until each chunk fits"
      },
      {
       "sign": "+",
-      "text": "Keeps paragraphs whole when they fit"
+      "text": "Paragraphs and sentences stay whole whenever they fit the size limit"
      },
      {
       "sign": "+",
-      "text": "A solid default for mixed prose"
+      "text": "The go-to default for mixed prose; LangChain recommends it for generic text"
      },
      {
       "sign": "-",
-      "text": "Still size-driven, not meaning-driven"
+      "text": "Still size-driven: one topic can be split, and two topics can share a chunk"
      }
     ],
     "latency": 1,
@@ -95,19 +95,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Splits on Markdown or HTML headings"
+      "text": "Splits on Markdown or HTML headings: one chunk per document section"
      },
      {
       "sign": "+",
-      "text": "Keeps tables and code blocks intact"
+      "text": "Keeps tables, lists and code blocks intact instead of cutting them mid-way"
      },
      {
       "sign": "+",
-      "text": "Adds the heading path as chunk metadata"
+      "text": "Stores the heading path (e.g. Setup > Auth > SSO) as metadata for filtering"
      },
      {
       "sign": "-",
-      "text": "Needs clean, well-structured source docs"
+      "text": "Depends on clean markup; flat PDFs or scans need parsing into structure first"
      }
     ],
     "latency": 1,
@@ -126,19 +126,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Embeds sentences, splits where meaning jumps"
+      "text": "Embeds each sentence and cuts where similarity to the next one drops"
      },
      {
       "sign": "+",
-      "text": "Chunks follow topics, not character counts"
+      "text": "Boundaries follow topic shifts, so each chunk tends to cover one idea"
      },
      {
       "sign": "+",
-      "text": "Fewer mixed-topic chunks in the index"
+      "text": "Fewer mixed-topic chunks give cleaner embeddings and more precise matches"
      },
      {
       "sign": "-",
-      "text": "An embedding call per sentence to index"
+      "text": "One embedding per sentence at index time, and chunk sizes vary widely"
      }
     ],
     "latency": 2,
@@ -157,19 +157,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Encodes the whole document in one pass"
+      "text": "Embeds the whole document at once (up to the model’s window, e.g. 8K tokens)"
      },
      {
       "sign": "+",
-      "text": "Pools token vectors per chunk afterwards"
+      "text": "Then averages the token vectors in each chunk’s span into its embedding"
      },
      {
       "sign": "+",
-      "text": "Chunk vectors keep document-wide context"
+      "text": "References like “it” or “the company” keep their meaning from earlier text"
      },
      {
       "sign": "-",
-      "text": "Needs a long-context embedding model"
+      "text": "Needs a long-context embedding model; longer documents must still be split first"
      }
     ],
     "latency": 2,
@@ -188,19 +188,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "LLM rewrites text into standalone facts"
+      "text": "An LLM rewrites each passage into short, self-contained facts (propositions)"
      },
      {
       "sign": "+",
-      "text": "Resolves pronouns so each fact stands alone"
+      "text": "Pronouns are replaced by names, so “it” becomes “the Eiffel Tower”"
      },
      {
       "sign": "+",
-      "text": "Precise matches for fact-lookup questions"
+      "text": "Very precise matches for fact lookups and FAQ-style questions"
      },
      {
       "sign": "-",
-      "text": "An LLM call per passage; slow to index"
+      "text": "One LLM call per passage: slow and costly to index, and facts lose their context"
      }
     ],
     "latency": 3,

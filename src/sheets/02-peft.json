@@ -33,19 +33,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Trains all weights: maximum flexibility"
+      "text": "Updates every weight, so it can learn big shifts in domain, style or language"
      },
      {
       "sign": "+",
-      "text": "Best fit for large domain shifts"
+      "text": "Nothing extra at inference: same architecture and speed as the base model"
      },
      {
       "sign": "+",
-      "text": "No extra modules at inference time"
+      "text": "Highest quality ceiling when you have lots of data and compute"
      },
      {
       "sign": "-",
-      "text": "Needs memory for grads and optimizer state"
+      "text": "Adam in mixed precision needs ~16 bytes per parameter: ~112 GB for a 7B model"
      }
     ],
     "latency": 1,
@@ -64,19 +64,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Freezes W, trains small matrices A and B"
+      "text": "Freezes W and learns the update ΔW = B·A with a small rank r (often 8–64)"
      },
      {
       "sign": "+",
-      "text": "Trains a tiny fraction of the weights"
+      "text": "Rank 8 on a 4096×4096 layer trains 65,536 values instead of 16.8M (0.39%)"
      },
      {
       "sign": "+",
-      "text": "Merge BA into W: no added latency"
+      "text": "After training, B·A is merged into W, so inference has no extra latency"
      },
      {
       "sign": "-",
-      "text": "Low rank can limit big behaviour changes"
+      "text": "Low rank can underfit big behaviour shifts; rank and layers need tuning"
      }
     ],
     "latency": 1,
@@ -95,19 +95,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Base frozen in 4-bit NF4, adapters in 16-bit"
+      "text": "Freezes the base model in 4-bit NF4 and trains 16-bit LoRA adapters on top"
      },
      {
       "sign": "+",
-      "text": "Fits larger models on a single GPU"
+      "text": "A 7B model’s weights drop from ~14 GB (16-bit) to ~3.5 GB, so it fits one GPU"
      },
      {
       "sign": "+",
-      "text": "Paged optimizers absorb memory spikes"
+      "text": "Paged optimizers move optimizer state to CPU RAM during memory spikes"
      },
      {
       "sign": "-",
-      "text": "Slower steps: weights dequantize on the fly"
+      "text": "Slower steps than LoRA: weights are dequantized on every forward pass"
      }
     ],
     "latency": 1,
@@ -126,19 +126,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Adds bottleneck layers, base stays frozen"
+      "text": "Inserts small bottleneck layers (down-project, nonlinearity, up-project) per block"
      },
      {
       "sign": "+",
-      "text": "Swap one adapter per task on a shared base"
+      "text": "The base stays frozen; each task gets its own small adapter on a shared model"
      },
      {
       "sign": "+",
-      "text": "Well studied, many variants"
+      "text": "Well studied since 2019 (Houlsby et al.), with many variants and tools"
      },
      {
       "sign": "-",
-      "text": "Extra layers add some inference latency"
+      "text": "The extra layers still run at inference, unlike merged LoRA, adding latency"
      }
     ],
     "latency": 2,
@@ -157,19 +157,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Learns prefix vectors for every layer"
+      "text": "Learns key and value vectors prepended to attention at every layer"
      },
      {
       "sign": "+",
-      "text": "Tiny share of params; weights unchanged"
+      "text": "Base weights never change; each task is a small file of prefix vectors"
      },
      {
       "sign": "+",
-      "text": "One small prefix file per task"
+      "text": "Around 0.1% of the parameters was enough for generation tasks in the paper"
      },
      {
       "sign": "-",
-      "text": "Uses context length; can be unstable to train"
+      "text": "Prefixes use up context length, and training can be unstable"
      }
     ],
     "latency": 2,
@@ -188,19 +188,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Learns a few soft-prompt vectors at the input"
+      "text": "Learns 20–100 soft-prompt vectors (virtual tokens) added at the input"
      },
      {
       "sign": "+",
-      "text": "Smallest footprint: kilobytes per task"
+      "text": "Tiny footprint: 20 tokens × 4096 dims is about 82K numbers per task"
      },
      {
       "sign": "+",
-      "text": "Closes the gap on very large models"
+      "text": "Catches up with full fine-tuning on very large models (around 10B+ parameters)"
      },
      {
       "sign": "-",
-      "text": "Weaker than LoRA on smaller models"
+      "text": "On smaller models it clearly trails LoRA and full fine-tuning"
      }
     ],
     "latency": 1,
