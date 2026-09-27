@@ -33,19 +33,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Stores weights in 8 bits: half of fp16"
+      "text": "Stores weights in 8 bits: a 7B model goes from ~14 GB (fp16) to ~7 GB"
      },
      {
       "sign": "+",
-      "text": "Keeps outlier features in fp16 for quality"
+      "text": "Keeps rare outlier feature dimensions in fp16, so quality stays close to fp16"
      },
      {
       "sign": "+",
-      "text": "Drop-in: load_in_8bit, no calibration"
+      "text": "Drop-in via bitsandbytes (load_in_8bit); no calibration data needed"
      },
      {
       "sign": "-",
-      "text": "Often slower than fp16 at inference"
+      "text": "The mixed int8/fp16 matmul is often slower than plain fp16 inference"
      }
     ],
     "latency": 2,
@@ -64,19 +64,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Post-training 4-bit with calibration data"
+      "text": "Quantizes weights to 4 bits layer by layer using a small calibration set"
      },
      {
       "sign": "+",
-      "text": "Pushes rounding error onto later weights"
+      "text": "Uses second-order (Hessian) information to push rounding error onto later weights"
      },
      {
       "sign": "+",
-      "text": "Widely supported fast GPU kernels"
+      "text": "Fast GPU kernels (ExLlama, Marlin) and wide support in vLLM and TGI"
      },
      {
       "sign": "-",
-      "text": "Needs a calibration set and quantize time"
+      "text": "Calibration takes time, and quality can depend on the calibration data"
      }
     ],
     "latency": 1,
@@ -96,19 +96,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Finds salient weights from activation size"
+      "text": "Finds the ~1% of weight channels that matter most, judged by activation size"
      },
      {
       "sign": "+",
-      "text": "Scales them up before 4-bit rounding"
+      "text": "Scales those channels up before 4-bit rounding, so their error shrinks"
      },
      {
       "sign": "+",
-      "text": "No backprop; small calibration set"
+      "text": "No backprop or reconstruction; needs only a small calibration set"
      },
      {
       "sign": "-",
-      "text": "Mostly 4-bit, GPU-focused kernels"
+      "text": "Mostly a 4-bit, weight-only method with GPU-focused kernels"
      }
     ],
     "latency": 1,
@@ -127,19 +127,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Single-file format for llama.cpp and Ollama"
+      "text": "Single file (weights + tokenizer) for llama.cpp, Ollama and LM Studio"
      },
      {
       "sign": "+",
-      "text": "Runs on CPU, Apple silicon, GPU offload"
+      "text": "Runs on CPUs and Apple silicon, with optional offload of layers to a GPU"
      },
      {
       "sign": "+",
-      "text": "Many levels, from Q8_0 down to Q2_K"
+      "text": "Many levels (Q8_0, Q5_K_M, Q4_K_M, Q2_K) trade file size for quality"
      },
      {
       "sign": "-",
-      "text": "Slower than GPU-native kernels at scale"
+      "text": "On GPU servers it’s usually slower than GPU-native formats like AWQ or FP8"
      }
     ],
     "latency": 2,
@@ -159,19 +159,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "16 levels spaced for normally shaped weights"
+      "text": "16 levels placed at quantiles of a normal curve, matching how weights spread"
      },
      {
       "sign": "+",
-      "text": "Double quantization shrinks the scales too"
+      "text": "Double quantization also compresses the scales: ~0.37 bits/param saved"
      },
      {
       "sign": "+",
-      "text": "The base format for QLoRA fine-tuning"
+      "text": "The storage format for the frozen base model in QLoRA fine-tuning"
      },
      {
       "sign": "-",
-      "text": "Not the fastest format for serving"
+      "text": "Built to save memory in training; dequantizing makes it slow for serving"
      }
     ],
     "latency": 2,
@@ -190,19 +190,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Floating point keeps dynamic range in 8 bits"
+      "text": "4 exponent + 3 mantissa bits keep a wide dynamic range in only 8 bits"
      },
      {
       "sign": "+",
-      "text": "Quantizes weights and activations"
+      "text": "Quantizes weights and activations, so matmuls run in FP8 on tensor cores"
      },
      {
       "sign": "+",
-      "text": "Native on NVIDIA Hopper and Ada GPUs"
+      "text": "Native on H100 and Ada GPUs; supported in vLLM and TensorRT-LLM"
      },
      {
       "sign": "-",
-      "text": "Needs recent hardware for the speed-up"
+      "text": "Needs recent hardware for the speed-up; older GPUs can’t run it natively"
      }
     ],
     "latency": 1,
