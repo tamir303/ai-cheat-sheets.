@@ -33,19 +33,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Instruction only; no examples needed"
+      "text": "Just a clear instruction and the input, with no examples in the prompt"
      },
      {
       "sign": "+",
-      "text": "Cheapest and fastest thing to try"
+      "text": "Cheapest and fastest to try; the baseline for every other technique"
      },
      {
       "sign": "+",
-      "text": "Works well with instruction-tuned models"
+      "text": "Works well on instruction-tuned models for common, well-defined tasks"
      },
      {
       "sign": "-",
-      "text": "Format and style can drift without examples"
+      "text": "Format and labels can drift; add a schema or examples to pin them down"
      }
     ],
     "latency": 1,
@@ -64,19 +64,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "A few input → output examples set the pattern"
+      "text": "2–5 input → output examples show the exact pattern you want"
      },
      {
       "sign": "+",
-      "text": "Locks in format, labels and tone"
+      "text": "Locks in labels, format and tone faster than longer instructions"
      },
      {
       "sign": "+",
-      "text": "No training; swap examples instantly"
+      "text": "No training: swap or add examples at any time"
      },
      {
       "sign": "-",
-      "text": "Longer prompts; examples can bias outputs"
+      "text": "Longer prompts, and the order or balance of examples can bias answers"
      }
     ],
     "latency": 1,
@@ -95,19 +95,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Model writes out intermediate steps"
+      "text": "The model writes intermediate steps before the final answer"
      },
      {
       "sign": "+",
-      "text": "Big gains on math and multi-step logic"
+      "text": "Big gains on math, logic and multi-step questions"
      },
      {
       "sign": "+",
-      "text": "Reasoning is visible and debuggable"
+      "text": "Visible steps make wrong answers easier to debug"
      },
      {
       "sign": "-",
-      "text": "More tokens; steps can still be wrong"
+      "text": "More tokens and latency, and a fluent chain can still be wrong"
      }
     ],
     "latency": 2,
@@ -126,19 +126,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Samples several reasoning paths"
+      "text": "Samples several chain-of-thought answers at a temperature above 0"
      },
      {
       "sign": "+",
-      "text": "Majority vote on the final answer"
+      "text": "Takes the majority final answer: 3 of 5 votes for 53 wins"
      },
      {
       "sign": "+",
-      "text": "More robust than a single chain"
+      "text": "More reliable than any single chain on reasoning tasks"
      },
      {
       "sign": "-",
-      "text": "N samples means N times the cost"
+      "text": "N samples cost N times as much; needs answers that can be compared"
      }
     ],
     "latency": 3,
@@ -157,19 +157,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "First asks the model to split the problem"
+      "text": "First prompt: break the problem into simpler subproblems"
      },
      {
       "sign": "+",
-      "text": "Solves subproblems in order, reusing answers"
+      "text": "Then solve them in order, feeding each answer into the next"
      },
      {
       "sign": "+",
-      "text": "Generalises to harder problems than examples"
+      "text": "Generalizes to problems harder than the examples shown"
      },
      {
       "sign": "-",
-      "text": "Several calls; needs a good decomposition"
+      "text": "Several calls, and a bad decomposition sinks the whole answer"
      }
     ],
     "latency": 2,
@@ -188,19 +188,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Explores several partial solutions as a tree"
+      "text": "Explores several partial solutions as branches of a tree"
      },
      {
       "sign": "+",
-      "text": "Model scores branches, prunes weak ones"
+      "text": "The model rates branches (sure, maybe, impossible) and prunes weak ones"
      },
      {
       "sign": "+",
-      "text": "Backtracks when a path dead-ends"
+      "text": "Backtracks from dead ends, like search in puzzles and planning"
      },
      {
       "sign": "-",
-      "text": "Many calls: slow and expensive"
+      "text": "Dozens of calls per problem: slow and costly, so keep it for hard tasks"
      }
     ],
     "latency": 3,

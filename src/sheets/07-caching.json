@@ -33,19 +33,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Hashes the full prompt; repeats return instantly"
+      "text": "Hashes the full prompt, plus model and settings, as the cache key"
      },
      {
       "sign": "+",
-      "text": "Zero model cost on a hit"
+      "text": "A hit returns the stored answer in milliseconds at zero model cost"
      },
      {
       "sign": "+",
-      "text": "Deterministic and easy to invalidate"
+      "text": "Deterministic and easy to invalidate by key or TTL"
      },
      {
       "sign": "-",
-      "text": "Misses any rewording, even one character"
+      "text": "Any change, even one character or a timestamp in the prompt, is a miss"
      }
     ],
     "latency": 1,
@@ -64,19 +64,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Reuses answers above a similarity threshold"
+      "text": "Reuses a stored answer when a new question is ≥0.90 similar (cosine)"
      },
      {
       "sign": "+",
-      "text": "Catches paraphrased repeat questions"
+      "text": "Catches rewordings: “reset my password” vs “how do I change my password”"
      },
      {
       "sign": "+",
-      "text": "Big savings on FAQ-style traffic"
+      "text": "Big savings on FAQ-style traffic where the same intent repeats"
      },
      {
       "sign": "-",
-      "text": "A loose threshold serves wrong answers"
+      "text": "Too loose a threshold returns wrong answers (“reset my router”)"
      }
     ],
     "latency": 2,
@@ -95,19 +95,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Provider stores the processed prompt prefix"
+      "text": "The provider keeps the processed prefix (system prompt, tools, docs) for reuse"
      },
      {
       "sign": "+",
-      "text": "Cached input tokens billed at a discount"
+      "text": "Cached input tokens are billed at a discount, up to 90% off by provider"
      },
      {
       "sign": "+",
-      "text": "Faster first token on long prompts"
+      "text": "Faster time to first token, since the long prefix isn’t reprocessed"
      },
      {
       "sign": "-",
-      "text": "Exact prefixes only; entries expire"
+      "text": "Only exact prefix matches count, and entries expire after minutes idle"
      }
     ],
     "latency": 1,
@@ -127,19 +127,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Stores attention keys and values per token"
+      "text": "Stores each past token’s attention keys and values during generation"
      },
      {
       "sign": "+",
-      "text": "New tokens attend to the cache only"
+      "text": "Each new token attends to the cache instead of re-running the whole prefix"
      },
      {
       "sign": "+",
-      "text": "Avoids recomputing the prefix each step"
+      "text": "Built into every serving stack; vLLM pages it in blocks to avoid waste"
      },
      {
       "sign": "-",
-      "text": "Memory grows with context length and batch"
+      "text": "Grows with length: 2×32×4096×2 bytes ≈ 0.5 MB per token (7B, fp16)"
      }
     ],
     "latency": 1,
@@ -158,19 +158,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Stores vectors keyed by a hash of the text"
+      "text": "Stores each vector keyed by a hash of the text and the model name"
      },
      {
       "sign": "+",
-      "text": "Re-indexing skips unchanged documents"
+      "text": "Re-indexing skips unchanged documents; only edited ones are embedded"
      },
      {
       "sign": "+",
-      "text": "Cuts embedding spend and indexing time"
+      "text": "Cuts embedding cost and indexing time for large, mostly stable corpora"
      },
      {
       "sign": "-",
-      "text": "A new embedding model means re-embed all"
+      "text": "Switching embedding model invalidates it: everything must be re-embedded"
      }
     ],
     "latency": 1,
@@ -189,19 +189,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Caches tool or API results by arguments"
+      "text": "Caches tool or API results keyed by the tool name and its arguments"
      },
      {
       "sign": "+",
-      "text": "Agents stop repeating the same calls"
+      "text": "Agents that repeat a lookup in a loop hit the cache instead of the API"
      },
      {
       "sign": "+",
-      "text": "A TTL keeps results reasonably fresh"
+      "text": "A TTL (e.g. 10 minutes) balances freshness against cost and rate limits"
      },
      {
       "sign": "-",
-      "text": "Stale answers if the TTL is too long"
+      "text": "A long TTL serves stale data; never cache calls with side effects"
      }
     ],
     "latency": 1,
