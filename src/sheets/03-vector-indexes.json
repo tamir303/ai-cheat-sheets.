@@ -33,19 +33,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Exact results: perfect recall by definition"
+      "text": "Compares the query with every vector, so recall is 100% by definition"
      },
      {
       "sign": "+",
-      "text": "No training, no tuning, easy updates"
+      "text": "No training or tuning; add or delete vectors at any time"
      },
      {
       "sign": "+",
-      "text": "The baseline to measure other indexes"
+      "text": "The ground truth you benchmark every approximate index against"
      },
      {
       "sign": "-",
-      "text": "Query cost grows with every vector added"
+      "text": "Linear cost: 10M × 768-dim vectors is ~7.7B multiply-adds per query"
      }
     ],
     "latency": 3,
@@ -64,19 +64,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Clusters vectors with k-means, scans a few"
+      "text": "k-means splits vectors into nlist clusters; a query scans only the nprobe closest ones"
      },
      {
       "sign": "+",
-      "text": "nprobe trades speed for recall per query"
+      "text": "With 1,000 clusters and nprobe = 10, a query scans about 1% of the data"
      },
      {
       "sign": "+",
-      "text": "Simple, and pairs well with compression"
+      "text": "Easy to reason about, and pairs with PQ (IVF-PQ) for very large corpora"
      },
      {
       "sign": "-",
-      "text": "Misses neighbours in unprobed clusters"
+      "text": "Needs a training step; neighbours in unprobed clusters are missed"
      }
     ],
     "latency": 2,
@@ -95,19 +95,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Greedy walk from a sparse top layer down"
+      "text": "A layered proximity graph; search walks greedily from the sparse top layer down"
      },
      {
       "sign": "+",
-      "text": "High recall at low latency; common default"
+      "text": "High recall at low latency; used by Qdrant, Weaviate and pgvector"
      },
      {
       "sign": "+",
-      "text": "Supports incremental inserts"
+      "text": "Supports inserts without a rebuild; tune speed vs recall with M and efSearch"
      },
      {
       "sign": "-",
-      "text": "Graph links cost a lot of extra memory"
+      "text": "Everything lives in RAM: full vectors plus ~128 B of links per vector at M = 16"
      }
     ],
     "latency": 1,
@@ -127,19 +127,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Splits vectors into chunks, 1-byte code each"
+      "text": "Splits each vector into m sub-vectors and stores a 1-byte centroid ID for each"
      },
      {
       "sign": "+",
-      "text": "Cuts memory sharply: 3 KB → 96 B here"
+      "text": "768 float32 dims (3,072 B) with m = 96 become 96 bytes: 32× smaller"
      },
      {
       "sign": "+",
-      "text": "Fast approximate distances via lookup tables"
+      "text": "Distances come from precomputed lookup tables, so scanning codes is fast"
      },
      {
       "sign": "-",
-      "text": "Lossy: re-rank with full vectors"
+      "text": "Lossy: recall drops, so re-rank the top candidates with the full vectors"
      }
     ],
     "latency": 1,
@@ -158,19 +158,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Random hyperplanes hash vectors to buckets"
+      "text": "Random hyperplanes turn each vector into bits; similar vectors share buckets"
      },
      {
       "sign": "+",
-      "text": "No training; easy to shard and stream"
+      "text": "No training step; new vectors are hashed and added instantly"
      },
      {
       "sign": "+",
-      "text": "Well-understood probability guarantees"
+      "text": "Clean guarantees: two vectors agree on a bit with probability 1 − θ/π"
      },
      {
       "sign": "-",
-      "text": "Needs many tables for good recall"
+      "text": "Needs many tables and long codes for good recall; graph indexes usually win"
      }
     ],
     "latency": 2,
@@ -189,19 +189,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Keeps the graph and full vectors on SSD"
+      "text": "Keeps the Vamana graph and full vectors on SSD, with PQ codes in RAM"
      },
      {
       "sign": "+",
-      "text": "Compressed codes in RAM guide the search"
+      "text": "The in-RAM codes steer the walk, so each query reads only a few SSD blocks"
      },
      {
       "sign": "+",
-      "text": "Scales past RAM on a single machine"
+      "text": "Serves billion-scale indexes from one machine with modest RAM"
      },
      {
       "sign": "-",
-      "text": "Slower than in-memory graphs; SSD-bound"
+      "text": "Latency depends on SSD speed; slower than in-RAM HNSW for small datasets"
      }
     ],
     "latency": 2,

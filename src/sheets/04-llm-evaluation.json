@@ -33,19 +33,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Checks the output equals the reference"
+      "text": "Scores 1 if the normalized output equals the reference, otherwise 0"
      },
      {
       "sign": "+",
-      "text": "Free, instant and fully reproducible"
+      "text": "Free, instant and reproducible, so it can run on every commit in CI"
      },
      {
       "sign": "+",
-      "text": "Ideal for labels, numbers and JSON fields"
+      "text": "Ideal for labels, numbers, IDs and JSON fields (normalize case and spaces)"
      },
      {
       "sign": "-",
-      "text": "Fails correct answers worded differently"
+      "text": "“Paris” vs “It’s Paris.” fails unless you extract the answer first"
      }
     ],
     "latency": 1,
@@ -64,19 +64,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Scores shared words and phrases vs a reference"
+      "text": "BLEU: n-gram precision; ROUGE: share of reference n-grams recovered"
      },
      {
       "sign": "+",
-      "text": "Standard for translation and summaries"
+      "text": "The standard metrics for translation (BLEU) and summarization (ROUGE)"
      },
      {
       "sign": "+",
-      "text": "Deterministic and easy to track over time"
+      "text": "Deterministic and cheap, so trends across model versions are easy to track"
      },
      {
       "sign": "-",
-      "text": "Misses paraphrases; rewards surface matches"
+      "text": "Rewards overlap: a good paraphrase can score low, a wrong copy high"
      }
     ],
     "latency": 1,
@@ -96,19 +96,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Compares meaning with embeddings (BERTScore)"
+      "text": "Embeds output and reference; cosine similarity or BERTScore measures overlap"
      },
      {
       "sign": "+",
-      "text": "Credits paraphrases that n-grams miss"
+      "text": "Credits paraphrases like “car won’t start” vs “vehicle fails to ignite”"
      },
      {
       "sign": "+",
-      "text": "Cheap once the model is loaded"
+      "text": "Cheap once the model is loaded, with no LLM calls"
      },
      {
       "sign": "-",
-      "text": "Similar text can still be wrong (negation)"
+      "text": "Blind to negation: “is safe” and “is not safe” can score very close"
      }
     ],
     "latency": 2,
@@ -127,19 +127,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Grades against a rubric and explains why"
+      "text": "A strong model grades each answer against a rubric and explains its score"
      },
      {
       "sign": "+",
-      "text": "Handles open-ended answers at scale"
+      "text": "Scales to open-ended qualities: helpfulness, tone, instruction following"
      },
      {
       "sign": "+",
-      "text": "Can check faithfulness to given context"
+      "text": "Can check groundedness: every claim must be backed by the given sources"
      },
      {
       "sign": "-",
-      "text": "Biased by position, length, self-preference"
+      "text": "Biased toward first position, longer answers and its own style; calibrate it"
      }
     ],
     "latency": 2,
@@ -159,19 +159,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Judge picks the better of two answers"
+      "text": "The judge sees answers A and B side by side and picks the better one"
      },
      {
       "sign": "+",
-      "text": "Often more consistent than absolute scores"
+      "text": "Relative choices are usually more consistent than 1–10 scores"
      },
      {
       "sign": "+",
-      "text": "Win rates feed Elo-style leaderboards"
+      "text": "Win rates over many pairs feed Elo-style rankings, as in Chatbot Arena"
      },
      {
       "sign": "-",
-      "text": "Relative only: A beats B, not A is good"
+      "text": "Says A beats B, not that either is good; swap order to cancel position bias"
      }
     ],
     "latency": 3,
@@ -190,19 +190,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Captures nuance, tone and domain correctness"
+      "text": "Experts judge nuance, tone and domain correctness that metrics miss"
      },
      {
       "sign": "+",
-      "text": "Ground truth for calibrating LLM judges"
+      "text": "Builds the labeled golden set you calibrate automated judges against"
      },
      {
       "sign": "+",
-      "text": "Catches failures no metric was built for"
+      "text": "Finds new failure types that no metric was designed to catch"
      },
      {
       "sign": "-",
-      "text": "Slow and costly; reviewers disagree"
+      "text": "Slow and costly; reviewers disagree, so use rubrics and measure agreement"
      }
     ],
     "latency": 3,
