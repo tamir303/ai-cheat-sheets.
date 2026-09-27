@@ -33,19 +33,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Trains on prompt and ideal-response pairs"
+      "text": "Trains on prompt → ideal response pairs, with loss on the response tokens only"
      },
      {
       "sign": "+",
-      "text": "Teaches format, tone and instruction following"
+      "text": "Teaches format, tone and instruction following from demonstrations"
      },
      {
       "sign": "+",
-      "text": "Simple, stable and cheap to run"
+      "text": "Simple, stable and cheap; the first step of nearly every pipeline"
      },
      {
       "sign": "-",
-      "text": "Only imitates; never sees what a bad answer is"
+      "text": "Only imitates good answers; it never learns what makes one bad"
      }
     ],
     "latency": 1,
@@ -65,19 +65,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "A reward model learns from human rankings"
+      "text": "Humans rank answers, and a reward model learns to predict their choice"
      },
      {
       "sign": "+",
-      "text": "PPO optimizes the model against that reward"
+      "text": "PPO maximizes reward minus a KL penalty that keeps it near the reference"
      },
      {
       "sign": "+",
-      "text": "The classic recipe behind InstructGPT"
+      "text": "The recipe behind InstructGPT and the first ChatGPT"
      },
      {
       "sign": "-",
-      "text": "Four models in memory; unstable and costly"
+      "text": "Four models in memory (policy, reference, reward, value) and finicky to tune"
      }
     ],
     "latency": 3,
@@ -96,19 +96,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Learns directly from chosen vs rejected pairs"
+      "text": "Trains directly on chosen vs rejected pairs with a classification-style loss"
      },
      {
       "sign": "+",
-      "text": "No reward model and no RL sampling loop"
+      "text": "No reward model and no sampling loop: it’s ordinary supervised training"
      },
      {
       "sign": "+",
-      "text": "Stable, simple loss; popular for open models"
+      "text": "Stable and cheap; used for open models such as Zephyr and Llama 3"
      },
      {
       "sign": "-",
-      "text": "Needs paired data and a frozen reference"
+      "text": "Needs paired preference data and a frozen reference model in memory"
      }
     ],
     "latency": 2,
@@ -127,19 +127,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Adds an odds-ratio penalty to the SFT loss"
+      "text": "Adds an odds-ratio penalty to the SFT loss that favors chosen over rejected"
      },
      {
       "sign": "+",
-      "text": "One stage for instructions and preferences"
+      "text": "One stage: instruction tuning and preference alignment together"
      },
      {
       "sign": "+",
-      "text": "No reference model, so less memory"
+      "text": "No reference model, so it needs less memory than DPO"
      },
      {
       "sign": "-",
-      "text": "Newer; less proven at large scale"
+      "text": "Newer (2024), with fewer results at large scale than DPO or RLHF"
      }
     ],
     "latency": 1,
@@ -158,19 +158,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Uses one desirable or undesirable label per answer"
+      "text": "Needs only a thumbs-up or thumbs-down per answer, not paired comparisons"
      },
      {
       "sign": "+",
-      "text": "No pairs; copes with imbalanced feedback"
+      "text": "The loss follows prospect theory: losses weigh more than equal gains"
      },
      {
       "sign": "+",
-      "text": "Loss shaped by prospect theory"
+      "text": "Copes with imbalanced feedback, e.g. many more good examples than bad"
      },
      {
       "sign": "-",
-      "text": "Weaker signal than a direct comparison"
+      "text": "A single label carries less signal than a direct A-vs-B comparison"
      }
     ],
     "latency": 2,
@@ -189,19 +189,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Samples a group of answers for each prompt"
+      "text": "Samples a group of answers per prompt (e.g. 16) and scores each one"
      },
      {
       "sign": "+",
-      "text": "Advantage = reward vs the group average"
+      "text": "Advantage = (reward − group mean) / group std, so no critic model"
      },
      {
       "sign": "+",
-      "text": "No critic model; shines with checkable rewards"
+      "text": "Shines with checkable rewards (math answers, unit tests), as in DeepSeek-R1"
      },
      {
       "sign": "-",
-      "text": "Many samples per prompt; reward design is key"
+      "text": "Many samples per prompt, and a flawed reward gets exploited fast"
      }
     ],
     "latency": 3,

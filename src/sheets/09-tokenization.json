@@ -33,19 +33,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Starts from characters, merges frequent pairs"
+      "text": "Starts from characters and repeatedly merges the most frequent adjacent pair"
      },
      {
       "sign": "+",
-      "text": "Common words become one token"
+      "text": "Frequent words become one token; the number of merges sets the vocab size"
      },
      {
       "sign": "+",
-      "text": "Rare words split into known subwords"
+      "text": "Rare words split into known pieces: “lowest” → low + est"
      },
      {
       "sign": "-",
-      "text": "Unseen characters can still be unknown"
+      "text": "Characters never seen in training can still end up as unknown tokens"
      }
     ],
     "latency": 1,
@@ -64,19 +64,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Base alphabet is 256 bytes, so no unknowns"
+      "text": "Runs BPE over UTF-8 bytes, so the base alphabet is 256 and nothing is unknown"
      },
      {
       "sign": "+",
-      "text": "Handles any language, emoji and code"
+      "text": "Handles any language, emoji and code; GPT-2’s vocab is 50,257 tokens"
      },
      {
       "sign": "+",
-      "text": "Standard for GPT-style LLMs"
+      "text": "The standard for GPT-style LLMs (tiktoken, Llama 3)"
      },
      {
       "sign": "-",
-      "text": "Non-English text often needs more tokens"
+      "text": "Non-English text often needs more tokens than English for the same sentence"
      }
     ],
     "latency": 1,
@@ -95,19 +95,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Merges pairs that most raise likelihood"
+      "text": "Picks merges that most raise the training data’s likelihood, not raw counts"
      },
      {
       "sign": "+",
-      "text": "Splits words greedily, longest piece first"
+      "text": "Splits words greedily by longest match: unaffable → un ##aff ##able"
      },
      {
       "sign": "+",
-      "text": "The tokenizer behind BERT and its family"
+      "text": "Powers BERT and its family (BERT-base has 30,522 tokens)"
      },
      {
       "sign": "-",
-      "text": "Falls back to [UNK] when nothing matches"
+      "text": "Falls back to [UNK] when a word can’t be split, losing it entirely"
      }
     ],
     "latency": 1,
@@ -126,19 +126,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Starts with a big vocab and prunes it down"
+      "text": "Starts with a large vocab and prunes the pieces that matter least"
      },
      {
       "sign": "+",
-      "text": "Picks the highest-probability segmentation"
+      "text": "Picks the most probable split: hell + o (0.0010) beats he + llo (0.0004)"
      },
      {
       "sign": "+",
-      "text": "Treats spaces as ▁, so no pre-splitting"
+      "text": "Treats spaces as ▁, so it works for languages without spaces (T5, ALBERT)"
      },
      {
       "sign": "-",
-      "text": "Slower to train than BPE"
+      "text": "Slower to train than BPE, and its splits are harder to predict"
      }
     ],
     "latency": 1,
@@ -157,19 +157,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Tiny vocabulary and no rare-word problem"
+      "text": "A tiny vocabulary (about 100 symbols for English) and no rare words"
      },
      {
       "sign": "+",
-      "text": "Sees spelling directly"
+      "text": "Sees spelling directly, which helps with typos and word games"
      },
      {
       "sign": "-",
-      "text": "Sequences get several times longer"
+      "text": "“tokenization” becomes 12 tokens instead of 2, so sequences get long"
      },
      {
       "sign": "-",
-      "text": "Attention cost grows with length squared"
+      "text": "Attention grows with length squared: 144 vs 4 pairs, 36× the work"
      }
     ],
     "latency": 3,
@@ -188,19 +188,19 @@
     "bullets": [
      {
       "sign": "+",
-      "text": "Reads raw UTF-8 bytes: 256 symbols"
+      "text": "Feeds raw UTF-8 bytes to the model: 256 values plus a few special tokens"
      },
      {
       "sign": "+",
-      "text": "No tokenizer to train, version or mismatch"
+      "text": "No tokenizer to train, version or mismatch between training and serving"
      },
      {
       "sign": "+",
-      "text": "Robust to typos, noise and rare scripts"
+      "text": "Robust to typos, noise and rare scripts, since every byte is known"
      },
      {
       "sign": "-",
-      "text": "Longer sequences make it slower and costlier"
+      "text": "Byte sequences run several times longer than subwords, so it costs more"
      }
     ],
     "latency": 3,
