@@ -1,8 +1,8 @@
 01-rag-chunking {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2446}
 02-peft {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2470}
-03-vector-indexes {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2424}
-04-llm-evaluation {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2365}
-05-quantization {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2297}
+03-vector-indexes {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2508}
+04-llm-evaluation {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2470}
+05-quantization {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2444}
 06-prompting {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2382}
 07-caching {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2324}
 08-post-training {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2374}
