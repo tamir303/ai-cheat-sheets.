@@ -1,0 +1,346 @@
+{
+ "title": "Same Keys. Different Tables. Different Speed.",
+ "concept": "Hash-table collision handling",
+ "createdAt": "2026-09-29T11:38:02.000Z",
+ "data": {
+  "concept": "Hash-table collision handling",
+  "kicker": "Computer science cheat sheet · 6 collision strategies",
+  "title": [
+   "Same Keys.",
+   "Different Tables.",
+   "Different Speed."
+  ],
+  "sticky": [
+   "Same hash.",
+   "New probe.",
+   "New speed!"
+  ],
+  "note": [
+   "Two keys, one slot:",
+   "who moves?"
+  ],
+  "intro": {
+   "before": "Sooner or later two keys hash to the same slot. How the table handles it sets",
+   "highlight": "memory, cache hits and worst cases",
+   "after": "for every lookup."
+  },
+  "items": [
+   {
+    "n": 1,
+    "title": "Separate Chaining",
+    "short": "Chaining",
+    "tagline": "A list per bucket",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Colliding keys share one linked list; a delete is a plain unlink"
+     },
+     {
+      "sign": "+",
+      "text": "Expected list length is the load factor α = n/m: O(1 + α) per lookup"
+     },
+     {
+      "sign": "+",
+      "text": "Java HashMap turns a bucket into a tree once it passes 8 entries"
+     },
+     {
+      "sign": "-",
+      "text": "Every entry is its own node: extra pointers and a cache miss per hop"
+     }
+    ],
+    "latency": 2,
+    "cost": 3,
+    "tools": [
+     "Java HashMap",
+     "C++ std::unordered_map"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 2,
+    "title": "Linear Probing",
+    "short": "Linear",
+    "tagline": "Try the next slot",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "On a collision, try slot h+1, h+2, … until an empty one turns up"
+     },
+     {
+      "sign": "+",
+      "text": "Probes read neighbouring slots, so most land in the same cache line"
+     },
+     {
+      "sign": "+",
+      "text": "At load 0.5 a hit takes 1.5 probes on average, a miss 2.5 (Knuth)"
+     },
+     {
+      "sign": "-",
+      "text": "Runs merge into clusters: at load 0.9 a miss averages 50.5 probes"
+     }
+    ],
+    "latency": 1,
+    "cost": 2,
+    "tools": [
+     "Java IdentityHashMap",
+     "algs4 LinearProbingHashST"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 3,
+    "title": "Quadratic Probing",
+    "short": "Quadratic",
+    "tagline": "Jumps that keep growing",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Offsets 0, 1, 3, 6, 10…: each jump is one longer, escaping crowded runs"
+     },
+     {
+      "sign": "+",
+      "text": "In a power-of-2 table, these triangular offsets visit every slot once"
+     },
+     {
+      "sign": "+",
+      "text": "Abseil and Rust's hashbrown jump between 16-slot groups (x86) this way"
+     },
+     {
+      "sign": "-",
+      "text": "Keys with the same home follow the same path: secondary clustering"
+     }
+    ],
+    "latency": 1,
+    "cost": 2,
+    "tools": [
+     "klib khash",
+     "Abseil flat_hash_map",
+     "Rust HashMap (hashbrown)"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 4,
+    "title": "Double Hashing",
+    "short": "Double hash",
+    "tagline": "A step size per key",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "A second hash sets each key's step: probe h1(k) + i·h2(k)"
+     },
+     {
+      "sign": "+",
+      "text": "Keys 14 and 21 share home 0 but step by 5 and 2: no shared path"
+     },
+     {
+      "sign": "+",
+      "text": "At load 0.9 a miss averages about 10 probes, vs 50.5 for linear"
+     },
+     {
+      "sign": "-",
+      "text": "Each probe jumps far (a likely cache miss); step must be coprime to m"
+     }
+    ],
+    "latency": 2,
+    "cost": 1,
+    "tools": [
+     ".NET System.Collections.Hashtable",
+     "glibc hsearch()"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 5,
+    "title": "Robin Hood Hashing",
+    "short": "Robin Hood",
+    "tagline": "Take from the rich",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Linear probing where a key far from home evicts one nearer its home"
+     },
+     {
+      "sign": "+",
+      "text": "Evens out probe lengths: here the worst drops from 4 slots to 2"
+     },
+     {
+      "sign": "+",
+      "text": "A miss stops early, at the first key closer to home than itself"
+     },
+     {
+      "sign": "-",
+      "text": "Inserts swap and shift keys, so writes cost more than plain probing"
+     }
+    ],
+    "latency": 1,
+    "cost": 2,
+    "tools": [
+     "tsl::robin_map",
+     "ska::flat_hash_map"
+    ],
+    "diagram": ""
+   },
+   {
+    "n": 6,
+    "title": "Cuckoo Hashing",
+    "short": "Cuckoo",
+    "tagline": "Two homes, evict one",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Every key has exactly two possible slots, one per hash function"
+     },
+     {
+      "sign": "+",
+      "text": "A lookup checks at most 2 slots: O(1) in the worst case, not on average"
+     },
+     {
+      "sign": "+",
+      "text": "Multi-slot buckets let DPDK's rte_hash fill more than 90% of slots"
+     },
+     {
+      "sign": "-",
+      "text": "1-slot tables must stay under 50% full; eviction loops force a rehash"
+     }
+    ],
+    "latency": 1,
+    "cost": 2,
+    "tools": [
+     "DPDK rte_hash",
+     "libcuckoo cuckoohash_map"
+    ],
+    "diagram": ""
+   }
+  ],
+  "overview_title": "Where each strategy does its work",
+  "overview": {
+   "label": "one insert",
+   "online": [
+    {
+     "name": "Hash the key",
+     "note": "h(k) mod m picks a home slot",
+     "items": []
+    },
+    {
+     "name": "Find a free place",
+     "note": "chain node, +1, growing jump or h2(k) step",
+     "items": [
+      1,
+      2,
+      3,
+      4
+     ]
+    },
+    {
+     "name": "Move other keys",
+     "note": "swap or evict to keep lookups short",
+     "items": [
+      5,
+      6
+     ]
+    },
+    {
+     "name": "Store the key",
+     "note": "lookups retrace the same path",
+     "items": []
+    }
+   ],
+   "offline": [],
+   "feeds": -1,
+   "loop": null,
+   "side": ""
+  },
+  "principles": [
+   {
+    "lead": "The load factor sets the speed.",
+    "hl": "Resize before it bites.",
+    "sub": "Java HashMap grows at 0.75 full; Abseil's Swiss tables grow at 7/8."
+   },
+   {
+    "lead": "A weak hash breaks every scheme.",
+    "hl": "Mix the key bits first.",
+    "sub": "With h(k) = k mod 8, keys 8, 16, 24 and 32 all land in slot 0."
+   },
+   {
+    "lead": "Big-O hides the cache.",
+    "hl": "Benchmark with real keys.",
+    "sub": "Hit/miss ratio, key size and delete rate pick the winner, not textbook averages."
+   }
+  ],
+  "which": {
+   "title": "Which strategy?",
+   "rows": [
+    {
+     "q": "Frequent deletes, large values",
+     "items": [
+      1
+     ]
+    },
+    {
+     "q": "Small keys, fastest average lookup",
+     "items": [
+      2,
+      5
+     ]
+    },
+    {
+     "q": "Flat array, less clustering",
+     "items": [
+      3
+     ]
+    },
+    {
+     "q": "Table must run nearly full",
+     "items": [
+      4,
+      6
+     ]
+    },
+    {
+     "q": "Many lookups for missing keys",
+     "items": [
+      5,
+      6
+     ]
+    },
+    {
+     "q": "Hard worst-case lookup bound",
+     "items": [
+      6
+     ]
+    }
+   ]
+  },
+  "quote": {
+   "big": "Collisions are certain. Slow lookups aren't.",
+   "small": "Same keys, different strategy, different speed."
+  },
+  "diagrams": {
+   "1": {
+    "alt": "Eight buckets; keys 11, 19 and 27 all hash to bucket 3 and hang in one linked list, so finding 27 means walking three nodes; six keys in eight buckets is a load factor of 0.75.",
+    "svg": "<text x='120' y='13' font-size='10.5' fill='#43506B' text-anchor='middle'>h(k) = k mod 8 · 11, 19 and 27 all hash to 3</text><rect x='16' y='31' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='29.0' y='26' font-size='10.5' fill='#8C95A8' text-anchor='middle'>0</text><rect x='42' y='31' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='55.0' y='26' font-size='10.5' fill='#8C95A8' text-anchor='middle'>1</text><rect x='68' y='31' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='81.0' y='26' font-size='10.5' fill='#8C95A8' text-anchor='middle'>2</text><rect x='94' y='31' width='26' height='20' rx='2' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.3'/><text x='107.0' y='26' font-size='10.5' fill='#8C95A8' text-anchor='middle'>3</text><rect x='120' y='31' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='133.0' y='26' font-size='10.5' fill='#8C95A8' text-anchor='middle'>4</text><rect x='146' y='31' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='159.0' y='26' font-size='10.5' fill='#8C95A8' text-anchor='middle'>5</text><rect x='172' y='31' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='185.0' y='26' font-size='10.5' fill='#8C95A8' text-anchor='middle'>6</text><rect x='198' y='31' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='211.0' y='26' font-size='10.5' fill='#8C95A8' text-anchor='middle'>7</text><circle cx='29.0' cy='41' r='2.6' fill='#1B2440'/><line x1='29.0' y1='43' x2='29.0' y2='63' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round'/><polyline points='32.1,57.3 29.0,63 25.9,57.3' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><rect x='16.0' y='64' width='26' height='18' rx='4' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='29.0' y='77' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>8</text><circle cx='107.0' cy='41' r='2.6' fill='#1B2440'/><line x1='107.0' y1='43' x2='107.0' y2='63' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round'/><polyline points='110.1,57.3 107.0,63 103.9,57.3' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><rect x='94.0' y='64' width='26' height='18' rx='4' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='107.0' y='77' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>11</text><line x1='107.0' y1='82' x2='107.0' y2='91' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round'/><polyline points='110.1,85.3 107.0,91 103.9,85.3' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><rect x='94.0' y='92' width='26' height='18' rx='4' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='107.0' y='105' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>19</text><line x1='107.0' y1='110' x2='107.0' y2='119' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round'/><polyline points='110.1,113.3 107.0,119 103.9,113.3' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><rect x='94.0' y='120' width='26' height='18' rx='4' fill='#FFD27A' stroke='#D1495B' stroke-width='1.8'/><text x='107.0' y='133' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>27</text><circle cx='159.0' cy='41' r='2.6' fill='#1B2440'/><line x1='159.0' y1='43' x2='159.0' y2='63' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round'/><polyline points='162.1,57.3 159.0,63 155.9,57.3' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><rect x='146.0' y='64' width='26' height='18' rx='4' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='159.0' y='77' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>5</text><circle cx='185.0' cy='41' r='2.6' fill='#1B2440'/><line x1='185.0' y1='43' x2='185.0' y2='63' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round'/><polyline points='188.1,57.3 185.0,63 181.9,57.3' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><rect x='172.0' y='64' width='26' height='18' rx='4' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='185.0' y='77' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>14</text><text x='172' y='104' font-size='10.5' fill='#43506B' text-anchor='middle'>6 keys / 8 buckets</text><text x='172' y='118' font-size='10.5' fill='#1B2440' text-anchor='middle' font-weight='bold'>load α = 0.75</text><text x='120' y='161' font-size='10.5' fill='#D1495B' text-anchor='middle'>find 27: hash once, then walk 3 nodes</text>"
+   },
+   "2": {
+    "alt": "Eight slots; 27 hashes to slot 3, finds 3, 4 and 5 taken and lands in slot 6 after four probes, extending one run of four neighbouring keys.",
+    "svg": "<text x='120' y='14' font-size='10.5' fill='#43506B' text-anchor='middle'>h(k) = k mod 8 · insert 27 (home slot 3)</text><rect x='16' y='74' width='26' height='24' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='29.0' y='90.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>8</text><text x='29.0' y='69' font-size='10.5' fill='#8C95A8' text-anchor='middle'>0</text><rect x='42' y='74' width='26' height='24' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='55.0' y='69' font-size='10.5' fill='#8C95A8' text-anchor='middle'>1</text><rect x='68' y='74' width='26' height='24' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='81.0' y='69' font-size='10.5' fill='#8C95A8' text-anchor='middle'>2</text><rect x='94' y='74' width='26' height='24' rx='2' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.3'/><text x='107.0' y='90.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>11</text><text x='107.0' y='69' font-size='10.5' fill='#8C95A8' text-anchor='middle'>3</text><rect x='120' y='74' width='26' height='24' rx='2' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.3'/><text x='133.0' y='90.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>19</text><text x='133.0' y='69' font-size='10.5' fill='#8C95A8' text-anchor='middle'>4</text><rect x='146' y='74' width='26' height='24' rx='2' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.3'/><text x='159.0' y='90.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>5</text><text x='159.0' y='69' font-size='10.5' fill='#8C95A8' text-anchor='middle'>5</text><rect x='172' y='74' width='26' height='24' rx='2' fill='#FFD27A' stroke='#D1495B' stroke-width='1.8'/><text x='185.0' y='90.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>27</text><text x='185.0' y='69' font-size='10.5' fill='#8C95A8' text-anchor='middle'>6</text><rect x='198' y='74' width='26' height='24' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='211.0' y='69' font-size='10.5' fill='#8C95A8' text-anchor='middle'>7</text><path d='M110.0 55 Q120.0 41.0 130.0 55' fill='none' stroke='#D1495B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><polyline points='129.3,49.5 130.0,55 125.0,52.6' fill='none' stroke='#D1495B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><path d='M136.0 55 Q146.0 41.0 156.0 55' fill='none' stroke='#D1495B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><polyline points='155.3,49.5 156.0,55 151.0,52.6' fill='none' stroke='#D1495B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><path d='M162.0 55 Q172.0 41.0 182.0 55' fill='none' stroke='#D1495B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><polyline points='181.3,49.5 182.0,55 177.0,52.6' fill='none' stroke='#D1495B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><text x='107.0' y='112' font-size='10.5' fill='#D1495B' text-anchor='middle' data-f='sans'>1</text><text x='133.0' y='112' font-size='10.5' fill='#D1495B' text-anchor='middle' data-f='sans'>2</text><text x='159.0' y='112' font-size='10.5' fill='#D1495B' text-anchor='middle' data-f='sans'>3</text><text x='185.0' y='112' font-size='10.5' fill='#D1495B' text-anchor='middle' data-f='sans'>4</text><text x='55.0' y='112' font-size='10.5' fill='#43506B' text-anchor='middle'>probe</text><line x1='96' y1='124' x2='196' y2='124' stroke='#43506B' stroke-width='1.2' stroke-linecap='round'/><line x1='96' y1='120' x2='96' y2='124' stroke='#43506B' stroke-width='1.2' stroke-linecap='round'/><line x1='196' y1='120' x2='196' y2='124' stroke='#43506B' stroke-width='1.2' stroke-linecap='round'/><text x='146.0' y='138' font-size='10.5' fill='#43506B' text-anchor='middle'>one run of 4 keys</text><text x='120' y='161' font-size='10.5' fill='#D1495B' text-anchor='middle'>4 probes, and the run keeps growing</text>"
+   },
+   "3": {
+    "alt": "Eight slots with 1 to 4 taken; 25 hashes to slot 1 and probes offsets 0, 1, 3 and 6, jumping +1, +2 and +3 to land in slot 7.",
+    "svg": "<text x='120' y='14' font-size='10.5' fill='#43506B' text-anchor='middle'>insert 25 (home 1) · offsets 0, 1, 3, 6</text><rect x='16' y='78' width='26' height='24' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='29.0' y='73' font-size='10.5' fill='#8C95A8' text-anchor='middle'>0</text><rect x='42' y='78' width='26' height='24' rx='2' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.3'/><text x='55.0' y='94.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>9</text><text x='55.0' y='73' font-size='10.5' fill='#8C95A8' text-anchor='middle'>1</text><rect x='68' y='78' width='26' height='24' rx='2' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.3'/><text x='81.0' y='94.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>17</text><text x='81.0' y='73' font-size='10.5' fill='#8C95A8' text-anchor='middle'>2</text><rect x='94' y='78' width='26' height='24' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='107.0' y='94.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>10</text><text x='107.0' y='73' font-size='10.5' fill='#8C95A8' text-anchor='middle'>3</text><rect x='120' y='78' width='26' height='24' rx='2' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.3'/><text x='133.0' y='94.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>12</text><text x='133.0' y='73' font-size='10.5' fill='#8C95A8' text-anchor='middle'>4</text><rect x='146' y='78' width='26' height='24' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='159.0' y='73' font-size='10.5' fill='#8C95A8' text-anchor='middle'>5</text><rect x='172' y='78' width='26' height='24' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='185.0' y='73' font-size='10.5' fill='#8C95A8' text-anchor='middle'>6</text><rect x='198' y='78' width='26' height='24' rx='2' fill='#FFD27A' stroke='#D1495B' stroke-width='1.8'/><text x='211.0' y='94.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>25</text><text x='211.0' y='73' font-size='10.5' fill='#8C95A8' text-anchor='middle'>7</text><path d='M58.0 59 Q68.0 45.0 78.0 59' fill='none' stroke='#D1495B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><polyline points='77.3,53.5 78.0,59 73.0,56.6' fill='none' stroke='#D1495B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><text x='68.0' y='48.0' font-size='10.5' fill='#D1495B' text-anchor='middle'>+1</text><path d='M84.0 59 Q107.0 37.0 130.0 59' fill='none' stroke='#D1495B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><polyline points='128.3,53.8 130.0,59 124.7,57.6' fill='none' stroke='#D1495B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><text x='107.0' y='44.0' font-size='10.5' fill='#D1495B' text-anchor='middle'>+2</text><path d='M136.0 59 Q172.0 27.0 208.0 59' fill='none' stroke='#D1495B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><polyline points='206.1,53.8 208.0,59 202.6,57.8' fill='none' stroke='#D1495B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><text x='172.0' y='39.0' font-size='10.5' fill='#D1495B' text-anchor='middle'>+3</text><text x='55.0' y='116' font-size='10.5' fill='#D1495B' text-anchor='middle' data-f='sans'>1</text><text x='81.0' y='116' font-size='10.5' fill='#D1495B' text-anchor='middle' data-f='sans'>2</text><text x='133.0' y='116' font-size='10.5' fill='#D1495B' text-anchor='middle' data-f='sans'>3</text><text x='211.0' y='116' font-size='10.5' fill='#D1495B' text-anchor='middle' data-f='sans'>4</text><text x='172.0' y='116' font-size='10.5' fill='#43506B' text-anchor='middle'>probe</text><text x='120' y='142' font-size='10.5' fill='#43506B' text-anchor='middle'>each jump is one slot longer</text><text x='120' y='161' font-size='10.5' fill='#1B2440' text-anchor='middle'>power-of-2 table: every slot gets visited</text>"
+   },
+   "4": {
+    "alt": "Seven slots; 14 and 21 both hash to occupied slot 0, but the second hash gives 14 a step of 5 and 21 a step of 2, so they land in slots 5 and 2 without following each other.",
+    "svg": "<text x='120' y='14' font-size='10.5' fill='#43506B' text-anchor='middle'>m = 7 · h1 = k mod 7 · h2 = 1 + k mod 5</text><rect x='22' y='70' width='28' height='24' rx='2' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.3'/><text x='36.0' y='86.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>7</text><text x='36.0' y='65' font-size='10.5' fill='#8C95A8' text-anchor='middle'>0</text><rect x='50' y='70' width='28' height='24' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='64.0' y='65' font-size='10.5' fill='#8C95A8' text-anchor='middle'>1</text><rect x='78' y='70' width='28' height='24' rx='2' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='92.0' y='86.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>21</text><text x='92.0' y='65' font-size='10.5' fill='#8C95A8' text-anchor='middle'>2</text><rect x='106' y='70' width='28' height='24' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='120.0' y='65' font-size='10.5' fill='#8C95A8' text-anchor='middle'>3</text><rect x='134' y='70' width='28' height='24' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='148.0' y='65' font-size='10.5' fill='#8C95A8' text-anchor='middle'>4</text><rect x='162' y='70' width='28' height='24' rx='2' fill='#FFD27A' stroke='#D1495B' stroke-width='1.8'/><text x='176.0' y='86.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>14</text><text x='176.0' y='65' font-size='10.5' fill='#8C95A8' text-anchor='middle'>5</text><rect x='190' y='70' width='28' height='24' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='204.0' y='65' font-size='10.5' fill='#8C95A8' text-anchor='middle'>6</text><path d='M40.0 50 Q108.0 22.0 176.0 50' fill='none' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><polyline points='172.5,45.7 176.0,50 170.5,50.6' fill='none' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><text x='106.0' y='30' font-size='10.5' fill='#D1495B' text-anchor='middle'>14: step 5</text><path d='M40.0 96 Q66.0 126.0 92.0 96' fill='none' stroke='#3452C7' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><polyline points='86.8,97.9 92.0,96 90.8,101.4' fill='none' stroke='#3452C7' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><text x='64.0' y='128' font-size='10.5' fill='#3452C7' text-anchor='middle'>21: step 2</text><text x='150' y='128' font-size='10.5' fill='#43506B' text-anchor='middle'>both start at 0</text><text x='120' y='161' font-size='10.5' fill='#1B2440' text-anchor='middle'>same home, different step, no shared path</text>"
+   },
+   "5": {
+    "alt": "Two rows of slots holding the same keys: plain linear probing puts 26 four slots from home, while Robin Hood gives 26 the slot of key 4, which sits nearer its home, so the worst distance drops from 4 to 2.",
+    "svg": "<text x='120' y='13' font-size='10.5' fill='#43506B' text-anchor='middle'>insert 26 (home 2) into the same keys</text><text x='55.0' y='27' font-size='10.5' fill='#8C95A8' text-anchor='middle'>1</text><text x='81.0' y='27' font-size='10.5' fill='#8C95A8' text-anchor='middle'>2</text><text x='107.0' y='27' font-size='10.5' fill='#8C95A8' text-anchor='middle'>3</text><text x='133.0' y='27' font-size='10.5' fill='#8C95A8' text-anchor='middle'>4</text><text x='159.0' y='27' font-size='10.5' fill='#8C95A8' text-anchor='middle'>5</text><text x='185.0' y='27' font-size='10.5' fill='#8C95A8' text-anchor='middle'>6</text><text x='8' y='47' font-size='10.5' fill='#43506B'>linear</text><rect x='42' y='32' width='26' height='22' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><rect x='68' y='32' width='26' height='22' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='81.0' y='47.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>10</text><rect x='94' y='32' width='26' height='22' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='107.0' y='47.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>18</text><rect x='120' y='32' width='26' height='22' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='133.0' y='47.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>4</text><rect x='146' y='32' width='26' height='22' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='159.0' y='47.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>12</text><rect x='172' y='32' width='26' height='22' rx='2' fill='#EFF2FF' stroke='#D1495B' stroke-width='1.8'/><text x='185.0' y='47.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>26</text><text x='81.0' y='66' font-size='10.5' fill='#43506B' text-anchor='middle'>0</text><text x='107.0' y='66' font-size='10.5' fill='#43506B' text-anchor='middle'>1</text><text x='133.0' y='66' font-size='10.5' fill='#43506B' text-anchor='middle'>0</text><text x='159.0' y='66' font-size='10.5' fill='#43506B' text-anchor='middle'>1</text><text x='185.0' y='66' font-size='10.5' fill='#D1495B' text-anchor='middle' data-f='sans'>4</text><text x='8' y='101' font-size='10.5' fill='#43506B'>Robin</text><text x='8' y='113' font-size='10.5' fill='#43506B'>Hood</text><rect x='42' y='88' width='26' height='22' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><rect x='68' y='88' width='26' height='22' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='81.0' y='103.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>10</text><rect x='94' y='88' width='26' height='22' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='107.0' y='103.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>18</text><rect x='120' y='88' width='26' height='22' rx='2' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='133.0' y='103.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>26</text><rect x='146' y='88' width='26' height='22' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='159.0' y='103.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>12</text><rect x='172' y='88' width='26' height='22' rx='2' fill='#FFD27A' stroke='#1B2440' stroke-width='1.3'/><text x='185.0' y='103.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>4</text><text x='81.0' y='122' font-size='10.5' fill='#43506B' text-anchor='middle'>0</text><text x='107.0' y='122' font-size='10.5' fill='#43506B' text-anchor='middle'>1</text><text x='133.0' y='122' font-size='10.5' fill='#D1495B' text-anchor='middle' data-f='sans'>2</text><text x='159.0' y='122' font-size='10.5' fill='#43506B' text-anchor='middle'>1</text><text x='185.0' y='122' font-size='10.5' fill='#D1495B' text-anchor='middle' data-f='sans'>2</text><text x='212' y='125' font-size='10.5' fill='#43506B' text-anchor='middle'>moved</text><text x='120' y='158' font-size='10.5' fill='#1B2440' text-anchor='middle'>distance from home · worst 4 → 2</text>"
+   },
+   "6": {
+    "alt": "Two tables with one hash each; inserting 7 takes slot 2 of the first table and evicts 12 to its home in the second table, and any lookup, such as finding 2, checks at most two slots.",
+    "svg": "<text x='120' y='13' font-size='10.5' fill='#43506B' text-anchor='middle'>h1 = k mod 5 · h2 = (k div 5) mod 5</text><text x='24' y='60' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>T1</text><text x='24' y='128' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>T2</text><rect x='70' y='44' width='30' height='22' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='85.0' y='59.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>10</text><rect x='100' y='44' width='30' height='22' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='115.0' y='59.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>1</text><rect x='130' y='44' width='30' height='22' rx='2' fill='#FFD27A' stroke='#D1495B' stroke-width='1.8'/><text x='145.0' y='59.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>7</text><rect x='160' y='44' width='30' height='22' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='175.0' y='59.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>3</text><rect x='190' y='44' width='30' height='22' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><rect x='70' y='112' width='30' height='22' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='85.0' y='127.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>2</text><rect x='100' y='112' width='30' height='22' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><rect x='130' y='112' width='30' height='22' rx='2' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='145.0' y='127.0' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>12</text><rect x='160' y='112' width='30' height='22' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><rect x='190' y='112' width='30' height='22' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><rect x='40' y='20' width='22' height='18' rx='4' fill='#FFFFFF' stroke='#D1495B' stroke-width='1.6'/><text x='51' y='33' font-size='11' fill='#D1495B' text-anchor='middle' data-f='sans'>7</text><line x1='62' y1='30' x2='137.0' y2='41' stroke='#D1495B' stroke-width='1.5' stroke-linecap='round'/><polyline points='131.8,37.1 137.0,41 130.9,43.3' fill='none' stroke='#D1495B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><line x1='145.0' y1='68' x2='145.0' y2='109' stroke='#3452C7' stroke-width='1.5' stroke-linecap='round'/><polyline points='148.1,103.3 145.0,109 141.9,103.3' fill='none' stroke='#3452C7' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><text x='137.0' y='84' font-size='10.5' fill='#3452C7' text-anchor='end'>12 → its 2nd home</text><text x='120' y='148' font-size='10.5' fill='#43506B' text-anchor='middle'>find 2: T1[2] no, T2[0] yes</text><text x='120' y='162' font-size='10.5' fill='#D1495B' text-anchor='middle'>any lookup checks at most 2 slots</text>"
+   }
+  }
+ }
+}

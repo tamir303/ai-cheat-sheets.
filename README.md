@@ -1,6 +1,6 @@
 # AI Cheat Sheets
 
-Eleven visual cheat sheets on AI engineering, machine learning, the math behind it, computer science and software engineering. Each compares six approaches with worked-example diagrams, trade-offs and a which-one-to-use table.
+Twelve visual cheat sheets on AI engineering, machine learning, the math behind it, computer science and software engineering. Each compares six approaches with worked-example diagrams, trade-offs and a which-one-to-use table.
 
 | # | Topic | Sheet title | LinkedIn |
 |---|---|---|---|
@@ -15,6 +15,7 @@ Eleven visual cheat sheets on AI engineering, machine learning, the math behind 
 | 09 | [LLM tokenization algorithms](09-tokenization/) | Same Sentence. Different Tokenizers. Different Tokens. | Wed Oct 7 |
 | 10 | [Prompt-injection defenses](10-prompt-injection/) | Same Injection. Different Defenses. Different Risk. | Thu Oct 8 |
 | 11 | [LLM response caching](11-response-caching/) | Same Prompt. Different Caching. Different Latency. | Sun Oct 4 |
+| 12 | [Hash-table collision handling](12-hash-tables/) | Same Keys. Different Tables. Different Speed. | Tue Sep 29 |
 
 Each folder holds the full-size image (1800 px wide), the LinkedIn post and the image alt text.
 
