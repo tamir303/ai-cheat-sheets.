@@ -1,6 +1,6 @@
 # AI Cheat Sheets
 
-Twelve visual cheat sheets on AI engineering, machine learning, the math behind it, computer science and software engineering. Most compare six approaches with worked-example diagrams, trade-offs and a which-one-to-use table; the rest use one of the other formats below.
+Sixteen visual cheat sheets on AI engineering, machine learning, the math behind it, computer science and software engineering. Most compare six approaches with worked-example diagrams, trade-offs and a which-one-to-use table; the rest use one of the other formats below.
 
 | # | Topic | Sheet title | LinkedIn |
 |---|---|---|---|
@@ -16,6 +16,10 @@ Twelve visual cheat sheets on AI engineering, machine learning, the math behind 
 | 10 | [Prompt-injection defenses](10-prompt-injection/) | Same Injection. Different Defenses. Different Risk. | Thu Oct 8 |
 | 11 | [LLM response caching](11-response-caching/) | Same Prompt. Different Caching. Different Latency. | Sun Oct 4 |
 | 12 | [Hash-table collision handling](12-hash-tables/) | Same Keys. Different Tables. Different Speed. | Tue Sep 29 |
+| 13 | [BatchNorm vs LayerNorm](13-batchnorm-layernorm/) | BatchNorm vs LayerNorm: Same Formula. Different Axis. | Sun Oct 11 |
+| 14 | [Deployment strategies](14-deployment/) | Same Release. Different Rollouts. Different Risk. | Mon Oct 12 |
+| 15 | [From RNNs to Transformers](15-rnns-transformers/) | How Models Learned to Read. 1997 → 2020 | Tue Oct 13 |
+| 16 | [Sigmoid activation](16-sigmoid/) | Sigmoid: Squash Any Number to (0, 1) | Wed Oct 14 |
 
 Each folder holds the full-size image (1800 px wide), the LinkedIn post and the image alt text.
 
