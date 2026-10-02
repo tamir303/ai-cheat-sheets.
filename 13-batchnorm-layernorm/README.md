@@ -2,7 +2,7 @@
 
 **Topic:** BatchNorm vs LayerNorm  
 **Format:** face-off  
-**LinkedIn:** Sun Oct 11 2026, 12:00 (Israel time)
+**LinkedIn:** Mon Oct 5 2026, 12:00 (Israel time)
 
 ![Cheat sheet titled 'BatchNorm vs LayerNorm: Same Formula. Different Axis.' comparing Batch Normalization and Layer Normalization side by side: a diagram of how each works, a chart of the same numbers normalized two ways, a table of key differences, and when to use each.](13-batchnorm-layernorm.png)
 

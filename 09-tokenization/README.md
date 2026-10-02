@@ -1,7 +1,7 @@
 # Same Sentence. Different Tokenizers. Different Tokens.
 
 **Topic:** LLM tokenization algorithms  
-**LinkedIn:** Tue Oct 27 2026, 09:00 (Israel time)
+**LinkedIn:** Thu Oct 8 2026, 12:00 (Israel time)
 
 ![Cheat sheet titled 'Same Sentence. Different Tokenizers. Different Tokens.' comparing six tokenization methods: BPE, byte-level BPE, WordPiece, Unigram (SentencePiece), character-level and byte-level models. Each has a worked-example diagram, pros and cons, and relative latency and cost, followed by a table of which tokenizer to use when.](09-tokenization.png)
 

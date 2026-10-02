@@ -1,7 +1,7 @@
 # Same Injection. Different Defenses. Different Risk.
 
 **Topic:** Prompt-injection defenses  
-**LinkedIn:** Thu Oct 29 2026, 09:00 (Israel time)
+**LinkedIn:** Sun Oct 4 2026, 12:00 (Israel time)
 
 ![Cheat sheet titled 'Same Injection. Different Defenses. Different Risk.' comparing six prompt-injection defenses: injection classifiers, spotlighting, output filtering, least-privilege tools, dual-LLM isolation and human approval. Each has a worked-example diagram, pros and cons, and relative latency and cost, followed by a table of which defense to use when.](10-prompt-injection.png)
 

@@ -2,7 +2,7 @@
 
 **Topic:** Deployment strategies  
 **Format:** gallery  
-**LinkedIn:** Mon Oct 12 2026, 12:00 (Israel time)
+**LinkedIn:** Sun Oct 11 2026, 12:00 (Israel time)
 
 ![Cheat sheet titled 'Same Release. Different Rollouts. Different Risk.' showing eight deployment strategies: recreate, rolling update, blue-green, canary release, shadow (mirroring), A/B testing, feature flags and ring deployment. Each has a small diagram, one strength and one watch-out, followed by a table of which to use when.](14-deployment.png)
 

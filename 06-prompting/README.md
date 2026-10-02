@@ -1,7 +1,7 @@
 # Same Question. Different Prompts. Different Accuracy.
 
 **Topic:** Prompting techniques  
-**LinkedIn:** Thu Oct 15 2026, 09:00 (Israel time)
+**LinkedIn:** Wed Oct 14 2026, 12:00 (Israel time)
 
 ![Cheat sheet titled 'Same Question. Different Prompts. Different Accuracy.' comparing six prompting techniques: zero-shot, few-shot, chain-of-thought, self-consistency, least-to-most and tree of thoughts. Each has a worked-example diagram, pros and cons, and relative latency and cost, followed by a table of which technique to use when.](06-prompting.png)
 

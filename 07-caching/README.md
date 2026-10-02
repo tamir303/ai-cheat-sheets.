@@ -1,7 +1,7 @@
 # Same Request. Different Caches. Different Savings.
 
 **Topic:** LLM caching strategies  
-**LinkedIn:** Tue Oct 20 2026, 09:00 (Israel time)
+**LinkedIn:** Tue Oct 6 2026, 12:00 (Israel time)
 
 ![Cheat sheet titled 'Same Request. Different Caches. Different Savings.' comparing six LLM caching layers: exact-match cache, semantic cache, prompt caching, KV cache, embedding cache and tool-result cache. Each has a worked-example diagram, pros and cons, and relative latency and cost, followed by a table of which cache to use when.](07-caching.png)
 

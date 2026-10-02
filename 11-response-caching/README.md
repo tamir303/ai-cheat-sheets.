@@ -1,7 +1,7 @@
 # Same Prompt. Different Caching. Different Latency.
 
 **Topic:** LLM response caching  
-**LinkedIn:** Sun Oct 18 2026, 12:00 (Israel time)
+**LinkedIn:** Sat Oct 17 2026, 12:00 (Israel time)
 
 ![Cheat sheet titled 'Same Prompt. Different Caching. Different Latency.' comparing six LLM caching approaches: Exact-Match Caching, Semantic Caching, Prefix Caching, KV-Cache Reuse, Provider Context Cache, and Batch Response Caching. Each has a worked-example diagram, pros and cons, and relative latency and cost, followed by a table of which approach to use when.](11-response-caching.png)
 

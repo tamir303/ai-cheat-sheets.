@@ -2,7 +2,7 @@
 
 **Topic:** Sigmoid activation  
 **Format:** deep dive · Activation functions 1/6  
-**LinkedIn:** Wed Oct 14 2026, 12:00 (Israel time)
+**LinkedIn:** Wed Oct 7 2026, 12:00 (Israel time)
 
 ![Cheat sheet titled 'Sigmoid: Squash Any Number to (0, 1)' explaining the sigmoid activation: the idea, the formula, a worked example, two diagrams (the S-curve and why gradients vanish), where it is used, and its strengths and limits. Part 1 of 6 in the Activation functions series.](16-sigmoid.png)
 

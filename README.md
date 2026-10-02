@@ -9,17 +9,17 @@ Sixteen visual cheat sheets on AI engineering, machine learning, the math behind
 | 03 | [Vector index types](03-vector-indexes/) | Same Embeddings. Different Indexes. Different Trade-offs. | Mon Sep 28 |
 | 04 | [LLM output evaluation](04-llm-evaluation/) | Same Output. Different Evaluators. Different Verdicts. | Tue Sep 29 |
 | 05 | [LLM quantization formats](05-quantization/) | Same Model. Different Precision. Different Footprint. | Wed Sep 30 |
-| 06 | [Prompting techniques](06-prompting/) | Same Question. Different Prompts. Different Accuracy. | Sat Oct 17 |
-| 07 | [LLM caching strategies](07-caching/) | Same Request. Different Caches. Different Savings. | Mon Oct 5 |
-| 08 | [LLM post-training and alignment methods](08-post-training/) | Same Raw Model. Different Feedback. Different Behavior. | Tue Oct 6 |
-| 09 | [LLM tokenization algorithms](09-tokenization/) | Same Sentence. Different Tokenizers. Different Tokens. | Wed Oct 7 |
-| 10 | [Prompt-injection defenses](10-prompt-injection/) | Same Injection. Different Defenses. Different Risk. | Thu Oct 8 |
-| 11 | [LLM response caching](11-response-caching/) | Same Prompt. Different Caching. Different Latency. | Sun Oct 4 |
+| 06 | [Prompting techniques](06-prompting/) | Same Question. Different Prompts. Different Accuracy. | Wed Oct 14 |
+| 07 | [LLM caching strategies](07-caching/) | Same Request. Different Caches. Different Savings. | Tue Oct 6 |
+| 08 | [LLM post-training and alignment methods](08-post-training/) | Same Raw Model. Different Feedback. Different Behavior. | Mon Oct 12 |
+| 09 | [LLM tokenization algorithms](09-tokenization/) | Same Sentence. Different Tokenizers. Different Tokens. | Thu Oct 8 |
+| 10 | [Prompt-injection defenses](10-prompt-injection/) | Same Injection. Different Defenses. Different Risk. | Sun Oct 4 |
+| 11 | [LLM response caching](11-response-caching/) | Same Prompt. Different Caching. Different Latency. | Sat Oct 17 |
 | 12 | [Hash-table collision handling](12-hash-tables/) | Same Keys. Different Tables. Different Speed. | Tue Sep 29 |
-| 13 | [BatchNorm vs LayerNorm](13-batchnorm-layernorm/) | BatchNorm vs LayerNorm: Same Formula. Different Axis. | Sun Oct 11 |
-| 14 | [Deployment strategies](14-deployment/) | Same Release. Different Rollouts. Different Risk. | Mon Oct 12 |
+| 13 | [BatchNorm vs LayerNorm](13-batchnorm-layernorm/) | BatchNorm vs LayerNorm: Same Formula. Different Axis. | Mon Oct 5 |
+| 14 | [Deployment strategies](14-deployment/) | Same Release. Different Rollouts. Different Risk. | Sun Oct 11 |
 | 15 | [From RNNs to Transformers](15-rnns-transformers/) | How Models Learned to Read. 1997 → 2020 | Tue Oct 13 |
-| 16 | [Sigmoid activation](16-sigmoid/) | Sigmoid: Squash Any Number to (0, 1) | Wed Oct 14 |
+| 16 | [Sigmoid activation](16-sigmoid/) | Sigmoid: Squash Any Number to (0, 1) | Wed Oct 7 |
 
 Each folder holds the full-size image (1800 px wide), the LinkedIn post and the image alt text.
 

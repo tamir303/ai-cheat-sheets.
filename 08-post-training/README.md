@@ -1,7 +1,7 @@
 # Same Raw Model. Different Feedback. Different Behavior.
 
 **Topic:** LLM post-training and alignment methods  
-**LinkedIn:** Thu Oct 22 2026, 09:00 (Israel time)
+**LinkedIn:** Mon Oct 12 2026, 12:00 (Israel time)
 
 ![Cheat sheet titled 'Same Raw Model. Different Feedback. Different Behavior.' comparing six LLM post-training methods: SFT, RLHF with PPO, DPO, ORPO, KTO and GRPO. Each has a worked-example diagram with the loss or advantage computed, pros and cons, and relative cost, followed by a table of which method to use when.](08-post-training.png)
 
