@@ -1,0 +1,206 @@
+{
+ "title": "Same Release. Different Rollouts. Different Risk.",
+ "concept": "Deployment strategies",
+ "createdAt": "2026-10-02T08:42:08.000Z",
+ "data": {
+  "layout": "gallery",
+  "concept": "Deployment strategies",
+  "kicker": "Software engineering · 8 deployment strategies",
+  "title": [
+   "Same Release.",
+   "Different Rollouts.",
+   "Different Risk."
+  ],
+  "sticky": [
+   "Same build.",
+   "New rollout.",
+   "Less risk!"
+  ],
+  "note": [
+   "Ship the code,",
+   "control the blast."
+  ],
+  "intro": {
+   "before": "Shipping code is a choice of",
+   "highlight": "how much traffic it touches",
+   "after": "first, and how fast you can take it back."
+  },
+  "tiles": [
+   {
+    "n": 1,
+    "title": "Recreate",
+    "short": "Recreate",
+    "tagline": "Stop old, start new",
+    "good": "Simplest: two versions never run side by side, so no compatibility work",
+    "watch": "Users see downtime between stopping v1 and v2 becoming ready",
+    "diagram": ""
+   },
+   {
+    "n": 2,
+    "title": "Rolling Update",
+    "short": "Rolling",
+    "tagline": "Swap instances in batches",
+    "good": "Kubernetes Deployment default: maxSurge and maxUnavailable at 25%",
+    "watch": "v1 and v2 serve traffic together, so both must accept the same data",
+    "diagram": ""
+   },
+   {
+    "n": 3,
+    "title": "Blue-Green",
+    "short": "Blue-green",
+    "tagline": "Flip all traffic at once",
+    "good": "Instant rollback: point the router back at the old environment",
+    "watch": "Needs double capacity while both environments are running",
+    "diagram": ""
+   },
+   {
+    "n": 4,
+    "title": "Canary Release",
+    "short": "Canary",
+    "tagline": "A small slice goes first",
+    "good": "Real users try v2 at 5% while you watch errors and latency",
+    "watch": "Slow to reach 100%, and only safe if metrics catch regressions",
+    "diagram": ""
+   },
+   {
+    "n": 5,
+    "title": "Shadow (Mirroring)",
+    "short": "Shadow",
+    "tagline": "Copy traffic, discard replies",
+    "good": "Tests v2 on real production load with zero impact on users",
+    "watch": "Mirrored writes, payments or emails must be stubbed out in v2",
+    "diagram": ""
+   },
+   {
+    "n": 6,
+    "title": "A/B Testing",
+    "short": "A/B test",
+    "tagline": "Split users, compare outcomes",
+    "good": "Measures business impact per version: conversion, retention, revenue",
+    "watch": "Needs enough traffic and time for a statistically significant result",
+    "diagram": ""
+   },
+   {
+    "n": 7,
+    "title": "Feature Flags",
+    "short": "Flags",
+    "tagline": "Ship dark, switch on later",
+    "good": "Decouples deploy from release; turn a feature off without a redeploy",
+    "watch": "Old flags pile up as tech debt; delete each one after full rollout",
+    "diagram": ""
+   },
+   {
+    "n": 8,
+    "title": "Ring Deployment",
+    "short": "Rings",
+    "tagline": "Widen the circle in steps",
+    "good": "Staff and opt-in users meet the bugs before the general public does",
+    "watch": "Each ring needs its own audience and a waiting period before the next",
+    "diagram": ""
+   }
+  ],
+  "which": {
+   "title": "Which strategy?",
+   "rows": [
+    {
+     "q": "Short downtime is acceptable",
+     "items": [
+      1
+     ]
+    },
+    {
+     "q": "Default for stateless services",
+     "items": [
+      2
+     ]
+    },
+    {
+     "q": "Need instant rollback",
+     "items": [
+      3
+     ]
+    },
+    {
+     "q": "Risky change, test on real users",
+     "items": [
+      4,
+      8
+     ]
+    },
+    {
+     "q": "Load-test v2 with zero user risk",
+     "items": [
+      5
+     ]
+    },
+    {
+     "q": "Compare business metrics",
+     "items": [
+      6
+     ]
+    },
+    {
+     "q": "Release separately from deploy",
+     "items": [
+      7
+     ]
+    }
+   ]
+  },
+  "principles": [
+   {
+    "lead": "Make rollback boring:",
+    "hl": "practice it.",
+    "sub": "A strategy is only as safe as the time it takes to get back to the old version."
+   },
+   {
+    "lead": "Watch the right signals:",
+    "hl": "errors and latency.",
+    "sub": "Canaries and rings help only if dashboards and alerts catch a bad version early."
+   },
+   {
+    "lead": "Separate deploy from release:",
+    "hl": "use feature flags.",
+    "sub": "Ship code dark, then turn it on per user, region or percentage."
+   }
+  ],
+  "quote": {
+   "big": "Deploys are routine. Releases are decisions.",
+   "small": "Choose how much traffic each version gets."
+  },
+  "diagrams": {
+   "1": {
+    "alt": "Three v1 instances are stopped, nothing serves during a downtime gap, then three v2 instances start.",
+    "svg": "<text x='70' y='30' font-size='10.5' fill='#43506B' text-anchor='middle'>stop all v1</text><text x='200' y='30' font-size='10.5' fill='#D1495B' text-anchor='middle'>nothing serving</text><text x='330' y='30' font-size='10.5' fill='#43506B' text-anchor='middle'>start all v2</text><rect x='20' y='44' width='34' height='22' rx='5' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='37' y='59' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>v1</text><rect x='58' y='44' width='34' height='22' rx='5' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='75' y='59' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>v1</text><rect x='96' y='44' width='34' height='22' rx='5' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='113' y='59' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>v1</text><rect x='146' y='40' width='108' height='30' rx='6' fill='#FFF1EC' stroke='#D1495B' stroke-width='1.6' stroke-dasharray='5 3'/><text x='200' y='60' font-size='12' fill='#D1495B' text-anchor='middle' data-f='sans'>downtime</text><rect x='266' y='44' width='34' height='22' rx='5' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='283' y='59' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>v2</text><rect x='304' y='44' width='34' height='22' rx='5' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='321' y='59' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>v2</text><rect x='342' y='44' width='34' height='22' rx='5' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='359' y='59' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>v2</text><line x1='20' y1='104' x2='380' y2='104' stroke='#43506B' stroke-width='1.3' stroke-linecap='round'/><polyline points='374.3,100.9 380,104 374.3,107.1' fill='none' stroke='#43506B' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><text x='370' y='122' font-size='10.5' fill='#43506B' text-anchor='end'>time</text><line x1='140' y1='98' x2='140' y2='110' stroke='#43506B' stroke-width='1.3' stroke-linecap='round'/><line x1='260' y1='98' x2='260' y2='110' stroke='#43506B' stroke-width='1.3' stroke-linecap='round'/><text x='200' y='122' font-size='10.5' fill='#D1495B' text-anchor='middle'>users get errors here</text>"
+   },
+   "2": {
+    "alt": "Four instances go from all v1 to all v2 in four steps, replacing one instance, 25 percent, per step.",
+    "svg": "<text x='52' y='22' font-size='10.5' fill='#43506B' text-anchor='middle'>step 1</text><rect x='34' y='30' width='36' height='18' rx='5' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='52' y='43' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>v2</text><rect x='34' y='52' width='36' height='18' rx='5' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='52' y='65' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>v1</text><rect x='34' y='74' width='36' height='18' rx='5' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='52' y='87' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>v1</text><rect x='34' y='96' width='36' height='18' rx='5' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='52' y='109' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>v1</text><line x1='80' y1='64' x2='112' y2='64' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round'/><polyline points='106.3,60.9 112,64 106.3,67.1' fill='none' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><text x='144' y='22' font-size='10.5' fill='#43506B' text-anchor='middle'>step 2</text><rect x='126' y='30' width='36' height='18' rx='5' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='144' y='43' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>v2</text><rect x='126' y='52' width='36' height='18' rx='5' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='144' y='65' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>v2</text><rect x='126' y='74' width='36' height='18' rx='5' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='144' y='87' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>v1</text><rect x='126' y='96' width='36' height='18' rx='5' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='144' y='109' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>v1</text><line x1='172' y1='64' x2='204' y2='64' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round'/><polyline points='198.3,60.9 204,64 198.3,67.1' fill='none' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><text x='236' y='22' font-size='10.5' fill='#43506B' text-anchor='middle'>step 3</text><rect x='218' y='30' width='36' height='18' rx='5' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='236' y='43' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>v2</text><rect x='218' y='52' width='36' height='18' rx='5' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='236' y='65' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>v2</text><rect x='218' y='74' width='36' height='18' rx='5' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='236' y='87' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>v2</text><rect x='218' y='96' width='36' height='18' rx='5' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='236' y='109' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>v1</text><line x1='264' y1='64' x2='296' y2='64' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round'/><polyline points='290.3,60.9 296,64 290.3,67.1' fill='none' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><text x='328' y='22' font-size='10.5' fill='#43506B' text-anchor='middle'>step 4</text><rect x='310' y='30' width='36' height='18' rx='5' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='328' y='43' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>v2</text><rect x='310' y='52' width='36' height='18' rx='5' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='328' y='65' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>v2</text><rect x='310' y='74' width='36' height='18' rx='5' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='328' y='87' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>v2</text><rect x='310' y='96' width='36' height='18' rx='5' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='328' y='109' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>v2</text><text x='200' y='130' font-size='10.5' fill='#1B2440' text-anchor='middle'>swap 1 of 4 instances per step (25%)</text>"
+   },
+   "3": {
+    "alt": "A router sends 100 percent of users to the green v2 environment while blue v1 waits on standby; rolling back flips the router back.",
+    "svg": "<circle cx='25' cy='62' r='4.2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><path d='M18.5 76 Q25 64 31.5 76' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><circle cx='34' cy='62' r='4.2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><path d='M27.5 76 Q34 64 40.5 76' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><circle cx='43' cy='62' r='4.2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><path d='M36.5 76 Q43 64 49.5 76' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><text x='34' y='90' font-size='10.5' fill='#43506B' text-anchor='middle'>users</text><rect x='80' y='54' width='70' height='30' rx='6' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.5'/><text x='115' y='72.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>router</text><line x1='62' y1='69' x2='78' y2='69' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round'/><polyline points='72.3,65.9 78,69 72.3,72.1' fill='none' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><rect x='250' y='14' width='130' height='46' rx='8' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.4'/><text x='315' y='32' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>blue · v1</text><text x='315' y='50' font-size='10.5' fill='#8C95A8' text-anchor='middle'>standby, 0%</text><rect x='250' y='82' width='130' height='46' rx='8' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.9'/><text x='315' y='100' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>green · v2</text><text x='315' y='118' font-size='10.5' fill='#3452C7' text-anchor='middle'>all traffic, 100%</text><line x1='150' y1='76' x2='246' y2='104' stroke='#3452C7' stroke-width='2.2' stroke-linecap='round'/><polyline points='241.4,99.4 246,104 239.7,105.4' fill='none' stroke='#3452C7' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/><line x1='150' y1='62' x2='246' y2='38' stroke='#8C95A8' stroke-width='1.3' stroke-linecap='round' stroke-dasharray='4 3'/><polyline points='239.7,36.4 246,38 241.2,42.4' fill='none' stroke='#8C95A8' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><path d='M236 24 Q204 8 162 50' fill='none' stroke='#D1495B' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' stroke-dasharray='4 3'/><polyline points='167.8,47.0 162,50 162.6,43.5' fill='none' stroke='#D1495B' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><text x='198' y='18' font-size='10.5' fill='#D1495B' text-anchor='end'>rollback: flip back</text>"
+   },
+   "4": {
+    "alt": "A load balancer sends 95 percent of users to v1 and 5 percent to one v2 canary; if errors and latency look fine, v2 grows to 25, 50 and 100 percent.",
+    "svg": "<circle cx='21' cy='64' r='4.2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><path d='M14.5 78 Q21 66 27.5 78' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><circle cx='30' cy='64' r='4.2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><path d='M23.5 78 Q30 66 36.5 78' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><circle cx='39' cy='64' r='4.2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><path d='M32.5 78 Q39 66 45.5 78' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><text x='30' y='92' font-size='10.5' fill='#43506B' text-anchor='middle'>users</text><rect x='64' y='55' width='54' height='30' rx='6' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.5'/><text x='91' y='73.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>LB</text><line x1='48' y1='70' x2='62' y2='70' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round'/><polyline points='56.3,66.9 62,70 56.3,73.1' fill='none' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><rect x='190' y='22' width='34' height='22' rx='5' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='207' y='37' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>v1</text><rect x='230' y='22' width='34' height='22' rx='5' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='247' y='37' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>v1</text><rect x='270' y='22' width='34' height='22' rx='5' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='287' y='37' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>v1</text><rect x='190' y='92' width='34' height='22' rx='5' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='207' y='107' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>v2</text><line x1='118' y1='64' x2='184' y2='34' stroke='#1B2440' stroke-width='1.6' stroke-linecap='round'/><polyline points='177.5,33.5 184,34 180.1,39.2' fill='none' stroke='#1B2440' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><line x1='118' y1='77' x2='184' y2='102' stroke='#D1495B' stroke-width='2.2' stroke-linecap='round'/><polyline points='179.8,97.1 184,102 177.6,102.9' fill='none' stroke='#D1495B' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='135.77' y='35' width='28.46' height='15' rx='3' fill='#FFFFFF'/><text x='150' y='46' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>95%</text><rect x='141.18' y='86' width='21.64' height='15' rx='3' fill='#FFFFFF'/><text x='152' y='97' font-size='11' fill='#D1495B' text-anchor='middle' data-f='sans'>5%</text><rect x='240' y='88' width='146' height='30' rx='6' fill='#E9F8F4' stroke='#1B2440' stroke-width='1.2'/><text x='313' y='101' font-size='10.5' fill='#1B2440' text-anchor='middle'>watch errors, latency</text><text x='313' y='113' font-size='10.5' fill='#3452C7' text-anchor='middle'>then 25% → 50% → 100%</text><line x1='228' y1='103' x2='238' y2='103' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><polyline points='232.3,99.9 238,103 232.3,106.1' fill='none' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/>"
+   },
+   "5": {
+    "alt": "The load balancer serves users from v1 and sends a copy of each request to v2, whose replies are thrown away.",
+    "svg": "<circle cx='21' cy='46' r='4.2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><path d='M14.5 60 Q21 48 27.5 60' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><circle cx='30' cy='46' r='4.2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><path d='M23.5 60 Q30 48 36.5 60' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><circle cx='39' cy='46' r='4.2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><path d='M32.5 60 Q39 48 45.5 60' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><text x='30' y='74' font-size='10.5' fill='#43506B' text-anchor='middle'>users</text><rect x='70' y='36' width='54' height='30' rx='6' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.5'/><text x='97' y='54.96' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>LB</text><line x1='48' y1='51' x2='68' y2='51' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round'/><polyline points='62.3,47.9 68,51 62.3,54.1' fill='none' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><rect x='200' y='28' width='44' height='26' rx='5' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><text x='222' y='45' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>v1</text><rect x='200' y='94' width='44' height='26' rx='5' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='222' y='111' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>v2</text><line x1='124' y1='46' x2='196' y2='41' stroke='#1B2440' stroke-width='1.6' stroke-linecap='round'/><polyline points='190.1,38.3 196,41 190.5,44.5' fill='none' stroke='#1B2440' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><line x1='110' y1='66' x2='196' y2='106' stroke='#8C95A8' stroke-width='1.4' stroke-linecap='round' stroke-dasharray='4 3'/><polyline points='192.1,100.8 196,106 189.5,106.4' fill='none' stroke='#8C95A8' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><rect x='116' y='80' width='54' height='15' rx='3' fill='#FFFFFF'/><text x='143' y='91' font-size='10.5' fill='#43506B' text-anchor='middle'>copy</text><path d='M222 28 Q140 8 34 34' fill='none' stroke='#3452C7' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><polyline points='40.4,32.9 34,32 38.2,27.0' fill='none' stroke='#3452C7' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><text x='150' y='14' font-size='10.5' fill='#3452C7' text-anchor='middle'>only v1 answers users</text><line x1='244' y1='107' x2='300' y2='107' stroke='#8C95A8' stroke-width='1.3' stroke-linecap='round'/><polyline points='294.3,103.9 300,107 294.3,110.1' fill='none' stroke='#8C95A8' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><text x='306' y='104' font-size='10.5' fill='#8C95A8'>reply</text><text x='306' y='117' font-size='10.5' fill='#8C95A8'>thrown away</text><line x1='288' y1='100' x2='296' y2='114' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round'/><line x1='296' y1='100' x2='288' y2='114' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round'/>"
+   },
+   "6": {
+    "alt": "Users are split 50/50 by a hash of their ID into group A on v1 and group B on v2, then conversion is compared between groups.",
+    "svg": "<circle cx='21' cy='64' r='4.2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><path d='M14.5 78 Q21 66 27.5 78' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><circle cx='30' cy='64' r='4.2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><path d='M23.5 78 Q30 66 36.5 78' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><circle cx='39' cy='64' r='4.2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><path d='M32.5 78 Q39 66 45.5 78' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><text x='30' y='92' font-size='10.5' fill='#43506B' text-anchor='middle'>users</text><rect x='62' y='50' width='100' height='40' rx='6' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.5'/><text x='112' y='69' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>split by user</text><text x='112' y='81' font-size='10.5' fill='#43506B' text-anchor='middle'>hash of user ID</text><line x1='48' y1='70' x2='60' y2='70' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round'/><polyline points='54.3,66.9 60,70 54.3,73.1' fill='none' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><rect x='214' y='18' width='104' height='34' rx='6' fill='#FFF1EC' stroke='#1B2440' stroke-width='1.3'/><text x='266' y='39' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>group A · v1</text><rect x='214' y='88' width='104' height='34' rx='6' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='266' y='109' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>group B · v2</text><line x1='162' y1='62' x2='210' y2='37' stroke='#1B2440' stroke-width='1.5' stroke-linecap='round'/><polyline points='203.5,36.9 210,37 206.4,42.4' fill='none' stroke='#1B2440' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><line x1='162' y1='78' x2='210' y2='104' stroke='#3452C7' stroke-width='1.5' stroke-linecap='round'/><polyline points='206.5,98.5 210,104 203.5,104.0' fill='none' stroke='#3452C7' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><rect x='169.77' y='32' width='28.46' height='15' rx='3' fill='#FFFFFF'/><text x='184' y='43' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>50%</text><rect x='169.77' y='94' width='28.46' height='15' rx='3' fill='#FFFFFF'/><text x='184' y='105' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>50%</text><line x1='318' y1='35' x2='340' y2='60' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round'/><polyline points='338.6,53.7 340,60 333.9,57.8' fill='none' stroke='#1B2440' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><line x1='318' y1='105' x2='340' y2='80' stroke='#3452C7' stroke-width='1.2' stroke-linecap='round'/><polyline points='333.9,82.2 340,80 338.6,86.3' fill='none' stroke='#3452C7' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='338' y='54' width='56' height='32' rx='6' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.2'/><text x='366' y='67' font-size='10.5' fill='#1B2440' text-anchor='middle'>compare</text><text x='366' y='80' font-size='10.5' fill='#1B2440' text-anchor='middle'>conversion</text>"
+   },
+   "7": {
+    "alt": "v2 is deployed with the new code behind a flag; the flag turns the feature on for 10 percent of users and keeps it off for the other 90 percent.",
+    "svg": "<rect x='16' y='40' width='112' height='58' rx='8' fill='#EFF2FF' stroke='#3452C7' stroke-width='1.8'/><text x='72' y='62' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>v2 deployed</text><text x='72' y='80' font-size='10.5' fill='#43506B' text-anchor='middle'>new code inside</text><line x1='128' y1='69' x2='152' y2='69' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round'/><polyline points='146.3,65.9 152,69 146.3,72.1' fill='none' stroke='#1B2440' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><rect x='156' y='44' width='70' height='50' rx='8' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.3'/><text x='191' y='60' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>flag</text><rect x='170' y='68' width='42' height='18' rx='9' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.3'/><circle cx='203' cy='77' r='6.5' fill='#3452C7'/><line x1='226' y1='60' x2='262' y2='36' stroke='#3452C7' stroke-width='1.6' stroke-linecap='round'/><polyline points='255.5,36.6 262,36 259.0,41.8' fill='none' stroke='#3452C7' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><line x1='226' y1='80' x2='262' y2='104' stroke='#8C95A8' stroke-width='1.4' stroke-linecap='round' stroke-dasharray='4 3'/><polyline points='259.0,98.2 262,104 255.5,103.4' fill='none' stroke='#8C95A8' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/><rect x='266' y='18' width='124' height='34' rx='6' fill='#E9F8F4' stroke='#3452C7' stroke-width='1.6'/><text x='328' y='32' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>flag on: 10%</text><text x='328' y='46' font-size='10.5' fill='#43506B' text-anchor='middle'>see the feature</text><rect x='266' y='88' width='124' height='34' rx='6' fill='#FFFFFF' stroke='#8C95A8' stroke-width='1.3'/><text x='328' y='102' font-size='11' fill='#8C95A8' text-anchor='middle' data-f='sans'>flag off: 90%</text><text x='328' y='116' font-size='10.5' fill='#8C95A8' text-anchor='middle'>old behaviour</text><text x='72' y='122' font-size='10.5' fill='#D1495B' text-anchor='middle'>deploy ≠ release</text>"
+   },
+   "8": {
+    "alt": "Three nested rings: staff first, then early adopters, then everyone, with a wait and a health check before each wider ring.",
+    "svg": "<ellipse cx='140' cy='74' rx='126' ry='62' fill='#FAF0FE' stroke='#1B2440' stroke-width='1.3'/><text x='140' y='26' font-size='10.5' fill='#1B2440' text-anchor='middle'>ring 2 · everyone</text><ellipse cx='140' cy='74' rx='84' ry='42' fill='#E9F8F4' stroke='#1B2440' stroke-width='1.3'/><text x='140' y='49' font-size='10.5' fill='#1B2440' text-anchor='middle'>ring 1 · early adopters</text><ellipse cx='140' cy='74' rx='40' ry='20' fill='#FFF6E0' stroke='#1B2440' stroke-width='1.3'/><text x='140' y='75' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>ring 0</text><text x='140' y='86' font-size='10.5' fill='#43506B' text-anchor='middle'>staff</text><circle cx='116' cy='72' r='3' fill='#D1495B'/><circle cx='164' cy='72' r='3' fill='#D1495B'/><circle cx='78' cy='68' r='3' fill='#3452C7'/><circle cx='202' cy='68' r='3' fill='#3452C7'/><circle cx='84' cy='88' r='3' fill='#3452C7'/><circle cx='196' cy='88' r='3' fill='#3452C7'/><circle cx='36' cy='66' r='3' fill='#1B2440'/><circle cx='244' cy='66' r='3' fill='#1B2440'/><circle cx='44' cy='96' r='3' fill='#1B2440'/><circle cx='236' cy='96' r='3' fill='#1B2440'/><circle cx='70' cy='114' r='3' fill='#1B2440'/><circle cx='210' cy='114' r='3' fill='#1B2440'/><circle cx='78' cy='30' r='3' fill='#1B2440'/><circle cx='202' cy='30' r='3' fill='#1B2440'/><text x='282' y='32' font-size='11' fill='#3452C7'>1. ship to ring 0</text><text x='282' y='58' font-size='11' fill='#1B2440'>2. wait and check</text><text x='282' y='84' font-size='11' fill='#3452C7'>3. widen to ring 1</text><text x='282' y='110' font-size='11' fill='#1B2440'>4. then everyone</text><line x1='274' y1='28' x2='274' y2='108' stroke='#3452C7' stroke-width='1.4' stroke-linecap='round'/><polyline points='277.1,102.3 274,108 270.9,102.3' fill='none' stroke='#3452C7' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/>"
+   }
+  }
+ }
+}
