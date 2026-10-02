@@ -10,3 +10,5 @@
 10-prompt-injection {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2412}
 11-response-caching {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2565}
 12-hash-tables {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2450}
+13-batchnorm-layernorm {"diagrams": ["ok", "ok", "ok"], "height": 2330}
+16-sigmoid {"diagrams": ["ok", "ok"], "height": 2281}
