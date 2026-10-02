@@ -1,0 +1,167 @@
+{
+ "title": "BatchNorm vs LayerNorm: Same Formula. Different Axis.",
+ "concept": "BatchNorm vs LayerNorm",
+ "createdAt": "2026-10-02T09:04:13.000Z",
+ "data": {
+  "layout": "faceoff",
+  "concept": "BatchNorm vs LayerNorm",
+  "kicker": "Machine learning · Face-off",
+  "title": [
+   "BatchNorm",
+   "LayerNorm",
+   "Same Formula. Different Axis."
+  ],
+  "sticky": [],
+  "note": [
+   "Same maths,",
+   "different axis."
+  ],
+  "intro": {
+   "before": "Both subtract a mean, divide by a standard deviation and rescale with learned γ and β. What differs is",
+   "highlight": "which numbers share a mean",
+   "after": ", and that decides where each one works."
+  },
+  "sides": [
+   {
+    "name": "Batch Normalization",
+    "short": "BatchNorm",
+    "tagline": "Normalize across the batch",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Each feature is normalized over all samples in the mini-batch"
+     },
+     {
+      "sign": "+",
+      "text": "Keeps running mean and variance, so inference needs no batch"
+     },
+     {
+      "sign": "+",
+      "text": "The CNN standard: ResNet puts one after almost every conv layer"
+     },
+     {
+      "sign": "-",
+      "text": "Tiny batches give noisy statistics, and train and eval can drift"
+     }
+    ],
+    "tools": [
+     "torch.nn.BatchNorm2d",
+     "tf.keras.layers.BatchNormalization"
+    ]
+   },
+   {
+    "name": "Layer Normalization",
+    "short": "LayerNorm",
+    "tagline": "Normalize across the features",
+    "bullets": [
+     {
+      "sign": "+",
+      "text": "Each sample is normalized over its own features, on its own"
+     },
+     {
+      "sign": "+",
+      "text": "Same computation in training and inference, with no running stats"
+     },
+     {
+      "sign": "+",
+      "text": "The Transformer standard: BERT and GPT-2 use it in every block"
+     },
+     {
+      "sign": "-",
+      "text": "In convolutional networks it usually trails BatchNorm on accuracy"
+     }
+    ],
+    "tools": [
+     "torch.nn.LayerNorm",
+     "tf.keras.layers.LayerNormalization"
+    ]
+   }
+  ],
+  "chart": {
+   "title": "Same numbers, two different means",
+   "caption": "Rows are samples, columns are features (γ = 1, β = 0). The same 9 becomes 1.22 under BatchNorm and 1.36 under LayerNorm."
+  },
+  "table": {
+   "title": "Key differences",
+   "rows": [
+    {
+     "feature": "Averages over",
+     "a": "the batch, for each feature",
+     "b": "the features, for each sample"
+    },
+    {
+     "feature": "Statistics at inference",
+     "a": "running averages saved in training",
+     "b": "computed fresh for every sample"
+    },
+    {
+     "feature": "Batch size of 1",
+     "a": "unreliable while training",
+     "b": "works exactly the same"
+    },
+    {
+     "feature": "Train vs eval mode",
+     "a": "behaves differently",
+     "b": "identical"
+    },
+    {
+     "feature": "Usual home",
+     "a": "CNNs such as ResNet",
+     "b": "Transformers and RNNs"
+    },
+    {
+     "feature": "Learned scale and shift",
+     "a": "γ and β per channel",
+     "b": "γ and β per feature"
+    }
+   ]
+  },
+  "when": {
+   "a": [
+    "Training CNNs on images with healthy batch sizes",
+    "Batch statistics are stable across steps",
+    "You want to fold it into the conv weights for inference"
+   ],
+   "b": [
+    "Transformers, RNNs and other sequence models",
+    "Batches are small, uneven or a single sample",
+    "Inputs vary in length, like tokens in a sentence"
+   ]
+  },
+  "principles": [
+   {
+    "lead": "Pick by the axis:",
+    "hl": "samples or features.",
+    "sub": "Stable image batches favor BatchNorm; tokens and sequences favor LayerNorm."
+   },
+   {
+    "lead": "BatchNorm has two modes:",
+    "hl": "call model.eval().",
+    "sub": "Skip it at inference and batch stats quietly change your outputs."
+   },
+   {
+    "lead": "Few samples per GPU?",
+    "hl": "Skip BatchNorm.",
+    "sub": "With tiny batches, LayerNorm or GroupNorm stays stable."
+   }
+  ],
+  "quote": {
+   "big": "Same formula. The axis is the decision.",
+   "small": "Normalize across samples, or across features."
+  },
+  "diagrams": {
+   "a": {
+    "alt": "A 4 by 5 grid of samples by features with one feature column highlighted; BatchNorm uses batch statistics in training and running averages at inference.",
+    "svg": "<text x='119' y='36' font-size='10.5' fill='#43506B' text-anchor='middle'>5 features →</text><text x='48' y='90' font-size='10.5' fill='#43506B' text-anchor='end'>batch</text><line x1='30' y1='98' x2='30' y2='120' stroke='#43506B' stroke-width='1.2' stroke-linecap='round'/><polyline points='33.1,114.3 30,120 26.9,114.3' fill='none' stroke='#43506B' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='54' y='46' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='80' y='46' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='106' y='46' width='26' height='20' rx='2' fill='#FFD27A' stroke='#1B2440' stroke-width='1.1'/><rect x='132' y='46' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='158' y='46' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='54' y='66' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='80' y='66' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='106' y='66' width='26' height='20' rx='2' fill='#FFD27A' stroke='#1B2440' stroke-width='1.1'/><rect x='132' y='66' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='158' y='66' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='54' y='86' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='80' y='86' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='106' y='86' width='26' height='20' rx='2' fill='#FFD27A' stroke='#1B2440' stroke-width='1.1'/><rect x='132' y='86' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='158' y='86' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='54' y='106' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='80' y='106' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='106' y='106' width='26' height='20' rx='2' fill='#FFD27A' stroke='#1B2440' stroke-width='1.1'/><rect x='132' y='106' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='158' y='106' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><path d='M106 132 L106 138 L132 138 L132 132' fill='none' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><text x='119' y='154' font-size='10.5' fill='#D1495B' text-anchor='middle'>1 mean and var per feature</text><rect x='214' y='40' width='136' height='38' rx='6' fill='#FFF1EC' stroke='#1B2440' stroke-width='1.5'/><text x='282' y='58' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>Training</text><text x='282' y='70' font-size='10.5' fill='#43506B' text-anchor='middle'>this batch's mean, var</text><rect x='214' y='96' width='136' height='38' rx='6' fill='#E9F8F4' stroke='#1B2440' stroke-width='1.5'/><text x='282' y='114' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>Inference</text><text x='282' y='126' font-size='10.5' fill='#43506B' text-anchor='middle'>running mean, var</text><line x1='190' y1='76' x2='210' y2='59' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round'/><polyline points='203.6,60.3 210,59 207.7,65.1' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><text x='282' y='154' font-size='10.5' fill='#43506B' text-anchor='middle'>two modes: train ≠ eval</text>"
+   },
+   "b": {
+    "alt": "The same grid with one sample row highlighted; LayerNorm uses that sample's own statistics in both training and inference, so a batch of 1 works.",
+    "svg": "<text x='119' y='36' font-size='10.5' fill='#43506B' text-anchor='middle'>5 features →</text><text x='48' y='90' font-size='10.5' fill='#43506B' text-anchor='end'>batch</text><line x1='30' y1='98' x2='30' y2='120' stroke='#43506B' stroke-width='1.2' stroke-linecap='round'/><polyline points='33.1,114.3 30,120 26.9,114.3' fill='none' stroke='#43506B' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/><rect x='54' y='46' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='80' y='46' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='106' y='46' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='132' y='46' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='158' y='46' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='54' y='66' width='26' height='20' rx='2' fill='#FFD27A' stroke='#1B2440' stroke-width='1.1'/><rect x='80' y='66' width='26' height='20' rx='2' fill='#FFD27A' stroke='#1B2440' stroke-width='1.1'/><rect x='106' y='66' width='26' height='20' rx='2' fill='#FFD27A' stroke='#1B2440' stroke-width='1.1'/><rect x='132' y='66' width='26' height='20' rx='2' fill='#FFD27A' stroke='#1B2440' stroke-width='1.1'/><rect x='158' y='66' width='26' height='20' rx='2' fill='#FFD27A' stroke='#1B2440' stroke-width='1.1'/><rect x='54' y='86' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='80' y='86' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='106' y='86' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='132' y='86' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='158' y='86' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='54' y='106' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='80' y='106' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='106' y='106' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='132' y='106' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><rect x='158' y='106' width='26' height='20' rx='2' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.1'/><path d='M188 66 L194 66 L194 86 L188 86' fill='none' stroke='#D1495B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><text x='119' y='154' font-size='10.5' fill='#D1495B' text-anchor='middle'>1 mean and var per sample</text><rect x='214' y='40' width='136' height='38' rx='6' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.5'/><text x='282' y='58' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>Training</text><text x='282' y='70' font-size='10.5' fill='#43506B' text-anchor='middle'>this sample's mean, var</text><rect x='214' y='96' width='136' height='38' rx='6' fill='#EFF2FF' stroke='#1B2440' stroke-width='1.5'/><text x='282' y='114' font-size='11' fill='#1B2440' text-anchor='middle' data-f='sans'>Inference</text><text x='282' y='126' font-size='10.5' fill='#43506B' text-anchor='middle'>exactly the same</text><line x1='198' y1='76' x2='210' y2='59' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round'/><polyline points='204.2,61.9 210,59 209.3,65.5' fill='none' stroke='#1B2440' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/><rect x='232' y='144' width='111.4' height='15' rx='4' fill='#E9F8F4' stroke='#1B2440' stroke-width='1.2'/><text x='287.7' y='155' font-size='10.5' fill='#1B2440' text-anchor='middle'>works at batch size 1</text>"
+   },
+   "chart": {
+    "alt": "The same 3 by 3 matrix twice: BatchNorm takes column means 4, 4 and 6, LayerNorm row means 5, 3 and 6, so the value 9 normalizes to 1.22 or 1.36.",
+    "svg": "<line x1='320' y1='14' x2='320' y2='190' stroke='#8C95A8' stroke-width='1.2' stroke-linecap='round' stroke-dasharray='4 3'/><text x='160' y='20' font-size='12' fill='#1B2440' text-anchor='middle' font-weight='bold'>BatchNorm: average down each column</text><text x='110' y='40' font-size='10.5' fill='#8C95A8' text-anchor='middle'>f1</text><text x='150' y='40' font-size='10.5' fill='#8C95A8' text-anchor='middle'>f2</text><text x='190' y='40' font-size='10.5' fill='#8C95A8' text-anchor='middle'>f3</text><text x='82' y='63' font-size='10.5' fill='#8C95A8' text-anchor='end'>s1</text><rect x='90' y='46' width='40' height='26' rx='3' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.2'/><text x='110' y='63' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>2</text><rect x='130' y='46' width='40' height='26' rx='3' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.2'/><text x='150' y='63' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>4</text><rect x='170' y='46' width='40' height='26' rx='3' fill='#FFD27A' stroke='#D1495B' stroke-width='2.2'/><text x='190' y='63' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>9</text><text x='82' y='89' font-size='10.5' fill='#8C95A8' text-anchor='end'>s2</text><rect x='90' y='72' width='40' height='26' rx='3' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.2'/><text x='110' y='89' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>6</text><rect x='130' y='72' width='40' height='26' rx='3' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.2'/><text x='150' y='89' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>0</text><rect x='170' y='72' width='40' height='26' rx='3' fill='#FFD27A' stroke='#1B2440' stroke-width='1.2'/><text x='190' y='89' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>3</text><text x='82' y='115' font-size='10.5' fill='#8C95A8' text-anchor='end'>s3</text><rect x='90' y='98' width='40' height='26' rx='3' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.2'/><text x='110' y='115' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>4</text><rect x='130' y='98' width='40' height='26' rx='3' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.2'/><text x='150' y='115' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>8</text><rect x='170' y='98' width='40' height='26' rx='3' fill='#FFD27A' stroke='#1B2440' stroke-width='1.2'/><text x='190' y='115' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>6</text><text x='110' y='140' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>μ=4</text><text x='150' y='140' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>μ=4</text><text x='190' y='140' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>μ=6</text><line x1='222' y1='46' x2='222' y2='120' stroke='#3452C7' stroke-width='1.5' stroke-linecap='round'/><polyline points='225.1,114.3 222,120 218.9,114.3' fill='none' stroke='#3452C7' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><text x='160' y='170' font-size='12' fill='#D1495B' text-anchor='middle' data-f='sans'>9 → (9 − 6) / 2.45 = 1.22</text><text x='480' y='20' font-size='12' fill='#1B2440' text-anchor='middle' font-weight='bold'>LayerNorm: average across each row</text><text x='420' y='40' font-size='10.5' fill='#8C95A8' text-anchor='middle'>f1</text><text x='460' y='40' font-size='10.5' fill='#8C95A8' text-anchor='middle'>f2</text><text x='500' y='40' font-size='10.5' fill='#8C95A8' text-anchor='middle'>f3</text><text x='392' y='63' font-size='10.5' fill='#8C95A8' text-anchor='end'>s1</text><rect x='400' y='46' width='40' height='26' rx='3' fill='#FFD27A' stroke='#1B2440' stroke-width='1.2'/><text x='420' y='63' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>2</text><rect x='440' y='46' width='40' height='26' rx='3' fill='#FFD27A' stroke='#1B2440' stroke-width='1.2'/><text x='460' y='63' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>4</text><rect x='480' y='46' width='40' height='26' rx='3' fill='#FFD27A' stroke='#D1495B' stroke-width='2.2'/><text x='500' y='63' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>9</text><text x='392' y='89' font-size='10.5' fill='#8C95A8' text-anchor='end'>s2</text><rect x='400' y='72' width='40' height='26' rx='3' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.2'/><text x='420' y='89' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>6</text><rect x='440' y='72' width='40' height='26' rx='3' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.2'/><text x='460' y='89' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>0</text><rect x='480' y='72' width='40' height='26' rx='3' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.2'/><text x='500' y='89' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>3</text><text x='392' y='115' font-size='10.5' fill='#8C95A8' text-anchor='end'>s3</text><rect x='400' y='98' width='40' height='26' rx='3' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.2'/><text x='420' y='115' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>4</text><rect x='440' y='98' width='40' height='26' rx='3' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.2'/><text x='460' y='115' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>8</text><rect x='480' y='98' width='40' height='26' rx='3' fill='#FFFFFF' stroke='#1B2440' stroke-width='1.2'/><text x='500' y='115' font-size='12' fill='#1B2440' text-anchor='middle' data-f='sans'>6</text><text x='550' y='63' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>μ=5</text><text x='550' y='89' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>μ=3</text><text x='550' y='115' font-size='11' fill='#3452C7' text-anchor='middle' data-f='sans'>μ=6</text><line x1='400' y1='136' x2='520' y2='136' stroke='#3452C7' stroke-width='1.5' stroke-linecap='round'/><polyline points='514.3,132.9 520,136 514.3,139.1' fill='none' stroke='#3452C7' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><text x='480' y='170' font-size='12' fill='#D1495B' text-anchor='middle' data-f='sans'>9 → (9 − 5) / 2.94 = 1.36</text>"
+   }
+  }
+ }
+}
