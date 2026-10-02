@@ -12,4 +12,5 @@
 12-hash-tables {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok"], "height": 2450}
 13-batchnorm-layernorm {"diagrams": ["ok", "ok", "ok"], "height": 2330}
 14-deployment {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok"], "height": 2432}
+15-rnns-transformers {"diagrams": ["ok", "ok", "ok", "ok", "ok", "ok", "ok", "ok"], "height": 2768}
 16-sigmoid {"diagrams": ["ok", "ok"], "height": 2281}
