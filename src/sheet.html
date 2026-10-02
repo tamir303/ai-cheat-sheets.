@@ -75,6 +75,104 @@ body{margin:0;background:#EEF1F6;color:#1B2440;font-family:'Nunito',system-ui,sa
 .cs-quote .cs-tape{transform:rotate(-5deg)}
 .cs-quote .big{font-family:'Kalam',cursive;font-weight:700;font-size:24px;line-height:1.22}
 .cs-quote .small{font-family:'Patrick Hand',cursive;font-size:18px;line-height:1.25;color:#43506B}
+/* ----- shared by the extra layouts (deepdive, faceoff, gallery, timeline) and series ----- */
+.cs-h1xl{font-size:88px;line-height:1.02}
+.cs-g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.cs-panel.full{width:100%}
+.cs-ph.plain{padding:12px 18px 11px}
+.cs-sec{display:flex;flex-direction:column;gap:14px;padding:16px 20px 20px;flex-grow:1}
+.cs-lead{font-weight:600;font-size:17px;line-height:1.55;color:#2A3350}
+.cs-dots{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;font-weight:600;font-size:15.5px;line-height:1.4;color:#2A3350}
+.cs-dots li{display:flex;gap:10px;align-items:flex-start}
+.cs-dots li::before{content:'';flex-shrink:0;width:9px;height:9px;margin-top:6px;border-radius:50%;background:#3452C7;box-shadow:0 0 0 3px #E6EAFF}
+.cs-m sup,.cs-m sub{font-size:.62em;line-height:0}
+.cs-formula{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 14px;background:#FFF6E0;border:2px solid #1B2440;border-radius:14px;box-shadow:3px 3px 0 #1B2440;font-family:'Kalam',cursive;font-weight:700;font-size:34px;line-height:1.25;text-align:center}
+.cs-formula div:nth-child(2){font-size:26px;color:#43506B}
+.cs-legend2{display:flex;flex-direction:column;gap:7px;margin:0}
+.cs-legend2 div{display:flex;gap:12px;align-items:baseline}
+.cs-legend2 dt{flex-shrink:0;min-width:74px;font-family:'Kalam',cursive;font-weight:700;font-size:21px;line-height:1.2;color:#D1495B;text-align:right}
+.cs-legend2 dd{margin:0;font-weight:600;font-size:15.5px;line-height:1.4;color:#2A3350}
+.cs-fnote{font-family:'Patrick Hand',cursive;font-size:18px;line-height:1.3;color:#43506B}
+.cs-steps{display:flex;align-items:stretch;gap:10px}
+.cs-steps>svg{flex-shrink:0;align-self:center}
+.cs-step{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px;padding:12px 14px 14px;background:#FFFFFF;border:1.5px solid #1B2440;border-radius:12px}
+.cs-step.given{background:#FFF6E0}
+.cs-step h4{display:flex;align-items:center;gap:8px;margin:0;font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#43506B}
+.cs-step h4 i{font-style:normal;width:22px;height:22px;flex-shrink:0;border-radius:7px;border:1.5px solid #1B2440;display:inline-flex;align-items:center;justify-content:center;font-family:'Kalam',cursive;font-weight:700;font-size:14px;color:#1B2440}
+.cs-step p{font-family:'Patrick Hand',cursive;font-size:20px;line-height:1.3;color:#1B2440}
+.cs-result{align-self:center;font-family:'Kalam',cursive;font-weight:700;font-size:24px;line-height:1.3;text-align:center}
+.cs-cap{font-weight:600;font-size:15px;line-height:1.45;color:#2A3350}
+.cs-uses{list-style:none;padding:0;display:flex;flex-direction:column;gap:12px}
+.cs-uses li{display:flex;gap:12px;align-items:flex-start}
+.cs-ub{width:30px;height:30px;flex-shrink:0;border:2px solid #1B2440;border-radius:9px;transform:rotate(-4deg);display:inline-flex;align-items:center;justify-content:center;font-family:'Kalam',cursive;font-weight:700;font-size:16px}
+.cs-uses b{display:block;font-weight:800;font-size:15.5px;line-height:1.3}
+.cs-uses span{display:block;font-weight:600;font-size:14.5px;line-height:1.4;color:#43506B}
+.cs-pc{display:flex;gap:26px;align-items:stretch}
+.cs-pc>div:not(.cs-vdiv){flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:10px}
+.cs-pc h3{font-family:'Kalam',cursive;font-weight:700;font-size:24px;line-height:1.1}
+.cs-take2{padding:26px 30px}
+.cs-prin2{flex-grow:1;display:flex;flex-direction:column;gap:18px;min-width:0}
+.cs-prin2 h2{font-family:'Kalam',cursive;font-weight:700;font-size:33px;line-height:1;white-space:nowrap}
+.cs-prin2 ul{list-style:none;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;font-weight:600;font-size:17px;line-height:1.4;color:#2A3350}
+.cs-prin2 li{display:flex;gap:10px;align-items:flex-start}
+.cs-prin2 .sub{display:block;margin-top:3px;font-size:14.5px;color:#43506B}
+/* face-off */
+.cs-vs{display:flex;align-items:center;justify-content:center;gap:22px;margin:6px 0 4px}
+.cs-vs span{font-family:'Kalam',cursive;font-weight:700;line-height:1.05}
+.cs-vsa,.cs-vsb{font-size:56px;padding:4px 24px 2px;border:2.5px solid #1B2440;border-radius:18px;box-shadow:4px 4px 0 #1B2440}
+.cs-vsa{background:#FFB9A6;transform:rotate(-2deg)}
+.cs-vsb{background:#BCC6FF;transform:rotate(2deg)}
+.cs-vsx{font-size:34px;color:#43506B}
+.cs-sub{display:inline-block;margin-top:8px;font-family:'Kalam',cursive;font-weight:700;font-size:32px;line-height:1.15}
+.cs-chart{display:flex;flex-direction:column;gap:12px;padding:22px 24px 22px}
+.cs-tbl{padding:22px 24px 16px}
+.cs-table{width:100%;border-collapse:collapse;margin-top:10px}
+.cs-table th,.cs-table td{padding:10px 12px;border-bottom:1px dashed #D9DFEA;text-align:left;vertical-align:top;font-size:16px;line-height:1.4}
+.cs-table tbody tr:last-child th,.cs-table tbody tr:last-child td{border-bottom:0}
+.cs-table thead th{border-bottom:2px solid #1B2440;padding-bottom:10px}
+.cs-table tbody th{width:24%;font-weight:800;color:#1B2440}
+.cs-table td{width:38%;font-weight:600;color:#2A3350}
+.cs-table td.a{background:rgba(255,241,236,.7)}
+.cs-table td.b{background:rgba(239,242,255,.8)}
+.cs-when{list-style:none;padding:0;display:flex;flex-direction:column;gap:10px;font-weight:600;font-size:16px;line-height:1.4;color:#2A3350}
+.cs-when li{display:flex;gap:10px;align-items:flex-start}
+/* gallery */
+.cs-gal{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+/* timeline */
+.cs-tl{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:84px;row-gap:22px}
+.cs-spine{position:absolute;left:50%;top:0;bottom:0;width:4px;margin-left:-2px;border-radius:2px;background:#1B2440}
+.cs-ev{position:relative;display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #DCE2EC;border-radius:18px;box-shadow:0 1px 0 rgba(27,36,64,.04),0 16px 30px -22px rgba(27,36,64,.45)}
+.cs-ev>.cs-ph{border-radius:18px 18px 0 0}
+.cs-ev::before{content:'';position:absolute;top:34px;width:42px;border-top:2.5px dashed #1B2440}
+.cs-ev.l::before{right:-43px}
+.cs-ev.r::before{left:-43px}
+.cs-dot{position:absolute;top:25px;width:20px;height:20px;border-radius:50%;background:#FFD27A;border:3px solid #1B2440;z-index:1}
+.cs-ev.l .cs-dot{right:-52px}
+.cs-ev.r .cs-dot{left:-52px}
+.cs-year{flex-shrink:0;padding:5px 12px 4px;border:2px solid #1B2440;border-radius:999px;box-shadow:2px 2px 0 #1B2440;transform:rotate(-3deg);font-family:'Kalam',cursive;font-weight:700;font-size:20px;line-height:1;white-space:nowrap}
+.cs-evt{font-weight:600;font-size:15px;line-height:1.45;color:#2A3350}
+.cs-evt b{font-weight:800;color:#1B2440}
+.cs-themes{display:flex;flex-direction:column;gap:16px;padding:22px 24px 24px}
+.cs-trow{display:flex;align-items:stretch;gap:8px}
+.cs-trow>svg{flex-shrink:0;align-self:center}
+.cs-th{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:4px;padding:12px 14px;border:1.5px solid #1B2440;border-radius:12px}
+.cs-th b{font-weight:800;font-size:15.5px;line-height:1.25}
+.cs-th span{font-family:'Patrick Hand',cursive;font-size:17px;line-height:1.25;color:#43506B}
+/* series */
+.cs-ser{display:flex;align-items:center;gap:18px;padding:12px 18px;background:#FFFFFF;border:1.5px solid #1B2440;border-radius:14px;box-shadow:3px 3px 0 #1B2440}
+.cs-ser-l{display:flex;flex-direction:column;gap:2px;flex-shrink:0}
+.cs-ser-l b{font-family:'Kalam',cursive;font-weight:700;font-size:22px;line-height:1.1}
+.cs-ser-list{list-style:none;margin:0;padding:0;flex-grow:1;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.cs-ser-list li{display:inline-flex;align-items:center;gap:6px;padding:3px 11px 3px 3px;border:1.5px solid #1B2440;border-radius:999px;font-weight:800;font-size:13.5px;line-height:1;white-space:nowrap;background:#FFFFFF}
+.cs-ser-list li i{font-style:normal;width:20px;height:20px;border-radius:6px;background:#F1F4F8;display:inline-flex;align-items:center;justify-content:center;font-family:'Kalam',cursive;font-weight:700;font-size:13px}
+.cs-ser-list li.now{background:#FFD27A;border:2.5px solid #D1495B;font-size:14.5px;padding:4px 13px 4px 4px}
+.cs-ser-list li.now i{background:#FFFFFF}
+.cs-ser-list li.next{border:1.5px dashed #8C95A8;color:#8C95A8;background:transparent}
+.cs-ser-r{flex-shrink:0;font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#43506B}
+.cs-ser-r b{font-family:'Kalam',cursive;font-size:30px;letter-spacing:0;color:#D1495B}
+.cs-next{display:flex;align-items:center;justify-content:center;gap:14px;padding:14px 20px;background:#FFF6E0;border:1.5px dashed #1B2440;border-radius:14px;font-weight:600;font-size:17px;line-height:1.35;color:#2A3350}
+.cs-next-k{font-family:'Kalam',cursive;font-weight:700;font-size:26px;line-height:1;color:#1B2440}
+.cs-next b{font-weight:800;color:#1B2440}
 </style>
 </head>
 <body>
@@ -216,7 +314,7 @@ function overviewSVG(ov, items) {
   return `<svg width="1070" height="${Math.round(H * 1070 / 1080)}" viewBox="0 0 1080 ${H}" role="img" aria-label="${esc(alt)}" style="display:block;overflow:visible">${c}</svg>`;
 }
 
-function sheetHTML(d) {
+function compareHTML(d) {
   const items = d.items;
   const panels = items.map(it => {
     const col = colOf(it.n);
@@ -224,7 +322,7 @@ function sheetHTML(d) {
     return `<section class="cs-panel">
 <div class="cs-ph" style="background:${TINT[col]}"><div class="cs-badge" style="background:${HL[col]}">${it.n}</div>
 <div class="cs-pt"><h2 class="cs-ptitle">${esc(it.title)}</h2><p class="cs-tag">“${esc(it.tagline)}”</p></div></div>
-<div class="cs-pb"><div class="cs-tile"><svg class="cs-diag" data-n="${it.n}" width="312" height="221" viewBox="0 0 240 170" role="img" aria-label="Diagram for ${esc(it.title)}"><text x="120" y="90" font-size="14" fill="${P.gray}" text-anchor="middle">Drawing diagram…</text></svg></div>
+<div class="cs-pb"><div class="cs-tile"><svg class="cs-diag" data-n="${it.n}" data-k="${it.n}" data-vw="240" data-vh="170" width="312" height="221" viewBox="0 0 240 170" role="img" aria-label="Diagram for ${esc(it.title)}"><text x="120" y="90" font-size="14" fill="${P.gray}" text-anchor="middle">Drawing diagram…</text></svg></div>
 <ul class="cs-bul">${lis}</ul>
 <div class="cs-foot"><div class="cs-meters"><span class="cs-meter">Latency${dots(it.latency, 'Latency')}</span><span class="cs-meter">Cost${dots(it.cost, 'Cost')}</span></div>
 <p class="cs-try"><b>Try: </b>${it.tools.map(t => `<span class="cs-nw">${esc(t)}</span>`).join(' · ')}</p></div></div></section>`;
@@ -250,6 +348,148 @@ ${ov}
 <div class="cs-which"><h3>${esc(d.which.title)}</h3><ul>${rows}</ul></div>
 <div class="cs-quote"><div><div class="cs-tape" aria-hidden="true"></div><p class="big">${esc(d.quote.big)}</p><p class="small">${esc(d.quote.small)}</p></div></div>
 </section></div>`;
+}
+
+/* ---------- more layouts: deep dive, face-off, gallery, timeline; plus series ---------- */
+const LAYOUTS = ['compare', 'deepdive', 'faceoff', 'gallery', 'timeline'];
+const layoutOf = (d) => LAYOUTS.includes(d && d.layout) ? d.layout : 'compare';
+const LAYOUT_NAME = {compare: 'Comparison', deepdive: 'Deep dive', faceoff: 'Face-off', gallery: 'Gallery', timeline: 'Timeline'};
+/* light math markup: x^{2}, x_{i}, x^2, w_i */
+const mth = (s) => esc(s).replace(/\^\{([^{}]{1,24})\}/g, '<sup>$1</sup>').replace(/_\{([^{}]{1,24})\}/g, '<sub>$1</sub>')
+  .replace(/\^([A-Za-z0-9])/g, '<sup>$1</sup>').replace(/_([A-Za-z0-9])\b/g, '<sub>$1</sub>');
+const arr = (a) => Array.isArray(a) ? a : [];
+function fullTitle(d) { const t = arr(d && d.title), L = layoutOf(d); return L === 'deepdive' ? `${t[0]}: ${t[1]}` : L === 'faceoff' ? `${t[0]} vs ${t[1]}: ${t[2]}` : t.join(' '); }
+function diagSVG(key, vw, vh, w, label) {
+  const h = Math.round(w * vh / vw);
+  return `<svg class="cs-diag" data-k="${esc(key)}" data-vw="${vw}" data-vh="${vh}" width="${w}" height="${h}" viewBox="0 0 ${vw} ${vh}" role="img" aria-label="Diagram for ${esc(label)}"><text x="${vw / 2}" y="${vh / 2 + 5}" font-size="14" fill="${P.gray}" text-anchor="middle">Drawing diagram…</text></svg>`;
+}
+/* every diagram a sheet needs: {key, vw, vh, label, brief} */
+function diagramSlots(d) {
+  const L = layoutOf(d);
+  if (L === 'deepdive') return arr(d.figures).map(f => ({key: String(f.key), vw: 240, vh: 170, label: f.title, brief: f.diagram || ''}));
+  if (L === 'faceoff') {
+    const s = arr(d.sides);
+    return [...s.slice(0, 2).map((x, i) => ({key: i ? 'b' : 'a', vw: 360, vh: 170, label: x.name, brief: x.diagram || ''})),
+      ...(d.chart ? [{key: 'chart', vw: 640, vh: 200, label: d.chart.title, brief: d.chart.diagram || ''}] : [])];
+  }
+  if (L === 'gallery') return arr(d.tiles).map(t => ({key: String(t.n), vw: 400, vh: 140, label: t.title, brief: t.diagram || ''}));
+  if (L === 'timeline') return arr(d.events).map(e => ({key: String(e.n), vw: 360, vh: 120, label: `${e.when} ${e.name}`, brief: e.diagram || ''}));
+  return arr(d.items).map(it => ({key: String(it.n), vw: 240, vh: 170, label: it.title, brief: it.diagram || ''}));
+}
+const ARROW_R = `<svg width="26" height="18" viewBox="0 0 26 18" aria-hidden="true"><path d="M2 9 L22 9 M15 3 L22 9 L15 15" fill="none" stroke="${P.ink}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>`;
+const phead = (badge, col, title, tag, cls = '') => `<div class="cs-ph ${cls}" style="background:${TINT[col]}"><div class="cs-badge" style="background:${HL[col]}">${esc(badge)}</div>
+<div class="cs-pt"><h2 class="cs-ptitle">${esc(title)}</h2>${tag ? `<p class="cs-tag">${esc(tag)}</p>` : ''}</div></div>`;
+const bulList = (list) => `<ul class="cs-bul">${list.map(b => `<li>${marker(b.sign)}<span>${esc(b.text)}</span></li>`).join('')}</ul>`;
+const tryLine = (tools) => arr(tools).length ? `<p class="cs-try"><b>Try: </b>${tools.map(t => `<span class="cs-nw">${esc(t)}</span>`).join(' · ')}</p>` : '';
+const prinLis = (d) => arr(d.principles).map(p => `<li>${CHECK}<span>${esc(p.lead)} <span class="cs-nw">${hl('amber', esc(p.hl))}</span><span class="sub">${esc(p.sub)}</span></span></li>`).join('');
+const quoteBox = (d) => `<div class="cs-quote"><div><div class="cs-tape" aria-hidden="true"></div><p class="big">${esc(d.quote.big)}</p><p class="small">${esc(d.quote.small)}</p></div></div>`;
+const introP = (d) => `<p class="cs-intro">${esc(d.intro.before)} <span class="cs-nw">${hl('peri', esc(d.intro.highlight))}</span>${/^[,.;:!?]/.test(d.intro.after) ? '' : ' '}${esc(d.intro.after)}</p>`;
+const stickyBox = (d) => arr(d.sticky).length ? `<div class="cs-sticky"><div class="cs-tape" aria-hidden="true"></div>${d.sticky.map(esc).join('<br>')}</div>` : '';
+const noteBox = (d) => arr(d.note).length >= 2 ? `<div class="cs-note">${BRACE}<p>${esc(d.note[0])}<br>${hl('amber', esc(d.note[1]))}</p></div>` : '';
+function headWith(d, centre, sticky = true) {
+  return `<header class="cs-head"><div class="cs-hrow">${sticky ? stickyBox(d) : ''}<div class="cs-center"><div class="cs-kicker">${esc(d.kicker)}</div>${centre}</div>${noteBox(d)}</div>${introP(d)}</header>`;
+}
+const head3 = (d) => headWith(d, `<h1 class="cs-h1">${hl('amber', esc(d.title[0]))}<br>${esc(d.title[1])}</h1><div><span class="cs-bigpill">${esc(d.title[2])}</span></div>`);
+function takeWide(d) {
+  return `<section class="cs-card cs-take cs-take2"><div class="cs-prin2"><div style="display:flex;align-items:center;gap:12px">${BULB}<h2>${hl('coral', 'Key Takeaways')}</h2></div><ul>${prinLis(d)}</ul></div>${quoteBox(d)}</section>`;
+}
+function takeWhich(d, list) {
+  const byN = Object.fromEntries(list.map(i => [i.n, i]));
+  const rows = arr(d.which && d.which.rows).map(r => `<li><span>${esc(r.q)}</span><span class="cs-pills">${r.items.map(k => byN[k] ? pill(byN[k]) : '').join('')}</span></li>`).join('');
+  return `<section class="cs-card cs-take">
+<div class="cs-prin"><div style="display:flex;align-items:center;gap:12px">${BULB}<h2>${hl('coral', 'Key Takeaways')}</h2></div><ul>${prinLis(d)}</ul></div>
+<div class="cs-vdiv" aria-hidden="true"></div>
+<div class="cs-which"><h3>${esc(d.which.title)}</h3><ul>${rows}</ul></div>
+${quoteBox(d)}</section>`;
+}
+function seriesBar(d) {
+  const s = d.series; if (!s || !arr(s.items).length) return '';
+  const n = clamp(s.n, 1, s.items.length);
+  return `<div class="cs-ser"><div class="cs-ser-l"><span class="cs-kicker">Series</span><b>${esc(s.name)}</b></div>
+<ol class="cs-ser-list">${s.items.map((t, i) => `<li class="${i + 1 < n ? 'past' : i + 1 === n ? 'now' : 'next'}"><i>${i + 1}</i>${esc(t)}</li>`).join('')}</ol>
+<div class="cs-ser-r">Part <b>${n}</b> of ${s.items.length}</div></div>`;
+}
+function seriesNext(d) {
+  const s = d.series; if (!s || !arr(s.items).length) return '';
+  const n = clamp(s.n, 1, s.items.length);
+  if (n >= s.items.length) return `<div class="cs-next"><span class="cs-next-k">That’s the series</span>${ARROW_R}<span>All ${s.items.length} parts of <b>${esc(s.name)}</b>: ${s.items.map(esc).join(', ')}.</span></div>`;
+  return `<div class="cs-next"><span class="cs-next-k">Next up</span>${ARROW_R}<span class="cs-pill" style="background:${HL[colOf(n + 1)]}"><i>${n + 1}</i>${esc(s.items[n])}</span>${s.next_note ? `<span>${esc(s.next_note)}</span>` : ''}</div>`;
+}
+
+/* deep dive: one concept, numbered panels */
+function deepdiveHTML(d) {
+  const f = d.formula || {}, ex = d.example || {}, figs = arr(d.figures), uses = d.uses || {};
+  let k = 0; const nx = () => ++k; const col = (n) => colOf(n);
+  const n1 = nx(), n2 = nx(), n3 = nx();
+  const idea = `<section class="cs-panel">${phead(n1, col(n1), (d.idea && d.idea.title) || 'The idea', '', 'plain')}<div class="cs-sec"><p class="cs-lead">${esc(d.idea && d.idea.text)}</p>
+<ul class="cs-dots">${arr(d.idea && d.idea.points).map(p => `<li><span>${esc(p)}</span></li>`).join('')}</ul></div></section>`;
+  const formula = `<section class="cs-panel">${phead(n2, col(n2), f.title || 'The formula', '', 'plain')}<div class="cs-sec"><div class="cs-formula cs-m">${arr(f.lines).map(l => `<div>${mth(l)}</div>`).join('')}</div>
+<dl class="cs-legend2 cs-m">${arr(f.legend).map(x => `<div><dt>${mth(x.sym)}</dt><dd>${esc(x.text)}</dd></div>`).join('')}</dl>${f.note ? `<p class="cs-fnote">${esc(f.note)}</p>` : ''}</div></section>`;
+  const steps = arr(ex.steps).map((s, i) => `${ARROW_R}<div class="cs-step"><h4><i>${i + 1}</i>${esc(s.title)}</h4>${arr(s.lines).map(l => `<p class="cs-m">${mth(l)}</p>`).join('')}</div>`).join('');
+  const example = `<section class="cs-panel full">${phead(n3, col(n3), ex.title || 'Worked example', ex.tagline || '', 'plain')}<div class="cs-sec">
+<div class="cs-steps"><div class="cs-step given"><h4>Given</h4>${arr(ex.given).map(l => `<p class="cs-m">${mth(l)}</p>`).join('')}</div>${steps}</div>
+${ex.result ? `<p class="cs-result cs-m">${hl('amber', mth(ex.result))}</p>` : ''}</div></section>`;
+  const figHTML = figs.map(fg => { const n = nx(); return `<section class="cs-panel">${phead(n, col(n), fg.title, '', 'plain')}<div class="cs-pb"><div class="cs-tile">${diagSVG(fg.key, 240, 170, 312, fg.title)}</div><p class="cs-cap">${esc(fg.caption)}</p></div></section>`; }).join('');
+  const nu = nx();
+  const usesHTML = `<section class="cs-panel">${phead(nu, col(nu), uses.title || 'Where it’s used', '', 'plain')}<div class="cs-sec"><ul class="cs-uses">${arr(uses.items).map((u, i) => `<li><span class="cs-ub" style="background:${HL[colOf(i + 1)]}">${String.fromCharCode(65 + i)}</span><div><b>${esc(u.name)}</b><span>${esc(u.text)}</span></div></li>`).join('')}</ul></div></section>`;
+  const np = nx();
+  const pc = `<section class="cs-panel full">${phead(np, col(np), 'Strengths and limits', '', 'plain')}<div class="cs-pb"><div class="cs-pc">
+<div><h3>${hl('teal', 'Strengths')}</h3>${bulList(arr(d.pros).map(t => ({sign: '+', text: t})))}</div><div class="cs-vdiv" aria-hidden="true"></div>
+<div><h3>${hl('coral', 'Limits')}</h3>${bulList(arr(d.cons).map(t => ({sign: '-', text: t})))}</div></div>
+${arr(d.tools).length ? `<div class="cs-foot">${tryLine(d.tools)}</div>` : ''}</div></section>`;
+  const fs = Math.min(88, Math.floor(600 / (0.5 * Math.max(1, String(d.title[0]).length))));
+  const head = headWith(d, `<h1 class="cs-h1 cs-h1xl" style="font-size:${fs}px">${hl('amber', esc(d.title[0]))}</h1><div><span class="cs-bigpill">${esc(d.title[1])}</span></div>`);
+  return `<div class="cs" lang="en" data-layout="deepdive">${seriesBar(d)}${head}
+<div class="cs-g2">${idea}${formula}</div>${example}
+<div class="cs-grid">${figHTML}${usesHTML}</div>${pc}${takeWide(d)}${seriesNext(d)}</div>`;
+}
+
+/* face-off: A vs B */
+function faceoffHTML(d) {
+  const S = arr(d.sides).slice(0, 2), C = ['coral', 'peri'], K = ['A', 'B'];
+  const side = (s, i) => `<section class="cs-panel">${phead(K[i], C[i], s.name, s.tagline ? `“${s.tagline}”` : '')}<div class="cs-pb">
+<div class="cs-tile">${diagSVG(i ? 'b' : 'a', 360, 170, 494, s.name)}</div>${bulList(arr(s.bullets))}${arr(s.tools).length ? `<div class="cs-foot">${tryLine(s.tools)}</div>` : ''}</div></section>`;
+  const pillAB = (i) => `<span class="cs-pill" style="background:${HL[C[i]]}"><i>${K[i]}</i>${esc(S[i] ? S[i].short || S[i].name : K[i])}</span>`;
+  const ch = d.chart ? `<section class="cs-card cs-chart"><h2 class="cs-h2">${hl('amber', esc(d.chart.title))}</h2><div class="cs-tile">${diagSVG('chart', 640, 200, 1056, d.chart.title)}</div>${d.chart.caption ? `<p class="cs-cap">${esc(d.chart.caption)}</p>` : ''}</section>` : '';
+  const rows = arr(d.table && d.table.rows).map(r => `<tr><th>${esc(r.feature)}</th><td class="a">${esc(r.a)}</td><td class="b">${esc(r.b)}</td></tr>`).join('');
+  const tbl = rows ? `<section class="cs-card cs-tbl"><h2 class="cs-h2">${hl('amber', esc((d.table && d.table.title) || 'Key differences'))}</h2><table class="cs-table"><thead><tr><th></th><th>${pillAB(0)}</th><th>${pillAB(1)}</th></tr></thead><tbody>${rows}</tbody></table></section>` : '';
+  const when = (i) => `<section class="cs-panel">${phead(K[i], C[i], `Use ${S[i] ? S[i].short || S[i].name : K[i]} when…`, '', 'plain')}<div class="cs-sec"><ul class="cs-when">${arr(d.when && d.when[i ? 'b' : 'a']).map(t => `<li>${CHECK}<span>${esc(t)}</span></li>`).join('')}</ul></div></section>`;
+  const vfs = Math.min(56, Math.floor(1300 / Math.max(1, String(d.title[0]).length + String(d.title[1]).length)));
+  const head = headWith(d, `<div class="cs-vs" style="font-size:${vfs}px"><span class="cs-vsa" style="font-size:${vfs}px">${esc(d.title[0])}</span><span class="cs-vsx">vs</span><span class="cs-vsb" style="font-size:${vfs}px">${esc(d.title[1])}</span></div><div><span class="cs-sub">${hl('amber', esc(d.title[2]))}</span></div>`, false);
+  return `<div class="cs" lang="en" data-layout="faceoff">${seriesBar(d)}${head}
+<div class="cs-g2">${S.map(side).join('')}</div>${ch}${tbl}<div class="cs-g2">${when(0)}${when(1)}</div>${takeWide(d)}${seriesNext(d)}</div>`;
+}
+
+/* gallery: 6–10 variants, one diagram each */
+function galleryHTML(d) {
+  const T = arr(d.tiles);
+  const tile = (t) => { const c = colOf(t.n); return `<section class="cs-panel">${phead(t.n, c, t.title, t.tagline ? `“${t.tagline}”` : '')}<div class="cs-pb">
+<div class="cs-tile">${diagSVG(t.n, 400, 140, 494, t.title)}</div>${bulList([...(t.good ? [{sign: '+', text: t.good}] : []), ...(t.watch ? [{sign: '-', text: t.watch}] : [])])}</div></section>`; };
+  return `<div class="cs" lang="en" data-layout="gallery">${seriesBar(d)}${head3(d)}
+<div class="cs-gal">${T.map(tile).join('')}</div>${takeWhich(d, T)}${seriesNext(d)}</div>`;
+}
+
+/* timeline: dated milestones, zig-zag along a spine */
+function timelineHTML(d) {
+  const E = arr(d.events);
+  const ev = E.map((e, i) => { const c = colOf(e.n); return `<article class="cs-ev ${i % 2 ? 'r' : 'l'}" style="grid-column:${i % 2 + 1};grid-row:${i + 1} / span 2">
+<div class="cs-ph" style="background:${TINT[c]}"><span class="cs-year" style="background:${HL[c]}">${esc(e.when)}</span><div class="cs-pt"><h2 class="cs-ptitle">${esc(e.name)}</h2>${e.by ? `<p class="cs-tag">${esc(e.by)}</p>` : ''}</div></div>
+<div class="cs-pb"><div class="cs-tile">${diagSVG(e.n, 360, 120, 466, e.name)}</div><p class="cs-evt"><b>New: </b>${esc(e.what)}</p><p class="cs-evt"><b>Why it mattered: </b>${esc(e.why)}</p></div><span class="cs-dot" aria-hidden="true"></span></article>`; }).join('');
+  const th = arr(d.themes);
+  const themes = th.length ? `<section class="cs-card cs-themes"><h2 class="cs-h2">${hl('amber', esc(d.themes_title || 'What kept changing'))}</h2>
+<div class="cs-trow">${th.map((t, i) => `${i ? ARROW_R : ''}<div class="cs-th" style="background:${TINT[colOf(i + 1)]}"><b>${esc(t.name)}</b><span>${esc(t.note)}</span></div>`).join('')}</div></section>` : '';
+  return `<div class="cs" lang="en" data-layout="timeline">${seriesBar(d)}${head3(d)}
+<section class="cs-tl"><div class="cs-spine" aria-hidden="true"></div>${ev}</section>${themes}${takeWide(d)}${seriesNext(d)}</div>`;
+}
+
+function sheetHTML(d) {
+  const L = layoutOf(d);
+  if (L === 'deepdive') return deepdiveHTML(d);
+  if (L === 'faceoff') return faceoffHTML(d);
+  if (L === 'gallery') return galleryHTML(d);
+  if (L === 'timeline') return timelineHTML(d);
+  if (d.series) return compareHTML(d).replace('<div class="cs" lang="en">', '<div class="cs" lang="en">' + seriesBar(d)).replace(/<\/div>\s*$/, seriesNext(d) + '</div>');
+  return compareHTML(d);
 }
 
 /* ---------- SVG sanitizer for Claude-drawn diagrams ---------- */
@@ -289,28 +529,35 @@ function mountDiagram(svgEl, markup) {
 function fitDiagram(svgEl) {
   try {
     if (!svgEl || !svgEl.isConnected) return;
-    svgEl.setAttribute('viewBox', '0 0 240 170');
+    const W = Number(svgEl.getAttribute('data-vw')) || 240, H = Number(svgEl.getAttribute('data-vh')) || 170;
+    svgEl.setAttribute('viewBox', `0 0 ${W} ${H}`);
     const bb = svgEl.getBBox(); const pad = 4;
     const x0 = Math.min(0, bb.x - pad), y0 = Math.min(0, bb.y - pad);
-    const x1 = Math.max(240, bb.x + bb.width + pad), y1 = Math.max(170, bb.y + bb.height + pad);
-    if (x0 < 0 || y0 < 0 || x1 > 240 || y1 > 170) svgEl.setAttribute('viewBox', `${x0.toFixed(1)} ${y0.toFixed(1)} ${(x1 - x0).toFixed(1)} ${(y1 - y0).toFixed(1)}`);
+    const x1 = Math.max(W, bb.x + bb.width + pad), y1 = Math.max(H, bb.y + bb.height + pad);
+    if (x0 < 0 || y0 < 0 || x1 > W || y1 > H) svgEl.setAttribute('viewBox', `${x0.toFixed(1)} ${y0.toFixed(1)} ${(x1 - x0).toFixed(1)} ${(y1 - y0).toFixed(1)}`);
   } catch (_) { /* not rendered yet */ }
 }
 function fitAllDiagrams() { document.querySelectorAll('#stage .cs-diag').forEach(fitDiagram); }
 function failDiagram(svgEl) {
   if (!svgEl) return;
-  svgEl.innerHTML = `<rect x="20" y="40" width="200" height="90" rx="10" fill="#FFFFFF" stroke="${P.gray}" stroke-width="1.3" stroke-dasharray="5 3"></rect><text x="120" y="82" font-size="14" fill="${P.soft}" text-anchor="middle">Diagram didn’t draw.</text><text x="120" y="102" font-size="13" fill="${P.gray}" text-anchor="middle">Use “Redraw missing diagrams”.</text>`;
+  const W = Number(svgEl.getAttribute('data-vw')) || 240, H = Number(svgEl.getAttribute('data-vh')) || 170, cx = W / 2, cy = H / 2;
+  svgEl.innerHTML = `<rect x="${cx - 100}" y="${cy - 45}" width="200" height="90" rx="10" fill="#FFFFFF" stroke="${P.gray}" stroke-width="1.3" stroke-dasharray="5 3"></rect><text x="${cx}" y="${cy - 3}" font-size="14" fill="${P.soft}" text-anchor="middle">Diagram didn’t draw.</text><text x="${cx}" y="${cy + 17}" font-size="13" fill="${P.gray}" text-anchor="middle">Use “Redraw missing diagrams”.</text>`;
 }
-
+const slotEl = (root, key) => root.querySelector(`.cs-diag[data-k="${String(key).replace(/["\\]/g, '')}"]`);
+/* mount every saved diagram; returns how many are still missing */
+function mountSlots(root, d, failMissing = true) {
+  let missing = 0;
+  for (const s of diagramSlots(d)) {
+    const el = slotEl(root, s.key), dg = (d.diagrams || {})[s.key];
+    if (dg && mountDiagram(el, dg.svg)) { if (dg.alt) el.setAttribute('aria-label', dg.alt); }
+    else { missing++; if (failMissing) failDiagram(el); }
+  }
+  return missing;
+}
 const d = window.DOC.data;
 const stage = $('stage');
 stage.innerHTML = sheetHTML(d);
-for (const it of d.items) {
-  const el = stage.querySelector(`.cs-diag[data-n="${it.n}"]`);
-  const dg = (d.diagrams || {})[it.n];
-  if (dg && mountDiagram(el, dg.svg)) { if (dg.alt) el.setAttribute('aria-label', dg.alt); }
-  else failDiagram(el);
-}
+mountSlots(stage, d, true);
 (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { fitAllDiagrams(); window.RENDERED = true; });
 })();
 </script>

@@ -1,6 +1,6 @@
 # AI Cheat Sheets
 
-Twelve visual cheat sheets on AI engineering, machine learning, the math behind it, computer science and software engineering. Each compares six approaches with worked-example diagrams, trade-offs and a which-one-to-use table.
+Twelve visual cheat sheets on AI engineering, machine learning, the math behind it, computer science and software engineering. Most compare six approaches with worked-example diagrams, trade-offs and a which-one-to-use table; the rest use one of the other formats below.
 
 | # | Topic | Sheet title | LinkedIn |
 |---|---|---|---|
@@ -19,6 +19,16 @@ Twelve visual cheat sheets on AI engineering, machine learning, the math behind 
 
 Each folder holds the full-size image (1800 px wide), the LinkedIn post and the image alt text.
 
+## Formats
+
+- **Comparison:** six (or nine) approaches to one job, each with a worked-example diagram, pros and cons, and a which-one-to-use table.
+- **Deep dive:** one concept: the idea, its formula, a worked example, two diagrams, where it's used, and its strengths and limits.
+- **Face-off:** two alternatives side by side, with a chart that puts numbers on the difference, a table of key differences and when to use each.
+- **Gallery:** six to ten variants of one thing, each with its own small flow diagram, one strength and one watch-out.
+- **Timeline:** dated milestones, each with a small diagram, what it introduced and why it mattered.
+
+Any sheet can also be one part of a series: the series list sits at the top and the next part is named at the bottom.
+
 ## How the images are made
 
-Each sheet is stored as data in `src/sheets/`. A GitHub Action (`.github/workflows/render.yml`) renders it with `src/render_sheet.py` and headless Chromium, and commits the PNG into the sheet's folder. Edit a JSON file and push to re-render.
+Each sheet is stored as data in `src/sheets/`. A GitHub Action (`.github/workflows/render.yml`) renders it with `src/render_sheet.py` and headless Chromium, and commits the PNG into the sheet's folder. The `layout` field in the data picks the format. Edit a JSON file and push to re-render.
